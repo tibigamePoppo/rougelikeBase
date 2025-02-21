@@ -1335,8 +1335,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -49.99994, y: -50}
-  m_SizeDelta: {x: -300.00006, y: -100}
+  m_AnchoredPosition: {x: -449.99994, y: -50}
+  m_SizeDelta: {x: -1100.0001, y: -100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1043980518
 MonoBehaviour:
@@ -1925,10 +1925,10 @@ MonoBehaviour:
   m_ChildAlignment: 0
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 300, y: 400}
+  m_CellSize: {x: 500, y: 400}
   m_Spacing: {x: 20, y: 20}
-  m_Constraint: 0
-  m_ConstraintCount: 2
+  m_Constraint: 1
+  m_ConstraintCount: 1
 --- !u!114 &1433958030
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2015,7 +2015,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -0.000004687121}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1441221570
@@ -2791,7 +2791,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _backButton: {fileID: 1745152517}
   _content: {fileID: 1433958028}
-  _card: {fileID: 6446685985685881535, guid: 1258777014be748729945aaff0da8340, type: 3}
+  _cardPanel: {fileID: 936583469777168902, guid: e622a89b72f204cf4bd59be0096e3e79, type: 3}
 --- !u!224 &2000460263
 RectTransform:
   m_ObjectHideFlags: 0

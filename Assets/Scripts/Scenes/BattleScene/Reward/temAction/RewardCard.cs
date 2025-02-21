@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 
 public class RewardCard : RewardItemActionBase
@@ -6,8 +7,8 @@ public class RewardCard : RewardItemActionBase
     {
         if (PlayerSingleton.Instance)
         {
-            var _cards = Resources.Load<CardPool>("Value/PlayerDeck").cards;
-            PlayerSingleton.Instance.AddCard(_cards[Random.RandomRange(0, _cards.Count)]);
+            var _cards = Resources.Load<CardPool>("Value/PlayerDeck").cards.ToArray();
+            PlayerSingleton.Instance.AddCard(_cards[Random.RandomRange(0, _cards.Length)]);
         }
         else
         {

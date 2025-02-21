@@ -21,16 +21,16 @@ namespace Scenes.MainScene.Player
         private Subject<Unit> _deckButtonClick = new Subject<Unit>();
         public IObservable<Unit> OnDeckButtonClick => _deckButtonClick;
 
-        public void Init(int initialHp,int initialMoney)
+        public void Init(int initialHp,int initialMoney, List<CardData> playerCard)
         {
             _hpText.text = initialHp.ToString();
             _moneyText.text = initialMoney.ToString();
-            _deckView.Init();
+            _deckView.Init(playerCard);
             _deckButton.OnClickAsObservable().Subscribe(_ => _deckButtonClick.OnNext(default)).AddTo(this);
             _menuButton.OnClickAsObservable().Subscribe(_ => MenuActive()).AddTo(this);
         }
 
-        public void OpenDeckView(List<Card> playerCard)
+        public void OpenDeckView(List<CardData> playerCard)
         {
             _deckView.ActiveWindow(playerCard);
         }

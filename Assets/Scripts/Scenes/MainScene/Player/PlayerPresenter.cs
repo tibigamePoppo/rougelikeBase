@@ -19,10 +19,10 @@ namespace Scenes.MainScene.Player
             _view = GetComponent<PlayerUIView>();
             _singleton = GetComponent<PlayerSingleton>();
             _model.Init();
-            _view.Init(_model.CurrentHp,_model.CurrentMoney);
+            _view.Init(_model.CurrentHp,_model.CurrentMoney, _model.CurrentCardDataList);
             _model.OnHpChange.Subscribe(v => _view.UpdateHpText(v)).AddTo(this);
             _model.OnMoneyChange.Subscribe(v => _view.UpdateMoneyText(v)).AddTo(this);
-            _view.OnDeckButtonClick.Subscribe(_ => _view.OpenDeckView(_model.CurrentCards)).AddTo(this);
+            _view.OnDeckButtonClick.Subscribe(_ => _view.OpenDeckView(_model.CurrentCardDataList)).AddTo(this);
 
             _singleton.OnChangeHpEvent.Subscribe(v => _model.ChangeHp(v)).AddTo(this);
             _singleton.OnChangeMoneyEvent.Subscribe(v => _model.ChangeMoney(v)).AddTo(this);

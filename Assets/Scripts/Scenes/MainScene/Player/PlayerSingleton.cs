@@ -7,10 +7,10 @@ public class PlayerSingleton : SingletonAbstract<PlayerSingleton>
 {
     private Subject<int> _changeHp = new Subject<int>();
     private Subject<int> _changeMoney = new Subject<int>();
-    private Subject<Card> _addCard = new Subject<Card>();
+    private Subject<CardData> _addCard = new Subject<CardData>();
     public IObservable<int> OnChangeHpEvent => _changeHp;
     public IObservable<int> OnChangeMoneyEvent => _changeMoney;
-    public IObservable<Card> OnAddCardEvent => _addCard;
+    public IObservable<CardData> OnAddCardEvent => _addCard;
 
     public void ChangeHp(int value)
     {
@@ -22,7 +22,7 @@ public class PlayerSingleton : SingletonAbstract<PlayerSingleton>
         _changeMoney.OnNext(value);
     }
 
-    public void AddCard(Card card)
+    public void AddCard(CardData card)
     {
         _addCard.OnNext(card);
     }

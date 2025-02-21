@@ -13,11 +13,5 @@ MonoBehaviour:
   m_Name: PlayerDeck
   m_EditorClassIdentifier: 
   cards:
-  - name: TEMPCARD1
-    sprite: {fileID: 21300000, guid: cb81b4d3282684886afcf86a630a9eb0, type: 3}
-  - name: TEMPCARD2
-    sprite: {fileID: 21300000, guid: 143d7d5e6dc6b42a594962b8c725c2e0, type: 3}
-  - name: TEMPCARD3
-    sprite: {fileID: 21300000, guid: 102c61284095740f28d9a8aa35efa679, type: 3}
-  - name: TEMPCARD4
-    sprite: {fileID: 21300000, guid: 4f225a5a054584e6f9e4ec36fe1b4290, type: 3}
+  - {fileID: 11400000, guid: b84817daad219474fa548e89a0220cae, type: 2}
+  - {fileID: 11400000, guid: 5365b555aaeab490a9b289e115417afe, type: 2}

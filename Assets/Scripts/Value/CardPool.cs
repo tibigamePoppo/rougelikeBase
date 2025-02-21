@@ -5,5 +5,5 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "ResourcePool/CardPool")]
 public class CardPool : ScriptableObject
 {
-    public List<Card> cards;
+    public List<CardData> cards;
 }

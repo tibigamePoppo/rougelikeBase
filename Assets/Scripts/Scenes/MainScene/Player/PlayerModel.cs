@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UniRx;
 using System;
+using System.Linq;
 using UnityEngine;
 
 namespace Scenes.MainScene.Player
@@ -10,17 +11,17 @@ namespace Scenes.MainScene.Player
     {
         private IntReactiveProperty _hp = new IntReactiveProperty(100);
         private IntReactiveProperty _money = new IntReactiveProperty(50);
-        private List<Card> _cards = new List<Card>();
+        private List<CardData> _cardDataList = new List<CardData>();
 
         public IObservable<int> OnHpChange => _hp;
         public IObservable<int> OnMoneyChange => _money;
         public int CurrentHp { get { return _hp.Value; } }
         public int CurrentMoney { get { return _money.Value; } }
-        public List<Card> CurrentCards { get { return _cards; } }
+        public List<CardData> CurrentCardDataList { get { return _cardDataList; } }
 
         public void Init()
         {
-            _cards = Resources.Load<CardPool>("Value/PlayerDeck").cards;
+            _cardDataList = Resources.Load<CardPool>("Value/PlayerDeck").cards;
         }
 
         public void ChangeHp(int value)
@@ -43,10 +44,10 @@ namespace Scenes.MainScene.Player
             return _money.Value + value >= 0;
         }
 
-        public void AddCard(Card card)
+        public void AddCard(CardData card)
         {
             Debug.Log($"addCard name is {card.name}");
-            _cards.Add(card);
+            _cardDataList.FirstOrDefault(c => c.card.name == card.card.name).count += card.count;
         }
     }
 }
