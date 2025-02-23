@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _enemyName: "\u30CE\u30FC\u30DE\u30EB\u30C6\u30B9\u30C81"
   _enemySprite: {fileID: 21300000, guid: 143d7d5e6dc6b42a594962b8c725c2e0, type: 3}
+  _unitData: {fileID: 11400000, guid: d7d359ea493434bbc9a12c6a3385ff39, type: 2}

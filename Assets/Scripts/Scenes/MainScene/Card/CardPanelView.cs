@@ -8,14 +8,14 @@ namespace Scenes.MainScene.Cards
     {
         [SerializeField] private TextMeshProUGUI _text;
         [SerializeField] private CardView _view;
-        private Card _cardData;
-        public Card Card { get { return _cardData; } }
+        private UnitStatus _cardData;
+        public UnitStatus Card { get { return _cardData; } }
 
-        public void Init(CardData cardData)
+        public void Init(UnitData cardData,int unitCount)
         {
-            _cardData = cardData.card;
+            _cardData = cardData.status;
             _view.Init(_cardData);
-            UpdateView(cardData.count);
+            UpdateView(unitCount);
         }
 
         public void UpdateView(int count)
@@ -26,8 +26,8 @@ namespace Scenes.MainScene.Cards
             }
             else
             {
-                _text.text = $"X {count}";
                 gameObject.SetActive(true);
+                _text.text = $"X {count}";
             }
         }
     }

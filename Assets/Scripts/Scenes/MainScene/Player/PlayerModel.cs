@@ -11,17 +11,20 @@ namespace Scenes.MainScene.Player
     {
         private IntReactiveProperty _hp = new IntReactiveProperty(100);
         private IntReactiveProperty _money = new IntReactiveProperty(50);
-        private List<CardData> _cardDataList = new List<CardData>();
+        private Subject<Unit> _updateDeck = new Subject<Unit>();
+        private List<UnitData> _cardDataList = new List<UnitData>();
 
         public IObservable<int> OnHpChange => _hp;
         public IObservable<int> OnMoneyChange => _money;
+        public IObservable<Unit> OnDeckChange => _updateDeck;
         public int CurrentHp { get { return _hp.Value; } }
         public int CurrentMoney { get { return _money.Value; } }
-        public List<CardData> CurrentCardDataList { get { return _cardDataList; } }
+        public List<UnitData> CurrentCardDataList { get { return _cardDataList; } }
 
         public void Init()
         {
-            _cardDataList = Resources.Load<CardPool>("Value/PlayerDeck").cards;
+            _cardDataList = Resources.Load<CardPool>("Value/PlayerDeck").CardList();
+            Debug.Log($"_cardDataList {_cardDataList.Count}");
         }
 
         public void ChangeHp(int value)
@@ -44,10 +47,10 @@ namespace Scenes.MainScene.Player
             return _money.Value + value >= 0;
         }
 
-        public void AddCard(CardData card)
+        public void AddCard(UnitData card)
         {
-            Debug.Log($"addCard name is {card.name}");
-            _cardDataList.FirstOrDefault(c => c.card.name == card.card.name).count += card.count;
+            _cardDataList.Add(card);
+            _updateDeck.OnNext(default);
         }
     }
 }

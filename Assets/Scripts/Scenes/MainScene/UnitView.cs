@@ -75,8 +75,7 @@ namespace Scenes.MainScene
                 BattlePresenter battlePresenter = FindObjectOfType<BattlePresenter>();
                 if (battlePresenter != null)
                 {
-                    battlePresenter.Init(_enemyLevel);
-                    Debug.Log("BattlePresenter の Init を実行！");
+                    battlePresenter.Init(_enemyLevel,PlayerSingleton.Instance.CurrentDeck);
                 }
                 else
                 {

@@ -2,15 +2,18 @@ using Common;
 using UniRx;
 using System;
 using Scenes.MainScene.Player;
+using System.Collections.Generic;
 
 public class PlayerSingleton : SingletonAbstract<PlayerSingleton>
 {
     private Subject<int> _changeHp = new Subject<int>();
     private Subject<int> _changeMoney = new Subject<int>();
-    private Subject<CardData> _addCard = new Subject<CardData>();
+    private Subject<UnitData> _addUnit = new Subject<UnitData>();
+    private List<UnitData> _currentDeck = new List<UnitData>();
     public IObservable<int> OnChangeHpEvent => _changeHp;
     public IObservable<int> OnChangeMoneyEvent => _changeMoney;
-    public IObservable<CardData> OnAddCardEvent => _addCard;
+    public IObservable<UnitData> OnAddCardEvent => _addUnit;
+    public List<UnitData> CurrentDeck { get { return _currentDeck; } }
 
     public void ChangeHp(int value)
     {
@@ -22,8 +25,13 @@ public class PlayerSingleton : SingletonAbstract<PlayerSingleton>
         _changeMoney.OnNext(value);
     }
 
-    public void AddCard(CardData card)
+    public void AddCard(UnitData unit)
     {
-        _addCard.OnNext(card);
+        _addUnit.OnNext(unit);
+    }
+
+    public void SetCurrentDeck(List<UnitData> currentDeck)
+    {
+        _currentDeck = currentDeck;
     }
 }

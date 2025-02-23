@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Scenes.MainScene.Player;
 using UnityEngine;
 
 namespace Scenes.Battle
@@ -8,10 +9,10 @@ namespace Scenes.Battle
     {
         private BattleView _view;
 
-        public void Init(EnemyLevel enemyLevel)
+        public void Init(EnemyLevel enemyLevel,List<UnitData> playerCards)
         {
             _view = GetComponent<BattleView>();
-            _view.Init(enemyLevel);
+            _view.Init(enemyLevel, playerCards);
         }
     }
 }

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UniRx;
@@ -11,19 +9,22 @@ public class RewardView : MonoBehaviour
     [SerializeField] private Transform _rewardItemPanel;
     [SerializeField] private RewardItemView _rewardItem;
 
-    void Start()
-    {
-        Init();
-    }
+    [SerializeField] private Sprite _moneySprite;
+    [SerializeField] private Sprite _unitSprite;
 
     public void Init()
     {
         _backButton.OnClickAsObservable().Subscribe(_ => BackScene()).AddTo(this);
 
-        Reward testReward = new Reward("MONEY!!", null, new RewardMoney());
+        RewardItemActionBase rewardMoney = new RewardMoney();
+        rewardMoney.Init();
+        Reward testReward = new Reward(rewardMoney.ContentName, _moneySprite, rewardMoney);
         var reward = Instantiate(_rewardItem, _rewardItemPanel);
         reward.Init(testReward);
-        Reward testReward2 = new Reward("CARD!!", null, new RewardCard());
+
+        RewardItemActionBase rewardCard = new RewardCard();
+        rewardCard.Init();
+        Reward testReward2 = new Reward(rewardCard.ContentName, _unitSprite, rewardCard);
         var reward2 = Instantiate(_rewardItem, _rewardItemPanel);
         reward2.Init(testReward2);
     }
