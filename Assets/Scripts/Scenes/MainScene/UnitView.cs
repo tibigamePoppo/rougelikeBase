@@ -82,7 +82,6 @@ namespace Scenes.MainScene
                     Debug.LogWarning("BattlePresenter が見つからない！");
                 }
 
-                // イベント登録解除（不要なら消す）
                 SceneManager.sceneLoaded -= OnSceneLoaded;
             }
         }

@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UniRx;
 using System;
-using System.Linq;
 using UnityEngine;
 
 namespace Scenes.MainScene.Player
@@ -24,7 +23,6 @@ namespace Scenes.MainScene.Player
         public void Init()
         {
             _cardDataList = Resources.Load<CardPool>("Value/PlayerDeck").CardList();
-            Debug.Log($"_cardDataList {_cardDataList.Count}");
         }
 
         public void ChangeHp(int value)

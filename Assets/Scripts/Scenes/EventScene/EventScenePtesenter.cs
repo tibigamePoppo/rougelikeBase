@@ -21,6 +21,7 @@ namespace Scenes.EventScene
             _model.Init();
             _view.Init(_model.SceneEvent);
             _view.OnEmitEvent.Subscribe(e => _model.EventProcess(e)).AddTo(this);
+            _model.ChangeScene.Subscribe(s => _view.ChangeScene(s)).AddTo(this);
         }
     }
 }

@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e886e9a109824a3584de5b58e13e0ef, type: 3}
+  m_Name: RuinedTemple
+  m_EditorClassIdentifier: 
+  eventName: "\u673D\u3061\u305F\u795E\u6BBF"
+  text: "\u9759\u5BC2\u306B\u5305\u307E\u308C\u305F\u795E\u6BBF\u306E\u4E2D\u306B\u3001\u4E00\u3064\u306E\u7948\u7977\u53F0\u304C\u3042\u308B\u3002\u304B\u3059\u304B\u306B\u795E\u8056\u306A\u529B\u3092\u611F\u3058\u308B\u304C\u3001\u4F55\u304B\u3092\u6367\u3052\u308B\u5FC5\u8981\u304C\u3042\u308A\u305D\u3046\u3060\u3002"
+  sprite: {fileID: 0}
+  eventEffectArgs:
+  - text: "\u304A\u91D1\u3092\u6367\u3052\u308B(+30HP,-10G)"
+    playerHpChange: 30
+    playerMoneyChange: -10
+    changeScene: 0
+    units: []
+  - text: "\u304A\u7948\u308A\u3060\u3051\u3059\u308B(+10HP)"
+    playerHpChange: 10
+    playerMoneyChange: 0
+    changeScene: 0
+    units: []
+  - text: "\u4F55\u3082\u3057\u306A\u3044"
+    playerHpChange: 0
+    playerMoneyChange: 0
+    changeScene: 0
+    units: []

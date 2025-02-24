@@ -1,45 +1,29 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UniRx;
+using System;
 
 namespace Scenes.EventScene
 {
     public class EventSceneModel
     {
-        private EventBase[] _sceneEvent;
-        public EventBase[] SceneEvent { get { return _sceneEvent; } }
+        private EventData _sceneEvent;
+        private Subject<SceneName> _changeScene = new Subject<SceneName>();
+        public EventData SceneEvent { get { return _sceneEvent; } }
+        public IObservable<SceneName> ChangeScene => _changeScene;
+
         public void Init()
         {
             _sceneEvent = RandomEventList();
         }
 
-        private EventBase[] RandomEventList()
+        private EventData RandomEventList()
         {
             List<EventBase> events = new List<EventBase>();
-            int randomIndex = Random.RandomRange(0, 4);
-            switch (randomIndex)
-            {
-                case 0:
-                    events.Add(new EventBase("big heal portion", new EventEffectArg(100, -30, "")));
-                    events.Add(new EventBase("small heal portion", new EventEffectArg(50, -10, "")));
-                    events.Add(new EventBase("harb only", new EventEffectArg(10, 0, "")));
-                    break;
-                case 1:
-                    events.Add(new EventBase("Fighting the Bandits", new EventEffectArg(0, 0, "BattleScene")));
-                    events.Add(new EventBase("give money.", new EventEffectArg(0, -10, "")));
-                    break;
-                case 2:
-                    events.Add(new EventBase("rest", new EventEffectArg(30, 0, "")));
-                    events.Add(new EventBase("work.", new EventEffectArg(0, 30, "")));
-                    break;
-                case 3:
-                    events.Add(new EventBase("go shop", new EventEffectArg(0, 0, "ShopScene")));
-                    events.Add(new EventBase("back home.", new EventEffectArg(0, 30, "")));
-                    break;
-                default:
-                    break;
-            }
-            return events.ToArray();
+            var _eventDataList = Resources.Load<EventDataPool>("Value/EventPool").events.ToArray();
+            int randomIndex = UnityEngine.Random.Range(0, _eventDataList.Length);
+            return _eventDataList[randomIndex];
         }
 
         public void EventProcess(EventEffectArg arg)
@@ -49,24 +33,17 @@ namespace Scenes.EventScene
             Debug.Log($"change money {arg.playerMoneyChange}");
             PlayerSingleton.Instance.ChangeMoney(arg.playerMoneyChange);
             Debug.Log($"change scene {arg.changeScene}");
-            if (arg.changeScene.Length > 0)
+            if (arg.changeScene != SceneName.None)
             {
-                SceneManager.LoadScene(arg.changeScene, LoadSceneMode.Additive);
+                _changeScene.OnNext(arg.changeScene);
+            }
+            foreach (var unit in arg.units)
+            {
+                Debug.Log($"add member {unit.name}");
+                PlayerSingleton.Instance.AddCard(unit);
             }
             SceneManager.UnloadSceneAsync("EventScene");
         }
-    }
 
-    public struct EventEffectArg
-    {
-        public int playerHpChange;
-        public int playerMoneyChange;
-        public string changeScene;
-        public EventEffectArg(int playerHpChange, int playerMoneyChange, string changeScene)
-        {
-            this.playerHpChange = playerHpChange;
-            this.playerMoneyChange = playerMoneyChange;
-            this.changeScene = changeScene;
-        }
     }
 }
