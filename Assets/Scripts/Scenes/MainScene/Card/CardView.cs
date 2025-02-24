@@ -11,11 +11,11 @@ namespace Scenes.MainScene.Cards
         [SerializeField] private Image _image;
         [SerializeField] private TextMeshProUGUI _text;
 
-        public void Init(UnitStatus card)
+        public void Init(UnitStatus unit)
         {
-            _nameText.text = card.name;
-            _image.sprite = card.sprite;
-            _text.text = card.text;
+            _nameText.text = unit.name;
+            _image.sprite = unit.sprite;
+            _text.text = unit.text;
         }
     }
 }

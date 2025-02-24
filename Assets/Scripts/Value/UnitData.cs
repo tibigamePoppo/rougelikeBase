@@ -8,5 +8,6 @@ namespace Scenes.MainScene.Player
     {
         public UnitStatus status;
         public CharacterUnitPresenter prefab;
+        public int shopCost;
     }
 }

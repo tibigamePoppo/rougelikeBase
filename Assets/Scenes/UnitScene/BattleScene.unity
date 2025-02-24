@@ -913,8 +913,8 @@ MonoBehaviour:
   _backButton: {fileID: 958077476}
   _rewardItemPanel: {fileID: 1094181518}
   _rewardItem: {fileID: 8295119243102662977, guid: 78623aa4a94db4cb89679c6a7cd86f2f, type: 3}
-  _moneySprite: {fileID: 21300000, guid: 9f5202927e2544f399497011ceb0f9d3, type: 3}
-  _unitSprite: {fileID: 21300000, guid: a5d15e61952874c4f93aa7dc41f1b985, type: 3}
+  _moneySprite: {fileID: 21300000, guid: eca6b6b8526004cdebeecce86d82514f, type: 3}
+  _unitSprite: {fileID: 21300000, guid: 8ef23337029334d468e14d077603cd1b, type: 3}
 --- !u!114 &1293555272
 MonoBehaviour:
   m_ObjectHideFlags: 0

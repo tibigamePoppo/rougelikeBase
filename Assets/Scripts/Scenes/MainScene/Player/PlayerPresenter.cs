@@ -22,7 +22,11 @@ namespace Scenes.MainScene.Player
             _singleton.SetCurrentDeck(_model.CurrentCardDataList);
             _view.Init(_model.CurrentHp,_model.CurrentMoney, _model.CurrentCardDataList);
             _model.OnHpChange.Subscribe(v => _view.UpdateHpText(v)).AddTo(this);
-            _model.OnMoneyChange.Subscribe(v => _view.UpdateMoneyText(v)).AddTo(this);
+            _model.OnMoneyChange.Subscribe(v =>
+            {
+                _view.UpdateMoneyText(v);
+                _singleton.SetCurrentMoney(v);
+            }).AddTo(this);
             _view.OnDeckButtonClick.Subscribe(_ => _view.OpenDeckView(_model.CurrentCardDataList)).AddTo(this);
 
             _model.OnDeckChange.Subscribe(_ => _singleton.SetCurrentDeck(_model.CurrentCardDataList));

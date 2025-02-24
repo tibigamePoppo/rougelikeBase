@@ -14,9 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   status:
     name: "\u5F13\u5175"
-    sprite: {fileID: 0}
+    sprite: {fileID: 21300000, guid: cb81b4d3282684886afcf86a630a9eb0, type: 3}
     text: 
     hp: 50
     attack: 20
     attackRange: 5
   prefab: {fileID: 1853526014605065979, guid: cbada60d2b7dd438a9cff42435d69fd7, type: 3}
+  shopCost: 30
