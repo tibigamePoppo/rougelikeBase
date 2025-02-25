@@ -14,7 +14,9 @@ namespace Scenes.Battle
     public class BattleView : MonoBehaviour
     {
         [SerializeField] private Transform _playerUnitSpawnTransfrom;
+        [SerializeField] private Transform[] _enemyUnitSpawnTransfrom;
         [SerializeField] private RewardView _rewardView;
+        [SerializeField] private BattleFormationPresenter _battleFormationPresenter;
 
         public void Init(EnemyLevel enemyLevel, List<UnitData> playerCards)
         {
@@ -42,6 +44,10 @@ namespace Scenes.Battle
             var enemyPresenter = EnemyUnitSpawn(enemyData);
             var playerModel = playerPresenter.Select(p => p.CharacterUnitModel).ToArray();
             var enemyModel = enemyPresenter.Select(p => p.CharacterUnitModel).ToArray();
+
+
+            _battleFormationPresenter.Init(playerModel);
+
             foreach (var pp in playerPresenter)
             {
                 pp.SetGroup(playerModel, enemyModel);
@@ -89,8 +95,9 @@ namespace Scenes.Battle
             List<CharacterUnitPresenter> enemyList = new List<CharacterUnitPresenter>();
             for (int i = 0; i < enemyCount; i++)
             {
+                Vector3 baseSpawnPosition = _enemyUnitSpawnTransfrom[UnityEngine.Random.Range(0, _enemyUnitSpawnTransfrom.Length)].position;
                 Vector3 random = new Vector3(UnityEngine.Random.Range(-5, 5), 0, UnityEngine.Random.Range(-5, 5)).normalized * 10;
-                var instanceUnit = Instantiate(enemyData._unitData.prefab, random, Quaternion.identity, _playerUnitSpawnTransfrom);
+                var instanceUnit = Instantiate(enemyData._unitData.prefab, baseSpawnPosition + random, Quaternion.identity, _playerUnitSpawnTransfrom);
                 enemyList.Add(instanceUnit.Init(enemyData._unitData.status));
             }
             return enemyList;

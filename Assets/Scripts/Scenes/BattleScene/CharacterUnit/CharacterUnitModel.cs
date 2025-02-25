@@ -8,6 +8,7 @@ using Cysharp.Threading.Tasks;
 using System;
 using Scenes.Battle.UnitCharacter.State;
 using System.Linq;
+using System.Threading;
 
 namespace Scenes.Battle.UnitCharacter
 {
@@ -16,9 +17,12 @@ namespace Scenes.Battle.UnitCharacter
         private float _maxHp;
         private float _attackPower;
         private float _attackRange;
+        private string _unitName;
 
         private Transform _originTransfrom;
         private bool isHoldPosition = false;
+        private bool isHoldFormationPosition = false;
+        private CancellationTokenSource formationMoveSorce ;
 
         private ReactiveProperty<float> _health = new ReactiveProperty<float>();
         private ReactiveProperty<CharacterUnitStateType> _stateType = new ReactiveProperty<CharacterUnitStateType>();
@@ -30,6 +34,7 @@ namespace Scenes.Battle.UnitCharacter
         public IObservable<float> OnChangeHealth => _health;
         public IObservable<CharacterUnitStateType> OnChangeStateType => _stateType;
 
+        public string UnitName { get { return _unitName; } }
         public float AttackPower { get { return _attackPower; } }
         public float CurrentHealth { get { return _health.Value; } }
         public float MaxHealth { get { return _maxHp; } }
@@ -39,6 +44,8 @@ namespace Scenes.Battle.UnitCharacter
 
         public void Init(UnitStatus status, NavMeshAgent agent, Transform originTransfrom)
         {
+            formationMoveSorce = new CancellationTokenSource();
+            _unitName = status.name;
             _maxHp = status.hp;
             _health.Value = status.hp;
             _attackPower = status.attack;
@@ -89,9 +96,11 @@ namespace Scenes.Battle.UnitCharacter
                 if (Vector3.Distance(_originTransfrom.position, taregt.Transform.position) <= _attackRange) // Attack
                 {
                     ChangeState(CharacterUnitStateType.Attak);
-                    Attack(taregt);
                     _agent.isStopped = true;
-                    await UniTask.Delay(TimeSpan.FromSeconds(1f));
+                    await UniTask.Delay(TimeSpan.FromSeconds(0.2f));
+                    Attack(taregt);
+                    await UniTask.Delay(TimeSpan.FromSeconds(0.8f));
+                    ChangeState(CharacterUnitStateType.Idle);
                 }
                 else if (isHoldPosition) // Idle
                 {
@@ -102,7 +111,7 @@ namespace Scenes.Battle.UnitCharacter
                 {
                     _agent.isStopped = false;
                     ChangeState(CharacterUnitStateType.Move);
-                    MoveAtTarget();
+                    if (!isHoldFormationPosition) MoveAtTarget();
                 }
                 await UniTask.Delay(TimeSpan.FromSeconds(0.1f));
             }
@@ -122,6 +131,18 @@ namespace Scenes.Battle.UnitCharacter
         private void MoveAtTarget()
         {
             _agent.SetDestination(_targetUnit.Transform.position);
+        }
+
+        public async UniTaskVoid SetFormationPoint(Vector3 vector)
+        {
+            formationMoveSorce.Cancel();
+
+            _agent.SetDestination(vector);
+            isHoldFormationPosition = true;
+            await UniTask.WaitUntil(() => Vector3.Distance(Transform.position, vector) < 1, cancellationToken: formationMoveSorce.Token);
+            isHoldFormationPosition = false;
+
+
         }
 
     }
