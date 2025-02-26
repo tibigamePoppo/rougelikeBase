@@ -30,9 +30,13 @@ namespace Scenes.MainScene.Player
             _view.OnDeckButtonClick.Subscribe(_ => _view.OpenDeckView(_model.CurrentCardDataList)).AddTo(this);
 
             _model.OnDeckChange.Subscribe(_ => _singleton.SetCurrentDeck(_model.CurrentCardDataList));
+            _model.OnUpdateRelicItem.Subscribe(r => _singleton.SetCurrentRelic(r));
             _singleton.OnChangeHpEvent.Subscribe(v => _model.ChangeHp(v)).AddTo(this);
             _singleton.OnChangeMoneyEvent.Subscribe(v => _model.ChangeMoney(v)).AddTo(this);
             _singleton.OnAddCardEvent.Subscribe(c => _model.AddCard(c)).AddTo(this);
+            _singleton.OnRemoveCardEvent.Subscribe(c => _model.RemoveCard(c)).AddTo(this);
+            _singleton.OnAddRelicItemEvent.Subscribe(r => _model.AddRelicItem(r)).AddTo(this);
+            _singleton.OnRemoveRelicItemEvent.Subscribe(r => _model.RemoveRelicItem (r)).AddTo(this);
         }
     }
 }

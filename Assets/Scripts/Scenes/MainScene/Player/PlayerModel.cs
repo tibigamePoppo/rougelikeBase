@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UniRx;
 using System;
 using UnityEngine;
+using Scenes.MainScene.Relic;
 
 namespace Scenes.MainScene.Player
 {
@@ -12,10 +13,13 @@ namespace Scenes.MainScene.Player
         private IntReactiveProperty _money = new IntReactiveProperty(50);
         private Subject<Unit> _updateDeck = new Subject<Unit>();
         private List<UnitData> _cardDataList = new List<UnitData>();
+        private List<RelicItemBase> _relicItems = new List<RelicItemBase>();
+        private Subject<RelicItemBase[]> _updateRelicItem = new Subject<RelicItemBase[]>();
 
         public IObservable<int> OnHpChange => _hp;
         public IObservable<int> OnMoneyChange => _money;
         public IObservable<Unit> OnDeckChange => _updateDeck;
+        public IObservable<RelicItemBase[]> OnUpdateRelicItem => _updateRelicItem;
         public int CurrentHp { get { return _hp.Value; } }
         public int CurrentMoney { get { return _money.Value; } }
         public List<UnitData> CurrentCardDataList { get { return _cardDataList; } }
@@ -49,6 +53,24 @@ namespace Scenes.MainScene.Player
         {
             _cardDataList.Add(card);
             _updateDeck.OnNext(default);
+        }
+
+        public void RemoveCard(UnitData card)
+        {
+            _cardDataList.Remove(card);
+            _updateDeck.OnNext(default);
+        }
+
+        public void AddRelicItem(RelicItemBase relicItem)
+        {
+            _relicItems.Add(relicItem);
+            _updateRelicItem.OnNext(_relicItems.ToArray());
+        }
+
+        public void RemoveRelicItem(RelicItemBase relicItem)
+        {
+            _relicItems.Remove(relicItem);
+            _updateRelicItem.OnNext(_relicItems.ToArray());
         }
     }
 }

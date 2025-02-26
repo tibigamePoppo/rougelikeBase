@@ -18,6 +18,7 @@ namespace Scenes.Battle.UnitCharacter
         private float _attackPower;
         private float _attackRange;
         private string _unitName;
+        private UnitWeaponType _type;
 
         private Transform _originTransfrom;
         private bool isHoldPosition = false;
@@ -30,6 +31,7 @@ namespace Scenes.Battle.UnitCharacter
         private CharacterUnitModel[] _teamGroup;
         private CharacterUnitModel[] _enemyGroup;
         private CharacterUnitModel _targetUnit;
+        private const float ATTACKSPEED = 1f;
 
         public IObservable<float> OnChangeHealth => _health;
         public IObservable<CharacterUnitStateType> OnChangeStateType => _stateType;
@@ -50,6 +52,7 @@ namespace Scenes.Battle.UnitCharacter
             _health.Value = status.hp;
             _attackPower = status.attack;
             _attackRange = status.attackRange;
+            _type = status.type;
             _originTransfrom = originTransfrom;
             _agent = agent;
             _agent.speed = status.speed;
@@ -63,9 +66,17 @@ namespace Scenes.Battle.UnitCharacter
             _enemyGroup = enemyGroup;
         }
 
-        public void Attack(IDamagable target)
+        public async UniTaskVoid Attack(IDamagable target)
         {
+            await UniTask.Delay(TimeSpan.FromSeconds(AttackSpeed() * 0.2f));
             target.TakeDamage(_attackPower);
+            if (HasRelicItem(1))
+            {
+                ChangeState(CharacterUnitStateType.Idle);
+                ChangeState(CharacterUnitStateType.Attak);
+                await UniTask.Delay(TimeSpan.FromSeconds(AttackSpeed() * 0.2f));
+                target.TakeDamage(_attackPower);
+            }
         }
 
         public void TakeDamage(float damage)
@@ -84,23 +95,29 @@ namespace Scenes.Battle.UnitCharacter
             while (_health.Value > 0)
             {
                 var taregt = GetTarget();
-                if (taregt == null || taregt == default)
+                if (taregt.Length <= 0)
                 {
                     await UniTask.Delay(TimeSpan.FromSeconds(0.1f));
                     continue;
                 }
-                else if(_targetUnit != taregt)
+                else if (_targetUnit != taregt[0])
                 {
-                    _targetUnit = taregt;
+                    _targetUnit = taregt[0];
                 }
 
-                if (Vector3.Distance(_originTransfrom.position, taregt.Transform.position) <= _attackRange) // Attack
+                if (taregt.Where(enemy => Vector3.Distance(enemy.Transform.position, Transform.position) <= _attackRange).ToArray().Length > 0) // Attack
                 {
                     ChangeState(CharacterUnitStateType.Attak);
                     _agent.isStopped = true;
-                    await UniTask.Delay(TimeSpan.FromSeconds(0.2f));
-                    Attack(taregt);
-                    await UniTask.Delay(TimeSpan.FromSeconds(0.8f));
+                    Attack(taregt[0]);
+                    if(_type == UnitWeaponType.Range)
+                    {
+                        if(HasRelicItem(2) && taregt.Length > 1)
+                        {
+                            Attack(taregt[1]);
+                        }
+                    }
+                    await UniTask.Delay(TimeSpan.FromSeconds(AttackSpeed() * 0.8f));
                     ChangeState(CharacterUnitStateType.Idle);
                 }
                 else if (isHoldPosition) // Idle
@@ -114,14 +131,14 @@ namespace Scenes.Battle.UnitCharacter
                     ChangeState(CharacterUnitStateType.Move);
                     if (!isHoldFormationPosition) MoveAtTarget();
                 }
+
                 await UniTask.Delay(TimeSpan.FromSeconds(0.1f));
             }
         }
 
-        public CharacterUnitModel GetTarget()
+        public CharacterUnitModel[] GetTarget()
         {
-            CharacterUnitModel target = _enemyGroup.Where(enemy => enemy.CurrentState != CharacterUnitStateType.Dead).OrderBy(enemy => Vector3.Distance(enemy.Transform.position, Transform.position)).FirstOrDefault();
-            return target;
+            return _enemyGroup.Where(enemy => enemy.CurrentState != CharacterUnitStateType.Dead).OrderBy(enemy => Vector3.Distance(enemy.Transform.position, Transform.position)).ToArray();
         }
 
         private void ChangeState(CharacterUnitStateType state)
@@ -144,6 +161,17 @@ namespace Scenes.Battle.UnitCharacter
             isHoldFormationPosition = false;
 
 
+        }
+
+        private float AttackSpeed()
+        {
+            return (ATTACKSPEED *
+                (HasRelicItem(3) ? 1f : 0.5f));
+        }
+
+        private bool HasRelicItem(int id)
+        {
+            return PlayerSingleton.Instance.CurrentRelic.Select(c => c._relicItemId).Contains(id);
         }
 
     }

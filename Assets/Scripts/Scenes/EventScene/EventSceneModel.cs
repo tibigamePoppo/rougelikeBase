@@ -33,6 +33,12 @@ namespace Scenes.EventScene
             Debug.Log($"change money {arg.playerMoneyChange}");
             PlayerSingleton.Instance.ChangeMoney(arg.playerMoneyChange);
             Debug.Log($"change scene {arg.changeScene}");
+            if(arg.relic != null)
+            {
+                arg.relic.Init();
+                Debug.Log($"Reric {arg.relic.name}");
+            }
+
             if (arg.changeScene != SceneName.None)
             {
                 _changeScene.OnNext(arg.changeScene);

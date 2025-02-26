@@ -43,6 +43,11 @@ namespace Scenes.MainScene.Decks
                 .GroupBy(c => c.status.name)
                 .ToDictionary(g => g.Key, g => new { Data = g.First(), Count = g.Count() });
 
+            foreach (var item in instanceCardList)
+            {
+                item.UpdateView(0);
+            }
+
             foreach (var unit in uniqueUnits)
             {
                 var existingCard = instanceCardList.FirstOrDefault(c => c.Card.name == unit.Key);

@@ -16,6 +16,7 @@ MonoBehaviour:
     name: "\u86EE\u65CF1"
     sprite: {fileID: 0}
     text: 
+    type: 1
     hp: 100
     attack: 20
     attackRange: 1

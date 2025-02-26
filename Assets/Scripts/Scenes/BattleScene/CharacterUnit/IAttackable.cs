@@ -1,8 +1,10 @@
+using Cysharp.Threading.Tasks;
+
 namespace Scenes.Battle.UnitCharacter
 {
-    public interface IAttacker
+    public interface  IAttacker
     {
         float AttackPower { get; }
-        void Attack(IDamagable target);
+        UniTaskVoid Attack(IDamagable target);
     }
 }
