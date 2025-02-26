@@ -37,9 +37,13 @@ namespace Scenes.Battle.UnitCharacter
             _hpGauge.fillAmount = fillValue;
         }
 
+        public void AttackEffect(Vector3 vector3)
+        {
+            _attackEffect.Emit(vector3);
+        }
         private void OnAttackEffect(AnimationEvent animationEvent)
         {
-            _attackEffect.Emit();
+            //_attackEffect.Emit(Vector3.zero);
         }
     }
 }
