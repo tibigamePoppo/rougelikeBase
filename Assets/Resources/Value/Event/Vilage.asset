@@ -14,15 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventName: "\u53CB\u597D\u7684\u306A\u6751"
   text: "\u6751\u306E\u4EBA\u306F\u3068\u3066\u3082\u826F\u304F\u3057\u3066\u304F\u308C\u308B\u3002\u4F11\u61A9\u3059\u308B\u304B\u3001\u6751\u306E\u624B\u4F1D\u3044\u3092\u3057\u3088\u3046\u3002"
-  sprite: {fileID: 0}
+  sprite: {fileID: 21300000, guid: d6f208eda1ac84e5baafd330e8a78d7e, type: 3}
   eventEffectArgs:
   - text: "\u4F11\u61A9\u3059\u308B(+30HP)"
     playerHpChange: 30
     playerMoneyChange: 0
     changeScene: 0
     units: []
+    relic: {fileID: 0}
   - text: "\u4ED5\u4E8B\u3092\u624B\u4F1D\u3046(+30G)"
     playerHpChange: 0
     playerMoneyChange: 30
     changeScene: 0
     units: []
+    relic: {fileID: 0}
