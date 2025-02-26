@@ -3179,6 +3179,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1193544918403264721}
   - {fileID: 8739756937220143907}
   - {fileID: 7766276740257665186}
   - {fileID: 214155443125936382}
@@ -3284,9 +3285,9 @@ NavMeshAgent:
   m_AgentTypeID: 0
   m_Radius: 0.5
   m_Speed: 3.5
-  m_Acceleration: 8
+  m_Acceleration: 16
   avoidancePriority: 50
-  m_AngularSpeed: 120
+  m_AngularSpeed: 180
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
@@ -3320,7 +3321,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _hpGauge: {fileID: 6799968567317738832}
-  _attackEffect: {fileID: 0}
+  _attackEffect: {fileID: 4985293268566316168}
 --- !u!65 &6828477051118364265
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -21796,3 +21797,80 @@ Transform:
   - {fileID: 4276783179950009247}
   m_Father: {fileID: 6638355442208159188}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &605822760133585131
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 9100121722736696072}
+    m_Modifications:
+    - target: {fileID: 1799190596883961914, guid: d409e04ce4b1f4a11a8b86292c0a3829, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.45
+      objectReference: {fileID: 0}
+    - target: {fileID: 1799190596883961914, guid: d409e04ce4b1f4a11a8b86292c0a3829, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.35
+      objectReference: {fileID: 0}
+    - target: {fileID: 1799190596883961914, guid: d409e04ce4b1f4a11a8b86292c0a3829, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 2.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1799190596883961914, guid: d409e04ce4b1f4a11a8b86292c0a3829, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1799190596883961914, guid: d409e04ce4b1f4a11a8b86292c0a3829, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1799190596883961914, guid: d409e04ce4b1f4a11a8b86292c0a3829, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1799190596883961914, guid: d409e04ce4b1f4a11a8b86292c0a3829, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1799190596883961914, guid: d409e04ce4b1f4a11a8b86292c0a3829, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1799190596883961914, guid: d409e04ce4b1f4a11a8b86292c0a3829, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 180
+      objectReference: {fileID: 0}
+    - target: {fileID: 1799190596883961914, guid: d409e04ce4b1f4a11a8b86292c0a3829, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6901085138435427936, guid: d409e04ce4b1f4a11a8b86292c0a3829, type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9040570825953566022, guid: d409e04ce4b1f4a11a8b86292c0a3829, type: 3}
+      propertyPath: m_Name
+      value: HorceCharge
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d409e04ce4b1f4a11a8b86292c0a3829, type: 3}
+--- !u!4 &1193544918403264721 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1799190596883961914, guid: d409e04ce4b1f4a11a8b86292c0a3829, type: 3}
+  m_PrefabInstance: {fileID: 605822760133585131}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4985293268566316168 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5568420871549320291, guid: d409e04ce4b1f4a11a8b86292c0a3829, type: 3}
+  m_PrefabInstance: {fileID: 605822760133585131}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ee0795a4fa6140abba2df20d29b0342, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

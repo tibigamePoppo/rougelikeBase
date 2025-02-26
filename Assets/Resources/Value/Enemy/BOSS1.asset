@@ -14,4 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _enemyName: "\u30DC\u30B9\u30C6\u30B9\u30C81"
   _enemySprite: {fileID: 21300000, guid: cb81b4d3282684886afcf86a630a9eb0, type: 3}
-  _unitData: {fileID: 11400000, guid: d7d359ea493434bbc9a12c6a3385ff39, type: 2}
+  _unitData:
+  - {fileID: 11400000, guid: d7e3f9b4089be45e6bbb0b979dc4a8f8, type: 2}
+  - {fileID: 11400000, guid: d7e3f9b4089be45e6bbb0b979dc4a8f8, type: 2}
+  - {fileID: 11400000, guid: d7e3f9b4089be45e6bbb0b979dc4a8f8, type: 2}
+  - {fileID: 11400000, guid: d7e3f9b4089be45e6bbb0b979dc4a8f8, type: 2}
+  - {fileID: 11400000, guid: d7e3f9b4089be45e6bbb0b979dc4a8f8, type: 2}
+  - {fileID: 11400000, guid: 10e55fe1d46f84639a11bd9f1796008f, type: 2}
+  - {fileID: 11400000, guid: 10e55fe1d46f84639a11bd9f1796008f, type: 2}
+  - {fileID: 11400000, guid: 10e55fe1d46f84639a11bd9f1796008f, type: 2}
+  - {fileID: 11400000, guid: 10e55fe1d46f84639a11bd9f1796008f, type: 2}
+  - {fileID: 11400000, guid: 10e55fe1d46f84639a11bd9f1796008f, type: 2}

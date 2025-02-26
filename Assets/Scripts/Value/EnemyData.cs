@@ -6,5 +6,5 @@ public class EnemyData : ScriptableObject
 {
     public string _enemyName;
     public Sprite _enemySprite;
-    public UnitData _unitData;
+    public UnitData[] _unitData;
 }

@@ -6,6 +6,7 @@ using Scenes.Battle.UnitCharacter;
 using UnityEngine;
 using UniRx;
 using System;
+using System.Threading;
 
 public class BattleFormationView : MonoBehaviour
 {
@@ -23,6 +24,7 @@ public class BattleFormationView : MonoBehaviour
     private MeshFilter _meshFilter;
     private MeshRenderer _meshRenderer;
     private List<GameObject> _arrowInstanceList = new List<GameObject>();
+    private CancellationTokenSource _source;
 
     private Subject<CharacterUnitView[]> _selectCharacterUnits = new Subject<CharacterUnitView[]>();
     private Subject<Vector3[]> _selectLine = new Subject<Vector3[]>();
@@ -39,48 +41,55 @@ public class BattleFormationView : MonoBehaviour
         _meshRenderer = GetComponent<MeshRenderer>();
         _meshCollider = GetComponent<MeshCollider>();
         _meshRenderer.material = meshMaterial;
-        StartMouse1Check().Forget();
-        StartMouse2Check().Forget();
+        _source = new CancellationTokenSource();
+        StartMouse1Check(_source.Token).Forget();
+        StartMouse2Check(_source.Token).Forget();
     }
 
 
-    private async UniTaskVoid StartMouse1Check()
+    private async UniTaskVoid StartMouse1Check(CancellationToken token)
     {
         while (true)
         {
-            await UniTask.WaitUntil(() => Input.GetKey(KeyCode.Mouse1));
+            await UniTask.WaitUntil(() => Input.GetKey(KeyCode.Mouse1),cancellationToken: token);
+            if (token.IsCancellationRequested) break;
+
             ResetSelectRenderer();
             while (Input.GetKey(KeyCode.Mouse1))
             {
                 AddEdgeLine(_selectLineRenderer);
-                await UniTask.WaitForFixedUpdate();
+                await UniTask.WaitForFixedUpdate(cancellationToken: token);
             }
 
+            if (token.IsCancellationRequested) break;
             if (_selectLineRenderer.positionCount < 1) continue;
 
             FixCircleLine();
             CreateMeshFromLineRenderer();
 
             Vector3[] points = new Vector3[_selectLineRenderer.positionCount];
-            _formationLineRenderer.GetPositions(points);
+            _selectLineRenderer.GetPositions(points);
             _selectLine.OnNext(points);
 
             await UniTask.WaitForFixedUpdate();
         }
     }
 
-    private async UniTaskVoid StartMouse2Check()
+    private async UniTaskVoid StartMouse2Check(CancellationToken token)
     {
         while (true)
         {
-            await UniTask.WaitUntil(() => Input.GetKey(KeyCode.Mouse0));
+            await UniTask.WaitUntil(() => Input.GetKey(KeyCode.Mouse0), cancellationToken: token);
+            if (token.IsCancellationRequested) break;
+
             ResetFormationRenderer();
             while (Input.GetKey(KeyCode.Mouse0))
             {
                 AddEdgeLine(_formationLineRenderer);
-                await UniTask.WaitForFixedUpdate();
+                await UniTask.WaitForFixedUpdate(cancellationToken: token);
             }
 
+            if (token.IsCancellationRequested) break;
             if (_formationLineRenderer.positionCount < 1) continue;
 
             Vector3[] points = new Vector3[_formationLineRenderer.positionCount];
@@ -197,5 +206,11 @@ public class BattleFormationView : MonoBehaviour
             var arrow = Instantiate(_arrowImage, position, Quaternion.Euler(90,0,0), _arrowCanvas);
             _arrowInstanceList.Add(arrow);
         }
+    }
+
+    private void OnDestroy()
+    {
+        _source.Cancel();
+        _source.Dispose();
     }
 }

@@ -52,6 +52,7 @@ namespace Scenes.Battle.UnitCharacter
             _attackRange = status.attackRange;
             _originTransfrom = originTransfrom;
             _agent = agent;
+            _agent.speed = status.speed;
             _stateType.Value = CharacterUnitStateType.Idle;
             MainLoop().Forget();
         }

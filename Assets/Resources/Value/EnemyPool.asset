@@ -14,7 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   normalPool:
   - {fileID: 11400000, guid: 029332b3cbb3242a5982c8715030c3d8, type: 2}
+  - {fileID: 11400000, guid: 19167d2602c0f49359127b3060854e5f, type: 2}
+  - {fileID: 11400000, guid: ac9142c544d0c40a4a7fd8a20e29eea0, type: 2}
   elitePool:
   - {fileID: 11400000, guid: 80fbd757881184186a10a8a8ad70b4db, type: 2}
+  - {fileID: 11400000, guid: f1e8b997721544f1da211e228d138c36, type: 2}
   bossPool:
   - {fileID: 11400000, guid: 9243d12df25a84a898b93beb4f5e5925, type: 2}
+  - {fileID: 11400000, guid: 8a016c384ce324cda92f9adbb84da4d9, type: 2}

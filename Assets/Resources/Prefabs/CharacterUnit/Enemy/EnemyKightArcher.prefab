@@ -4238,7 +4238,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6660143826304023235
 Transform:
   m_ObjectHideFlags: 0
@@ -5697,7 +5697,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &3064812148405168038
 Transform:
   m_ObjectHideFlags: 0
@@ -6226,7 +6226,7 @@ GameObject:
   - component: {fileID: 4039030071854802766}
   - component: {fileID: 2522297024425728205}
   m_Layer: 0
-  m_Name: Unit_Archer
+  m_Name: EnemyKightArcher
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6417,7 +6417,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4051944122187041991
 Transform:
   m_ObjectHideFlags: 0
@@ -6453,7 +6453,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: dccf8e44ede71db42b49378af93c5fb7, type: 2}
+  - {fileID: 2100000, guid: 8163ec80450214ff4bce9991079a1566, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -10376,7 +10376,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &3381222856573227982
 Transform:
   m_ObjectHideFlags: 0
@@ -10412,7 +10412,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: dccf8e44ede71db42b49378af93c5fb7, type: 2}
+  - {fileID: 2100000, guid: 8163ec80450214ff4bce9991079a1566, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -11345,7 +11345,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5460164132404693511
 Transform:
   m_ObjectHideFlags: 0
@@ -18327,7 +18327,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &8494238139721316680
 Transform:
   m_ObjectHideFlags: 0

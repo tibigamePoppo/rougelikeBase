@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventName: "\u673D\u3061\u305F\u795E\u6BBF"
   text: "\u9759\u5BC2\u306B\u5305\u307E\u308C\u305F\u795E\u6BBF\u306E\u4E2D\u306B\u3001\u4E00\u3064\u306E\u7948\u7977\u53F0\u304C\u3042\u308B\u3002\u304B\u3059\u304B\u306B\u795E\u8056\u306A\u529B\u3092\u611F\u3058\u308B\u304C\u3001\u4F55\u304B\u3092\u6367\u3052\u308B\u5FC5\u8981\u304C\u3042\u308A\u305D\u3046\u3060\u3002"
-  sprite: {fileID: 0}
+  sprite: {fileID: 21300000, guid: 5d36c8e2fd0194d3e8c59571319acbee, type: 3}
   eventEffectArgs:
   - text: "\u304A\u91D1\u3092\u6367\u3052\u308B(+30HP,-10G)"
     playerHpChange: 30

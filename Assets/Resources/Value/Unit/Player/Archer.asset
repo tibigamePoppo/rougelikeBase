@@ -18,6 +18,7 @@ MonoBehaviour:
     text: 
     hp: 50
     attack: 20
-    attackRange: 5
+    attackRange: 7
+    speed: 3.5
   prefab: {fileID: 1853526014605065979, guid: cbada60d2b7dd438a9cff42435d69fd7, type: 3}
-  shopCost: 30
+  shopCost: 60

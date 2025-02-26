@@ -3,7 +3,7 @@ using UnityEngine;
 namespace Scenes.MainScene.Player
 {
     [System.Serializable]
-    public struct  UnitStatus
+    public struct UnitStatus
     {
         public string name;
         public Sprite sprite;
@@ -11,8 +11,9 @@ namespace Scenes.MainScene.Player
         public float hp;
         public float attack;
         public float attackRange;
+        public float speed;
 
-        public UnitStatus(string name, Sprite sprite, string text,float hp,float attack, float attackRange)
+        public UnitStatus(string name, Sprite sprite, string text,float hp,float attack, float attackRange, float speed)
         {
             this.name = name;
             this.sprite = sprite;
@@ -20,6 +21,7 @@ namespace Scenes.MainScene.Player
             this.hp = hp;
             this.attack = attack;
             this.attackRange = attackRange;
+            this.speed = speed;
         }
     }
 }

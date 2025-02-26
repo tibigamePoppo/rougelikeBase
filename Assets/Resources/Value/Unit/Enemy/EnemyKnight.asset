@@ -13,11 +13,12 @@ MonoBehaviour:
   m_Name: EnemyKnight
   m_EditorClassIdentifier: 
   status:
-    name: "\u6575\u6B69\u5175"
-    sprite: {fileID: 0}
+    name: "\u6575\u9A0E\u58EB"
+    sprite: {fileID: 21300000, guid: 143d7d5e6dc6b42a594962b8c725c2e0, type: 3}
     text: 
-    hp: 80
-    attack: 10
-    attackRange: 1
-  count: 1
-  prefab: {fileID: 6994925682584366310, guid: 9efab5ba22815485ab3df355bfa3eda9, type: 3}
+    hp: 130
+    attack: 25
+    attackRange: 1.5
+    speed: 3.5
+  prefab: {fileID: 4165283848585114273, guid: f2cc706ae5cab469cb8df5e2f0ea40a8, type: 3}
+  shopCost: 40

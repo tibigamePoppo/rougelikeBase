@@ -24,17 +24,17 @@ namespace Scenes.Battle
             _rewardView.gameObject.SetActive(false);
 
             EnemyDataPool dataPool =  Resources.Load<EnemyDataPool>("Value/EnemyPool");
-            EnemyData enemyData = new EnemyData();
+            UnitData[] enemyData = new UnitData[0];
             switch (enemyLevel)
             {
                 case EnemyLevel.Normal:
-                    enemyData = dataPool.normalPool[UnityEngine.Random.Range(0, dataPool.normalPool.Count)];
+                    enemyData = dataPool.normalPool[UnityEngine.Random.Range(0, dataPool.normalPool.Count)]._unitData;
                     break;
                 case EnemyLevel.Elite:
-                    enemyData = dataPool.elitePool[UnityEngine.Random.Range(0, dataPool.elitePool.Count)];
+                    enemyData = dataPool.elitePool[UnityEngine.Random.Range(0, dataPool.elitePool.Count)]._unitData;
                     break;
                 case EnemyLevel.Boss:
-                    enemyData = dataPool.bossPool[UnityEngine.Random.Range(0, dataPool.bossPool.Count)];
+                    enemyData = dataPool.bossPool[UnityEngine.Random.Range(0, dataPool.bossPool.Count)]._unitData;
                     break;
                 default:
                     break;
@@ -89,16 +89,15 @@ namespace Scenes.Battle
             return playerList;
         }
 
-        private List<CharacterUnitPresenter> EnemyUnitSpawn(EnemyData enemyData)
+        private List<CharacterUnitPresenter> EnemyUnitSpawn(UnitData[] enemyData)
         {
-            const int enemyCount = 10;
             List<CharacterUnitPresenter> enemyList = new List<CharacterUnitPresenter>();
-            for (int i = 0; i < enemyCount; i++)
+            foreach (var enemy in enemyData)
             {
                 Vector3 baseSpawnPosition = _enemyUnitSpawnTransfrom[UnityEngine.Random.Range(0, _enemyUnitSpawnTransfrom.Length)].position;
                 Vector3 random = new Vector3(UnityEngine.Random.Range(-5, 5), 0, UnityEngine.Random.Range(-5, 5)).normalized * 10;
-                var instanceUnit = Instantiate(enemyData._unitData.prefab, baseSpawnPosition + random, Quaternion.identity, _playerUnitSpawnTransfrom);
-                enemyList.Add(instanceUnit.Init(enemyData._unitData.status));
+                var instanceUnit = Instantiate(enemy.prefab, baseSpawnPosition + random, Quaternion.identity, _playerUnitSpawnTransfrom);
+                enemyList.Add(instanceUnit.Init(enemy.status));
             }
             return enemyList;
         }
