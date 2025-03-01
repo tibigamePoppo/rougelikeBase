@@ -19,6 +19,7 @@ namespace Scenes.Battle.UnitCharacter
         private float _attackRange;
         private string _unitName;
         private UnitWeaponType _type;
+        private UnitGroup _unitGroup;
 
         private Transform _originTransfrom;
         private bool isHoldPosition = false;
@@ -26,14 +27,15 @@ namespace Scenes.Battle.UnitCharacter
         private CancellationTokenSource formationMoveSorce ;
 
         private ReactiveProperty<float> _health = new ReactiveProperty<float>();
-        private ReactiveProperty<CharacterUnitStateType> _stateType = new ReactiveProperty<CharacterUnitStateType>();
+        private ReactiveProperty<CharacterUnitStateType> _stateType = new ReactiveProperty<CharacterUnitStateType>(CharacterUnitStateType.Idle);
         private Subject<Vector3> _attackTarget = new Subject<Vector3>();
         private NavMeshAgent _agent;
         private CharacterUnitModel[] _teamGroup;
         private CharacterUnitModel[] _enemyGroup;
         private CharacterUnitModel _targetUnit;
-        private const float ATTACKSPEED = 1f;
+        private const float ATTACKSPEED = 2f;
 
+        public UnitWeaponType WeaponType { get { return _type; } }
         public IObservable<float> OnChangeHealth => _health;
         public IObservable<CharacterUnitStateType> OnChangeStateType => _stateType;
 
@@ -46,6 +48,8 @@ namespace Scenes.Battle.UnitCharacter
         public CharacterUnitModel TargetUnit { get { return _targetUnit; } }
         public CharacterUnitStateType CurrentState { get { return _stateType.Value; } }
 
+        public Vector3 TargetPosition { get { return Transform.position; } }
+
         public void Init(UnitStatus status, NavMeshAgent agent, Transform originTransfrom)
         {
             formationMoveSorce = new CancellationTokenSource();
@@ -55,12 +59,17 @@ namespace Scenes.Battle.UnitCharacter
             _attackPower = status.attack;
             _attackRange = status.attackRange;
             _type = status.type;
+            _unitGroup = status.group;
             _originTransfrom = originTransfrom;
             _agent = agent;
             _agent.speed = status.speed;
-            _stateType.Value = CharacterUnitStateType.Idle;
+        }
+
+        public void BattleLoopStart()
+        {
             MainLoop().Forget();
         }
+
 
         public void SetGroup(CharacterUnitModel[] teamGroup, CharacterUnitModel[] enemyGroup)
         {
@@ -71,9 +80,11 @@ namespace Scenes.Battle.UnitCharacter
         public async UniTaskVoid Attack(IDamagable target)
         {
             await UniTask.Delay(TimeSpan.FromSeconds(AttackSpeed() * 0.2f));
+
             target.TakeDamage(_attackPower);
+            _attackTarget.OnNext(target.TargetPosition);
+
             if (GetTarget().Length <= 0) return;
-            _attackTarget.OnNext(GetTarget()[0].Transform.position);
             if (_type == UnitWeaponType.Range)
             {
                 if (HasRelicItem(1))
@@ -83,8 +94,7 @@ namespace Scenes.Battle.UnitCharacter
                     ChangeState(CharacterUnitStateType.Attak);
                     await UniTask.Delay(TimeSpan.FromSeconds(AttackSpeed() * 0.2f));
                     target.TakeDamage(_attackPower);
-                    if (GetTarget().Length <= 0) return;
-                    _attackTarget.OnNext(GetTarget()[0].Transform.position);
+                    _attackTarget.OnNext(target.TargetPosition);
                 }
             }
         }
@@ -168,18 +178,17 @@ namespace Scenes.Battle.UnitCharacter
             isHoldFormationPosition = true;
             await UniTask.WaitUntil(() => Vector3.Distance(Transform.position, vector) < 1, cancellationToken: formationMoveSorce.Token);
             isHoldFormationPosition = false;
-
-
         }
 
         private float AttackSpeed()
         {
             return (ATTACKSPEED *
-                (HasRelicItem(3) ? 1f : 0.3f));
+                (HasRelicItem(3) && _type == UnitWeaponType.Range ? 0.3f : 1f));
         }
 
         private bool HasRelicItem(int id)
         {
+            if (_unitGroup == UnitGroup.Enemy) return false;
             return PlayerSingleton.Instance.CurrentRelic.Select(c => c._relicItemId).Contains(id);
         }
 

@@ -8,15 +8,29 @@ using UnityEngine;
 using System;
 using UniRx.Triggers;
 using UniRx;
+using Cysharp.Threading.Tasks;
+using UnityEngine.UI;
 
 namespace Scenes.Battle
 {
+    public enum FormationType
+    {
+        None,
+        FormationO,
+        FormationI,
+        FormationV,
+        FormationA
+    }
+
     public class BattleView : MonoBehaviour
     {
         [SerializeField] private Transform _playerUnitSpawnTransfrom;
         [SerializeField] private Transform[] _enemyUnitSpawnTransfrom;
         [SerializeField] private RewardView _rewardView;
         [SerializeField] private BattleFormationPresenter _battleFormationPresenter;
+        [SerializeField] private BatleInitalFormationView _battleInitialFormationView;
+        [SerializeField] private Button _battlReadyButton;
+        private FormationType _formationType = FormationType.None;
 
         public void Init(EnemyLevel enemyLevel, List<UnitData> playerCards)
         {
@@ -45,7 +59,7 @@ namespace Scenes.Battle
             var playerModel = playerPresenter.Select(p => p.CharacterUnitModel).ToArray();
             var enemyModel = enemyPresenter.Select(p => p.CharacterUnitModel).ToArray();
 
-
+            _battleInitialFormationView.Init(playerModel);
             _battleFormationPresenter.Init(playerModel);
 
             foreach (var pp in playerPresenter)
@@ -56,6 +70,7 @@ namespace Scenes.Battle
             {
                 ep.SetGroup(enemyModel, playerModel);
             }
+
             this.UpdateAsObservable()
                 .Select(_ => playerModel.All(p => p.CurrentState == UnitCharacter.State.CharacterUnitStateType.Dead)) // すべての survive が false か判定
                 .DistinctUntilChanged()
@@ -70,6 +85,35 @@ namespace Scenes.Battle
                 .Where(allDead => allDead)
                 .Subscribe(_ => BattleEnd())
                 .AddTo(this);
+
+            //debug
+            this.UpdateAsObservable()
+                .Select(_ => playerModel.All(p => p.CurrentState == UnitCharacter.State.CharacterUnitStateType.Dead)) // すべての survive が false か判定
+                .DistinctUntilChanged()
+                .Subscribe(_ => Debug.Log(" palyer Unit is Dead"))
+                .AddTo(this);
+
+            Debug.Log($"enemy unit count is {enemyModel.Length}");
+            this.UpdateAsObservable()
+                .Select(_ => enemyModel.All(p => p.CurrentState == UnitCharacter.State.CharacterUnitStateType.Dead)) // すべての survive が false か判定
+                .DistinctUntilChanged()
+                .Subscribe(_ => Debug.Log(" enemy Unit is Dead"))
+                .AddTo(this);
+            //debug
+            InitalFormation(playerPresenter.Concat(enemyPresenter).ToList()).Forget();
+        }
+
+        public async UniTaskVoid InitalFormation(List<CharacterUnitPresenter> characters)
+        {
+            await UniTask.WaitUntil(() => _formationType == FormationType.None);
+            _battlReadyButton.OnClickAsObservable().Subscribe(_ =>
+            {
+                foreach (var item in characters)
+                {
+                    item.BattleStart();
+                }
+                _battleInitialFormationView.gameObject.SetActive(false);
+            });
         }
 
         private void BattleEnd()

@@ -34,6 +34,12 @@ namespace Scenes.Battle.UnitCharacter
             return this;
         }
 
+        public void BattleStart()
+        {
+            _model.BattleLoopStart();
+        }
+
+
         public void SetGroup(CharacterUnitModel[] teamGroup, CharacterUnitModel[] enemyGroup)
         {
             _model.SetGroup(teamGroup,enemyGroup);

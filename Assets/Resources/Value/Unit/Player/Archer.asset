@@ -16,9 +16,11 @@ MonoBehaviour:
     name: "\u5F13\u5175"
     sprite: {fileID: 21300000, guid: cb81b4d3282684886afcf86a630a9eb0, type: 3}
     text: 
+    type: 0
+    group: 0
     hp: 50
     attack: 20
     attackRange: 7
-    speed: 3.5
+    speed: 2
   prefab: {fileID: 1853526014605065979, guid: cbada60d2b7dd438a9cff42435d69fd7, type: 3}
   shopCost: 60

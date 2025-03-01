@@ -27,7 +27,7 @@ namespace Scenes.Battle.UnitCharacter
             _animIDSpeed = Animator.StringToHash("Speed");
 
             this.UpdateAsObservable().Subscribe(_ => {
-                _animator.SetFloat(_animIDSpeed, agent.speed, 0.15f, Time.deltaTime);
+                _animator.SetFloat(_animIDSpeed, agent.velocity.magnitude, 0.15f, Time.deltaTime);
             }).AddTo(this);
 
         }
