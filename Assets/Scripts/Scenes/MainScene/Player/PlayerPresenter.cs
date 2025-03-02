@@ -18,10 +18,10 @@ namespace Scenes.MainScene.Player
             _model = new PlayerModel();
             _view = GetComponent<PlayerUIView>();
             _singleton = GetComponent<PlayerSingleton>();
-            _model.Init();
+            _model.Init(); 
             _singleton.SetCurrentDeck(_model.CurrentCardDataList);
-            _view.Init(_model.CurrentHp,_model.CurrentMoney, _model.CurrentCardDataList);
-            _model.OnHpChange.Subscribe(v => _view.UpdateHpText(v)).AddTo(this);
+            _view.Init(_model.CurrentPopularity, _model.CurrentMoney, _model.CurrentCardDataList);
+            _model.OnPopularityChange.Subscribe(v => _view.UpdatePopularityText(v)).AddTo(this);
             _model.OnMoneyChange.Subscribe(v =>
             {
                 _view.UpdateMoneyText(v);
@@ -31,7 +31,7 @@ namespace Scenes.MainScene.Player
 
             _model.OnDeckChange.Subscribe(_ => _singleton.SetCurrentDeck(_model.CurrentCardDataList));
             _model.OnUpdateRelicItem.Subscribe(r => _singleton.SetCurrentRelic(r));
-            _singleton.OnChangeHpEvent.Subscribe(v => _model.ChangeHp(v)).AddTo(this);
+            _singleton.OnChangePopularityEvent.Subscribe(v => _model.ChangePopularity(v)).AddTo(this);
             _singleton.OnChangeMoneyEvent.Subscribe(v => _model.ChangeMoney(v)).AddTo(this);
             _singleton.OnAddCardEvent.Subscribe(c => _model.AddCard(c)).AddTo(this);
             _singleton.OnRemoveCardEvent.Subscribe(c => _model.RemoveCard(c)).AddTo(this);

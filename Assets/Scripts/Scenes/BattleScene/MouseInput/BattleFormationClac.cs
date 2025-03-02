@@ -109,14 +109,14 @@ public class BattleFormationClac
 
     private void SetPosition(Transform[] meleeUnits, Transform[] rangeUnits, List<Vector3> meleePosition, List<Vector3> rangePosition)
     {
-
+        Debug.Log($"meleeUnits {meleeUnits.Length},rangeUnits {rangeUnits.Length},meleePosition {meleePosition.Count},rangePosition {rangePosition.Count}");
         while (meleePosition.Count > meleeUnits.Length && meleePosition.Count > 0)
         {
             meleePosition.Remove(meleePosition.Last());
         }
         while (meleePosition.Count < meleeUnits.Length)
         {
-            meleePosition.Add(meleePosition[meleePosition.Count]);
+            meleePosition.Add(meleePosition[meleePosition.Count - 1]);
         }
 
         while (rangePosition.Count > rangeUnits.Length && rangePosition.Count > 0)
@@ -125,7 +125,7 @@ public class BattleFormationClac
         }
         while (rangePosition.Count < rangeUnits.Length)
         {
-            rangePosition.Add(rangePosition[rangePosition.Count]);
+            rangePosition.Add(rangePosition[rangePosition.Count - 1]);
         }
 
         for (int i = 0; i < meleeUnits.Length; i++)

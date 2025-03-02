@@ -13,7 +13,7 @@ namespace Scenes.MainScene.Player
     public class PlayerUIView : MonoBehaviour
     {
         [SerializeField] private TextMeshProUGUI _playerNameText;
-        [SerializeField] private TextMeshProUGUI _hpText;
+        [SerializeField] private TextMeshProUGUI _popularityText;
         [SerializeField] private TextMeshProUGUI _moneyText;
         [SerializeField] private Button _deckButton;
         [SerializeField] private Button _menuButton;
@@ -21,9 +21,9 @@ namespace Scenes.MainScene.Player
         private Subject<Unit> _deckButtonClick = new Subject<Unit>();
         public IObservable<Unit> OnDeckButtonClick => _deckButtonClick;
 
-        public void Init(int initialHp,int initialMoney, List<UnitData> playerCard)
+        public void Init(int initialPopularity, int initialMoney, List<UnitData> playerCard)
         {
-            _hpText.text = initialHp.ToString();
+            _popularityText.text = initialPopularity.ToString();
             _moneyText.text = initialMoney.ToString();
             _deckView.Init(playerCard);
             _deckButton.OnClickAsObservable().Subscribe(_ => _deckButtonClick.OnNext(default)).AddTo(this);
@@ -35,9 +35,9 @@ namespace Scenes.MainScene.Player
             _deckView.ActiveWindow(playerCard);
         }
 
-        public void UpdateHpText(int newHp)
+        public void UpdatePopularityText(int newPopularity)
         {
-            _hpText.text = newHp.ToString();
+            _popularityText.text = newPopularity.ToString();
         }
 
         public void UpdateMoneyText(int newMoney)

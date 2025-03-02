@@ -28,8 +28,8 @@ namespace Scenes.EventScene
 
         public void EventProcess(EventEffectArg arg)
         {
-            Debug.Log($"change hp {arg.playerHpChange}");
-            PlayerSingleton.Instance.ChangeHp(arg.playerHpChange);
+            Debug.Log($"change Popularity {arg.playerPopularityChange}");
+            PlayerSingleton.Instance.ChangePopularity(arg.playerPopularityChange);
             Debug.Log($"change money {arg.playerMoneyChange}");
             PlayerSingleton.Instance.ChangeMoney(arg.playerMoneyChange);
             Debug.Log($"change scene {arg.changeScene}");

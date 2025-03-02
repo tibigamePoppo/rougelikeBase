@@ -9,18 +9,18 @@ namespace Scenes.MainScene.Player
 {
     public class PlayerModel
     {
-        private IntReactiveProperty _hp = new IntReactiveProperty(100);
+        private IntReactiveProperty _popularity = new IntReactiveProperty(100);
         private IntReactiveProperty _money = new IntReactiveProperty(50);
         private Subject<Unit> _updateDeck = new Subject<Unit>();
         private List<UnitData> _cardDataList = new List<UnitData>();
         private List<RelicItemBase> _relicItems = new List<RelicItemBase>();
         private Subject<RelicItemBase[]> _updateRelicItem = new Subject<RelicItemBase[]>();
 
-        public IObservable<int> OnHpChange => _hp;
+        public IObservable<int> OnPopularityChange => _popularity;
         public IObservable<int> OnMoneyChange => _money;
         public IObservable<Unit> OnDeckChange => _updateDeck;
         public IObservable<RelicItemBase[]> OnUpdateRelicItem => _updateRelicItem;
-        public int CurrentHp { get { return _hp.Value; } }
+        public int CurrentPopularity { get { return _popularity.Value; } }
         public int CurrentMoney { get { return _money.Value; } }
         public List<UnitData> CurrentCardDataList { get { return _cardDataList; } }
 
@@ -29,9 +29,9 @@ namespace Scenes.MainScene.Player
             _cardDataList = Resources.Load<CardPool>("Value/PlayerDeck").CardList();
         }
 
-        public void ChangeHp(int value)
+        public void ChangePopularity(int value)
         {
-            _hp.Value = Mathf.Max(_hp.Value + value,0);
+            _popularity.Value = Mathf.Max(_popularity.Value + value,0);
         }
 
         public void ChangeMoney(int value)
@@ -41,7 +41,7 @@ namespace Scenes.MainScene.Player
 
         public bool CanTakeDamage(int value)
         {
-            return _hp.Value + value >= 0;
+            return _popularity.Value + value >= 0;
         }
 
         public bool CanTakeMoney(int value)

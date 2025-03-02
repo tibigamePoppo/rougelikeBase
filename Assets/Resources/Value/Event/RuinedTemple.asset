@@ -17,17 +17,20 @@ MonoBehaviour:
   sprite: {fileID: 21300000, guid: 5d36c8e2fd0194d3e8c59571319acbee, type: 3}
   eventEffectArgs:
   - text: "\u304A\u91D1\u3092\u6367\u3052\u308B(+30HP,-10G)"
-    playerHpChange: 30
+    playerPopularityChange: 30
     playerMoneyChange: -10
     changeScene: 0
     units: []
+    relic: {fileID: 0}
   - text: "\u304A\u7948\u308A\u3060\u3051\u3059\u308B(+10HP)"
-    playerHpChange: 10
+    playerPopularityChange: 10
     playerMoneyChange: 0
     changeScene: 0
     units: []
+    relic: {fileID: 0}
   - text: "\u4F55\u3082\u3057\u306A\u3044"
-    playerHpChange: 0
+    playerPopularityChange: 0
     playerMoneyChange: 0
     changeScene: 0
     units: []
+    relic: {fileID: 0}

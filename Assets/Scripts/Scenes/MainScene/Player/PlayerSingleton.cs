@@ -8,7 +8,7 @@ using UnityEngine;
 
 public class PlayerSingleton : SingletonAbstract<PlayerSingleton>
 {
-    private Subject<int> _changeHp = new Subject<int>();
+    private Subject<int> _changePopularity = new Subject<int>();
     private Subject<int> _changeMoney = new Subject<int>();
     private Subject<UnitData> _addUnit = new Subject<UnitData>();
     private Subject<UnitData> _removeUnit = new Subject<UnitData>();
@@ -18,7 +18,7 @@ public class PlayerSingleton : SingletonAbstract<PlayerSingleton>
     private RelicItemBase[] _currentRelicItem = new RelicItemBase[0];
     private int _playerMoney;
 
-    public IObservable<int> OnChangeHpEvent => _changeHp;
+    public IObservable<int> OnChangePopularityEvent => _changePopularity;
     public IObservable<int> OnChangeMoneyEvent => _changeMoney;
     public IObservable<UnitData> OnAddCardEvent => _addUnit;
     public IObservable<UnitData> OnRemoveCardEvent => _removeUnit;
@@ -28,9 +28,9 @@ public class PlayerSingleton : SingletonAbstract<PlayerSingleton>
     public RelicItemBase[] CurrentRelic { get { return _currentRelicItem; } } 
     public int CurrentMoney { get {return _playerMoney; } }
 
-    public void ChangeHp(int value)
+    public void ChangePopularity(int value)
     {
-        _changeHp.OnNext(value);
+        _changePopularity.OnNext(value);
     }
 
     public void ChangeMoney(int value)

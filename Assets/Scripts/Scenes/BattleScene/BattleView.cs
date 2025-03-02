@@ -86,20 +86,6 @@ namespace Scenes.Battle
                 .Subscribe(_ => BattleEnd())
                 .AddTo(this);
 
-            //debug
-            this.UpdateAsObservable()
-                .Select(_ => playerModel.All(p => p.CurrentState == UnitCharacter.State.CharacterUnitStateType.Dead)) // すべての survive が false か判定
-                .DistinctUntilChanged()
-                .Subscribe(_ => Debug.Log(" palyer Unit is Dead"))
-                .AddTo(this);
-
-            Debug.Log($"enemy unit count is {enemyModel.Length}");
-            this.UpdateAsObservable()
-                .Select(_ => enemyModel.All(p => p.CurrentState == UnitCharacter.State.CharacterUnitStateType.Dead)) // すべての survive が false か判定
-                .DistinctUntilChanged()
-                .Subscribe(_ => Debug.Log(" enemy Unit is Dead"))
-                .AddTo(this);
-            //debug
             InitalFormation(playerPresenter.Concat(enemyPresenter).ToList()).Forget();
         }
 
