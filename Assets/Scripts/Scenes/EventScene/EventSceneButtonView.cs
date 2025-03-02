@@ -36,7 +36,7 @@ public class EventSceneButtonView : MonoBehaviour
     {
         if(money != 0)
         {
-            _moneyText.text = money.ToString();
+            _moneyText.text = money > 0 ? $"<color=#38b48b>  ▲{money} </color>" : $" <color=#cd5e3c> ▼{-money} </color>";
         }
         else
         {
@@ -48,7 +48,7 @@ public class EventSceneButtonView : MonoBehaviour
     {
         if (popularity != 0)
         {
-            _popularityText.text = popularity.ToString();
+            _popularityText.text = popularity > 0 ? $"<color=#38b48b> ▲{popularity} </color>" : $" <color=#cd5e3c> ▼{-popularity} </color>";
         }
         else
         {
