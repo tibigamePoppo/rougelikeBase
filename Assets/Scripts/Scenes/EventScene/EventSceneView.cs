@@ -12,7 +12,7 @@ namespace Scenes.EventScene
 {
     public class EventSceneView : MonoBehaviour
     {
-        [SerializeField] private Button _button;
+        [SerializeField] private EventSceneButtonView _button;
         [SerializeField] private TextMeshProUGUI _text;
         [SerializeField] private Image _eventImage;
         [SerializeField] private Transform _buttonPanel;
@@ -27,9 +27,9 @@ namespace Scenes.EventScene
             foreach (var eventUnit in eventData.eventEffectArgs)
             {
                 var button = Instantiate(_button, _buttonPanel);
-                button.interactable = -eventUnit.playerMoneyChange < PlayerSingleton.Instance.CurrentMoney ;
-                button.OnClickAsObservable().Subscribe(_ => _emitEvent.OnNext(eventUnit)).AddTo(this);
-                button.transform.GetComponentInChildren<TextMeshProUGUI>().text = eventUnit.text;
+                button.Init(eventUnit);
+                button.Interactable(-eventUnit.playerMoneyChange < PlayerSingleton.Instance.CurrentMoney);
+                button.OnClick.Subscribe(_ => _emitEvent.OnNext(eventUnit)).AddTo(this);
             }
         }
 

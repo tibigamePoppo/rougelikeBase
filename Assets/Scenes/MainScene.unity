@@ -1286,7 +1286,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerNameText: {fileID: 538952657}
-  _popularityText: {fileID: 0}
+  _popularityText: {fileID: 1529705093}
   _moneyText: {fileID: 1984049715}
   _deckButton: {fileID: 208820123}
   _menuButton: {fileID: 380872423}
