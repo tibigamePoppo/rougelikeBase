@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UniRx;
 using System.Linq;
+using System;
 
 namespace Scenes.Battle
 {
@@ -18,6 +19,8 @@ namespace Scenes.Battle
         private Transform[] _meleeUnits;
         private Transform[] _rangeUnits;
 
+        private float unitsScale;
+
         public void Init(CharacterUnitModel[] units)
         {
             _meleeUnits = units.Where(u => u.WeaponType == MainScene.Player.UnitWeaponType.Melee).Select(u => u.Transform).ToArray();
@@ -26,6 +29,8 @@ namespace Scenes.Battle
             _formationI.OnClickAsObservable().Subscribe(_ => Formation(FormationType.FormationI)).AddTo(this);
             _formationV.OnClickAsObservable().Subscribe(_ => Formation(FormationType.FormationV)).AddTo(this);
             _formationA.OnClickAsObservable().Subscribe(_ => Formation(FormationType.FormationA)).AddTo(this);
+
+            unitsScale = 1 + Math.Max(_meleeUnits.Length, _rangeUnits.Length) / 2;
         }
 
         private void Formation(FormationType type)
@@ -35,21 +40,25 @@ namespace Scenes.Battle
             switch (type)
             {
                 case FormationType.FormationO:
-                    path = new Vector3[] {new Vector3(10, 0, 0), new Vector3(8.2f, 0, 8.2f), new Vector3(0, 0, 10),
-                                          new Vector3(-8.2f, 0, 8.2f), new Vector3(-10, 0, 0), new Vector3(-8.2f, 0, -8.2f),
-                                          new Vector3(0, 0, -10), new Vector3(8.2f, 0, -8.2f) };
+                    path = new Vector3[] {new Vector3(1, 0, 0), new Vector3(0.82f, 0, 0.82f), new Vector3(0, 0, 1),
+                                          new Vector3(-0.82f, 0, 0.82f), new Vector3(-1, 0, 0), new Vector3(-0.82f, 0, -0.82f),
+                                          new Vector3(0, 0, -1), new Vector3(0.82f, 0, -0.82f) };
+                    path = path.Select(v => v * unitsScale).ToArray();
                     clac.FormationO(_meleeUnits, _rangeUnits, path);
                     break;
                 case FormationType.FormationI:
-                    path = new Vector3[] { new Vector3(-10, 0, 1), new Vector3(10, 0, 1) };
+                    path = new Vector3[] { new Vector3(-1f, 0, 0.1f), new Vector3(1, 0, 0.1f) };
+                    path = path.Select(v => v * unitsScale).ToArray();
                     clac.FormationI(_meleeUnits, _rangeUnits, path);
                     break;
                 case FormationType.FormationV:
-                    path = new Vector3[] { new Vector3(-10, 0, 1), new Vector3(0, 0, -5), new Vector3(10, 0, 1) };
+                    path = new Vector3[] { new Vector3(-1f, 0, 0.1f), new Vector3(0, 0, -0.5f), new Vector3(1, 0, 0.1f) };
+                    path = path.Select(v => v * unitsScale).ToArray();
                     clac.FormationI(_meleeUnits, _rangeUnits, path);
                     break;
                 case FormationType.FormationA:
-                    path = new Vector3[] { new Vector3(-10, 0, 1), new Vector3(0, 0, 7), new Vector3(10, 0, 1) };
+                    path = new Vector3[] { new Vector3(-1f, 0, 0.1f), new Vector3(0, 0, 0.7f), new Vector3(1, 0, 0.1f) };
+                    path = path.Select(v => v * unitsScale).ToArray();
                     clac.FormationI(_meleeUnits, _rangeUnits, path);
                     break;
                 default:

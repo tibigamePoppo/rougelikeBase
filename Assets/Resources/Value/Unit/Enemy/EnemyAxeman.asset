@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: eede8a92714b14915ace7836afc9d95b, type: 3}
-  m_Name: EnemySowrdman2
+  m_Name: EnemyAxeman
   m_EditorClassIdentifier: 
   status:
     name: "\u86EE\u65CF2"
@@ -21,6 +21,6 @@ MonoBehaviour:
     hp: 70
     attack: 15
     attackRange: 1
-    speed: 2
+    speed: 2.5
   prefab: {fileID: 4165283848585114273, guid: 9292ff1f6aea345e9ba1de6452e87bce, type: 3}
   shopCost: 0

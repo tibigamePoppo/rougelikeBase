@@ -54,6 +54,8 @@ public class BattleFormationClac
             remainingDistance -= segmentLength;
         }
 
+        meleeUnitsPoints.Add(path.Last());
+        rangeUnitsPoints.Add(path.Last() - (path.Last() - center) / 4);
         SetPosition(meleeUnits, rangeUnits, meleeUnitsPoints, rangeUnitsPoints);
     }
 
@@ -73,37 +75,39 @@ public class BattleFormationClac
         meleeUnitsPoints.Add(path[0]);
         rangeUnitsPoints.Add(path[0] + rightAngleDir);
 
-        float remainingDistance = meleeInterval;
+        float melleeRemainingDistance = meleeInterval;
         for (int i = 0; i < path.Length - 1; i++)
         {
             Vector3 start = path[i];
             Vector3 end = path[i + 1];
             float segmentLength = Vector3.Distance(start, end);
 
-            while (remainingDistance <= segmentLength)
+            while (melleeRemainingDistance <= segmentLength)
             {
-                Vector3 point = Vector3.Lerp(start, end, remainingDistance / segmentLength);
+                Vector3 point = Vector3.Lerp(start, end, melleeRemainingDistance / segmentLength);
                 meleeUnitsPoints.Add(point);
-                remainingDistance += rangenterval;
+                melleeRemainingDistance += meleeInterval;
             }
-            remainingDistance -= segmentLength;
+            melleeRemainingDistance -= segmentLength;
         }
-        remainingDistance = rangenterval;
+        float rangeRemainingDistance = rangenterval;
         for (int i = 0; i < path.Length - 1; i++)
         {
             Vector3 start = path[i];
             Vector3 end = path[i + 1];
             float segmentLength = Vector3.Distance(start, end);
 
-            while (remainingDistance <= segmentLength)
+            while (rangeRemainingDistance <= segmentLength)
             {
-                Vector3 point = Vector3.Lerp(start, end, remainingDistance / segmentLength);
+                Vector3 point = Vector3.Lerp(start, end, rangeRemainingDistance / segmentLength);
                 rangeUnitsPoints.Add(point + rightAngleDir);
-                remainingDistance += rangenterval;
+                rangeRemainingDistance += rangenterval;
             }
-            remainingDistance -= segmentLength;
+            rangeRemainingDistance -= segmentLength;
         }
 
+        meleeUnitsPoints.Add(path.Last());
+        rangeUnitsPoints.Add(path.Last() + rightAngleDir);
         SetPosition(meleeUnits,rangeUnits,meleeUnitsPoints, rangeUnitsPoints);
     }
 
