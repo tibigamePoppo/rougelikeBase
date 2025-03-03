@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using Scenes.MainScene.Player;
 using UnityEngine;
 using System.Linq;

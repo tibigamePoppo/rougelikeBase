@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using Scenes.MainScene.Cards;
 using UnityEngine;
@@ -21,11 +20,11 @@ namespace Scenes.MainScene.Upgrade
         
         private UnitStatus _unitStatus1;
         private UnitStatus _unitStatus2;
-        private Subject<String> _updateUnit = new Subject<String>();
-        private Subject<String> _baseSelectUnit = new Subject<String>();
+        private Subject<string> _updateUnit = new Subject<string>();
+        private Subject<string> _baseSelectUnit = new Subject<string>();
 
-        public IObservable<String> OnUpdateUnit => _updateUnit;
-        public IObservable<String> OnBaseSelectUnit => _baseSelectUnit;
+        public IObservable<string> OnUpdateUnit => _updateUnit;
+        public IObservable<string> OnBaseSelectUnit => _baseSelectUnit;
 
         public void Init()
         {
