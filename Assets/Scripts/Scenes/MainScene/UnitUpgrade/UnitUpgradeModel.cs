@@ -30,8 +30,8 @@ namespace Scenes.MainScene.Upgrade
         public void UpdateUnit(string unitName)
         {
             var playerDeck = PlayerSingleton.Instance.CurrentDeck;
-            var baseUnit = Resources.Load<CardPool>("Value/RewardUnitPool").cards.FirstOrDefault(c => c.status.name == _baseUnitName);
-            var upgradedUnit = Resources.Load<CardPool>("Value/RewardUnitPool").cards.FirstOrDefault(c => c.status.name == unitName);
+            var baseUnit = Resources.Load<CardPool>("Value/PlayerAllUnitPool").cards.FirstOrDefault(c => c.status.name == _baseUnitName);
+            var upgradedUnit = Resources.Load<CardPool>("Value/PlayerAllUnitPool").cards.FirstOrDefault(c => c.status.name == unitName);
             var baseUnitCount = playerDeck.Count(d => d == baseUnit);
             for (int i = 0; i < baseUnitCount; i++)
             {

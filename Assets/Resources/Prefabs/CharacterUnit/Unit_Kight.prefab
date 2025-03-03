@@ -1824,7 +1824,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2404120866644031190
 Transform:
   m_ObjectHideFlags: 0
@@ -4591,7 +4591,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5910993552322771995
 Transform:
   m_ObjectHideFlags: 0
@@ -9146,7 +9146,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &3924866714533847933
 Transform:
   m_ObjectHideFlags: 0
@@ -9925,7 +9925,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4440474638620620668
 Transform:
   m_ObjectHideFlags: 0
@@ -15840,7 +15840,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1533010671354823612
 Transform:
   m_ObjectHideFlags: 0
@@ -16782,7 +16782,7 @@ GameObject:
   - component: {fileID: 5172305637913901325}
   - component: {fileID: -1645021217909014134}
   m_Layer: 0
-  m_Name: Unit_Swordman
+  m_Name: Unit_Kight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17171,7 +17171,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &8265975619252871823
 Transform:
   m_ObjectHideFlags: 0
@@ -17271,7 +17271,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1674962887047800075
 Transform:
   m_ObjectHideFlags: 0
