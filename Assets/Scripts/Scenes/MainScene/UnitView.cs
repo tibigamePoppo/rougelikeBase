@@ -15,14 +15,19 @@ namespace Scenes.MainScene
         private Image _image;
         private EventUnit _unit;
         private CharacterIconView _iconView;
-        private Subject<int> _clickEvent = new Subject<int>();
+        private Subject<EventUnit> _clickEvent = new Subject<EventUnit>();
         public EventUnit eventUnit { get { return _unit; } }
-        public IObservable<int> OnClickEvent => _clickEvent;
+        public IObservable<EventUnit> OnClickEvent => _clickEvent;
         private EnemyLevel _enemyLevel;
 
         public void Intaractable(bool value)
         {
             _button.interactable = value;
+        }
+
+        public void FadeUnit(bool value)
+        {
+            _image.color = value ? Color.gray : Color.white;
         }
 
         public void Init(EventUnit unit, CharacterIconView iconView)
@@ -65,7 +70,7 @@ namespace Scenes.MainScene
                     break;
 
             }
-            _clickEvent.OnNext(eventUnit.depth);
+            _clickEvent.OnNext(eventUnit);
         }
 
         void OnSceneLoaded(Scene scene, LoadSceneMode mode)

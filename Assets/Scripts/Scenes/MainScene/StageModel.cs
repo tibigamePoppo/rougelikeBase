@@ -53,7 +53,8 @@ namespace Scenes.MainScene
             for (int i = _stageDepth - 1; i >= 0; i--)
             {
                 _unitInfos[i] = new List<EventUnit>();
-                for (int j = 0; j < UnitCountByDepth(i); j++)
+                int layerInUnitCount = UnitCountByDepth(i);
+                for (int j = 0; j < layerInUnitCount; j++)
                 {
                     var newUnit = new EventUnit(null, GetRandomUnitType(i), i);
                     if (i != _stageDepth - 1)
@@ -64,8 +65,13 @@ namespace Scenes.MainScene
                         {
                             connectSkip = _unitInfos[i + 1].Count - connectSize;
                         }
+
+                        if(j == layerInUnitCount - 1 && j + connectSize < _unitInfos[i + 1].Count)
+                        {
+                            connectSize = _unitInfos[i + 1].Count - j;
+                        }
+
                         newUnit.connect = _unitInfos[i + 1].Skip(connectSkip).Take(connectSize).ToArray();
-                        //newUnit.connect = _unitInfos[i + 1].ToArray();
                     }
                     _unitInfos[i].Add(newUnit);
                 }
@@ -104,9 +110,10 @@ namespace Scenes.MainScene
             }
         }
 
-        public void NextDepth(int unitDepth)
+        public EventUnit[] NextDepth(EventUnit eventUnit)
         {
-            _currentDepth = unitDepth;
+            _currentDepth = eventUnit.depth;
+            return eventUnit.connect;
         }
     }
 }

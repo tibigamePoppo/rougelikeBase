@@ -171,7 +171,7 @@ public class BattleFormationClac
 
     private void SetPosition(Transform[] meleeUnits, Transform[] rangeUnits, List<Vector3> meleePosition, List<Vector3> rangePosition)
     {
-        Debug.Log($"meleeUnits {meleeUnits.Length},rangeUnits {rangeUnits.Length},meleePosition {meleePosition.Count},rangePosition {rangePosition.Count}");
+        //Debug.Log($"meleeUnits {meleeUnits.Length},rangeUnits {rangeUnits.Length},meleePosition {meleePosition.Count},rangePosition {rangePosition.Count}");
         while (meleePosition.Count > meleeUnits.Length && meleePosition.Count > 0)
         {
             meleePosition.Remove(meleePosition.Last());

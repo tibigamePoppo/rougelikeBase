@@ -21,10 +21,9 @@ namespace Scenes.MainScene
             _stageView = GetComponent<StageView>();
             _stageModel.Init();
             _stageView.Init(_stageModel.UnitInfo);
-            _stageView.OnDepthForword.Subscribe(d =>
-            {
-                _stageModel.NextDepth(d);
-                _stageView.UnitUpdate(_stageModel.CurrentDepth);
+            _stageView.OnEventForword.Subscribe(d =>
+            { 
+                _stageView.UnitUpdate(_stageModel.NextDepth(d));
             }).AddTo(this);
         }
     }

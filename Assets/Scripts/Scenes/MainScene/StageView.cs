@@ -14,8 +14,8 @@ namespace Scenes.MainScene
         [SerializeField] private GameObject _layerUnit;
         [SerializeField] private UnitLineView _unitLineView;
         private List<UnitView> _instanceEventUnitList = new List<UnitView>();
-        private Subject<int> _depthForword = new Subject<int>();
-        public IObservable<int> OnDepthForword => _depthForword;
+        private Subject<EventUnit> _eventForword = new Subject<EventUnit>();
+        public IObservable<EventUnit> OnEventForword => _eventForword ;
 
         public void Init(List<EventUnit>[] unitInfo)
         {
@@ -34,7 +34,7 @@ namespace Scenes.MainScene
                     unit.Init(unitInfo[i][j], _iconView);
                     unit.OnClickEvent.Subscribe(d =>
                     {
-                        _depthForword.OnNext(d);
+                        _eventForword.OnNext(d);
                     }).AddTo(this);
                     unit.gameObject.name = $"unit_{i}_{j}";
                     if (i != 0)
@@ -62,17 +62,19 @@ namespace Scenes.MainScene
         }
 
 
-        public void UnitUpdate(int currentDepth)
+        public void UnitUpdate(EventUnit[] EventUnits)
         {
-            var pastEventUnit = _instanceEventUnitList.Where(e => e.eventUnit.depth <= currentDepth).ToArray();
+            var pastEventUnit = _instanceEventUnitList.Where(e => e.eventUnit.depth <= EventUnits.First().depth).ToArray();
             foreach (var units in pastEventUnit)
             {
                 units.Intaractable(false);
+                units.FadeUnit(true);
             }
-            var nextEventUnit = _instanceEventUnitList.Where(e => e.eventUnit.depth == currentDepth + 1).ToArray();
+            var nextEventUnit = _instanceEventUnitList.Where(e => EventUnits.Contains(e.eventUnit)).ToArray();
             foreach (var units in nextEventUnit)
             {
                 units.Intaractable(true);
+                units.FadeUnit(false);
             }
         }
     }
