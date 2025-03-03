@@ -3321,7 +3321,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _hpGauge: {fileID: 6799968567317738832}
-  _attackEffect: {fileID: 8836900827440633381}
+  _attackEffect:
+  - {fileID: 8836900827440633381}
 --- !u!65 &6828477051118364265
 BoxCollider:
   m_ObjectHideFlags: 0

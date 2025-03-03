@@ -12,7 +12,7 @@ namespace Scenes.Battle.UnitCharacter
     public class CharacterUnitView : MonoBehaviour
     {
         [SerializeField] private Image _hpGauge;
-        [SerializeField] private EffectEmitBase _attackEffect;
+        [SerializeField] private EffectEmitBase[] _attackEffect;
 
         private Animator _animator;
         public Animator Animator { get { return _animator; } }
@@ -37,9 +37,10 @@ namespace Scenes.Battle.UnitCharacter
             _hpGauge.fillAmount = fillValue;
         }
 
-        public void AttackEffect(Vector3 vector3)
+        public void AttackEffect(AttackArg arg)
         {
-            _attackEffect.Emit(vector3);
+            var effectNum = arg.effectNum >= _attackEffect.Length ? 0: arg.effectNum;
+            _attackEffect[effectNum].Emit(arg.target);
         }
         private void OnAttackEffect(AnimationEvent animationEvent)
         {
