@@ -46,5 +46,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _relicItemId: 2
   _relicItemName: "\u30C7\u30E5\u30A2\u30EB\u30BF\u30FC\u30B2\u30C3\u30C8"
-  _sprite: {fileID: 0}
+  _sprite: {fileID: 21300000, guid: 82afe1c26f7704118b7b01d2dcddf8fd, type: 3}
   _effectText: "\uFF11\u5EA6\u306E\u653B\u6483\u3067\uFF12\u3064\u306E\u76EE\u6A19\u306B\u5C04\u6483\u3059\u308B"
