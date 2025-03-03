@@ -7,6 +7,7 @@ using UniRx;
 using System;
 using UnityEngine.SceneManagement;
 using Scenes.MainScene.Decks;
+using Scenes.MainScene.Upgrade;
 
 namespace Scenes.MainScene.Player
 {
@@ -18,6 +19,7 @@ namespace Scenes.MainScene.Player
         [SerializeField] private Button _deckButton;
         [SerializeField] private Button _menuButton;
         [SerializeField] private DeckView _deckView;
+        [SerializeField] private UnitUpgradePresenter _unitUpgradePresenter;
         private Subject<Unit> _deckButtonClick = new Subject<Unit>();
         public IObservable<Unit> OnDeckButtonClick => _deckButtonClick;
 
@@ -26,6 +28,7 @@ namespace Scenes.MainScene.Player
             _popularityText.text = initialPopularity.ToString();
             _moneyText.text = initialMoney.ToString();
             _deckView.Init(playerCard);
+            _unitUpgradePresenter.Init();
             _deckButton.OnClickAsObservable().Subscribe(_ => _deckButtonClick.OnNext(default)).AddTo(this);
             _menuButton.OnClickAsObservable().Subscribe(_ => MenuActive()).AddTo(this);
         }

@@ -12,8 +12,10 @@ public class DevelopPanel : MonoBehaviour
     [SerializeField] private Button _button;
     [SerializeField] private Button _closeButton;
     [SerializeField] private Button _openButton;
+    [SerializeField] private Button _upgradeButton;
     [SerializeField] private Transform _panelTransform;
     [SerializeField] private Transform _panelButtonTransform;
+    [SerializeField] private GameObject _upgradeWindow;
     void Start()
     {
         Init();
@@ -23,6 +25,7 @@ public class DevelopPanel : MonoBehaviour
     {
         _closeButton.OnClickAsObservable().Subscribe(_ => gameObject.SetActive(false)).AddTo(this);
         _openButton.OnClickAsObservable().Subscribe(_ => gameObject.SetActive(true)).AddTo(this);
+        _upgradeButton.OnClickAsObservable().Subscribe(_ => _upgradeWindow.SetActive(true)).AddTo(this);
         gameObject.SetActive(false);
         _relicItem = Resources.Load<RelicItemPool>("Value/RelicItemPool").relicItem;
         foreach (var item in _relicItem)
