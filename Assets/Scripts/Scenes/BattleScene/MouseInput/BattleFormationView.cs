@@ -199,8 +199,9 @@ public class BattleFormationView : MonoBehaviour
 
 
 
-    public void SetFormation(Vector3[] positions)
+    public void SetFormation(FormationPositionInfo info)
     {
+        var positions = info.rangePositions.Concat(info.meleePositions);
         foreach (var position in positions)
         {
             var arrow = Instantiate(_arrowImage, position, Quaternion.Euler(90,0,0), _arrowCanvas);

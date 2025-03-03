@@ -5,15 +5,16 @@ using UnityEngine;
 using System.Linq;
 using UniRx;
 using System;
+using Scenes.MainScene.Player;
 
 public class BattleFormationModel 
 {
     private CharacterUnitModel[] _playerUnits = new CharacterUnitModel[0];
     private CharacterUnitModel[] _selectUnits = new CharacterUnitModel[0];
 
-    private Subject<Vector3[]> _formationPosition = new Subject<Vector3[]>();
+    private Subject<FormationPositionInfo> _formationPosition = new Subject<FormationPositionInfo>();
 
-    public IObservable<Vector3[]> OnFormationChange => _formationPosition;
+    public IObservable<FormationPositionInfo> OnFormationChange => _formationPosition;
 
     public void Init(CharacterUnitModel[] playerUnits)
     {
@@ -41,54 +42,26 @@ public class BattleFormationModel
         _selectUnits = _selectUnits.Where(u => u.CurrentState != Scenes.Battle.UnitCharacter.State.CharacterUnitStateType.Dead).ToArray();
         float interval = LineLength(vectors) / _selectUnits.Length;
         if (interval < 0.5f) return;
-        var formationPosition = GetEvenlySpacedPoints(vectors, interval, _selectUnits.Length);
+        BattleFormationClac clac = new BattleFormationClac();
+        var meleeUnits = _selectUnits.Where(u => u.WeaponType == UnitWeaponType.Melee).ToArray();
+        var rangeUnits = _selectUnits.Where(u => u.WeaponType == UnitWeaponType.Range).ToArray();
+        var formationPosition = clac.FormationCurve(meleeUnits.Select(u => u.Transform).ToArray(), rangeUnits.Select(u => u.Transform).ToArray(), vectors);
 
-        for (int i = 0; i < _selectUnits.Length; i++)
+        for (int i = 0; i < meleeUnits.Length; i++)
         {
-            _selectUnits[i].SetFormationPoint(formationPosition[i]).Forget();
+            meleeUnits[i].SetFormationPoint(formationPosition.meleePositions[i]).Forget();
         }
-        _formationPosition.OnNext(formationPosition.ToArray());
+        for (int i = 0; i < rangeUnits.Length; i++)
+        {
+            rangeUnits[i].SetFormationPoint(formationPosition.rangePositions[i]).Forget();
+        }
+        _formationPosition.OnNext(formationPosition);
     }
 
 
     private float LineLength(Vector3[] vectors)
     {
         return vectors.Zip(vectors.Skip(1), Vector3.Distance).Sum();
-    }
-
-    public List<Vector3> GetEvenlySpacedPoints(Vector3[] path, float interval,int count)
-    {
-        List<Vector3> points = new List<Vector3>();
-        if (path == null || path.Length < 2) return points;
-
-        points.Add(path[0]);  // 始点を追加
-        float remainingDistance = interval;
-
-        for (int i = 0; i < path.Length - 1; i++)
-        {
-            Vector3 start = path[i];
-            Vector3 end = path[i + 1];
-            float segmentLength = Vector3.Distance(start, end);
-
-            while (remainingDistance <= segmentLength)
-            {
-                Vector3 point = Vector3.Lerp(start, end, remainingDistance / segmentLength);
-                points.Add(point);
-                remainingDistance += interval;
-            }
-
-            remainingDistance -= segmentLength;
-        }
-        while (points.Count > count && points.Count > 0)
-        {
-            points.Remove(points.Last());
-        }
-        while (points.Count < count)
-        {
-            points.Add(points[points.Count]);
-        }
-
-        return points;
     }
 
     private List<CharacterUnitModel> DetectUnitsInsideShape(Vector3[] linePositions)
