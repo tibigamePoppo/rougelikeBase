@@ -12,6 +12,8 @@ public class EventSceneButtonView : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _text;
     [SerializeField] private TextMeshProUGUI _moneyText;
     [SerializeField] private TextMeshProUGUI _popularityText;
+    [SerializeField] private GameObject _battle;
+    [SerializeField] private GameObject _shop;
     private Button _button;
     private Subject<Unit> _click = new Subject<Unit>();
     public IObservable<Unit> OnClick => _click;
@@ -19,9 +21,12 @@ public class EventSceneButtonView : MonoBehaviour
 
     public void Init(EventEffectArg arg)
     {
+        _battle.SetActive(false);
+        _shop.SetActive(false);
         _text.text = arg.text;
         SetMoney(arg.playerMoneyChange);
         SetPopularity(arg.playerPopularityChange);
+        SetUnitScene(arg.changeScene);
 
         _button = GetComponent<Button>();
         _button.OnClickAsObservable().Subscribe(_ => _click.OnNext(default)).AddTo(this);
@@ -30,6 +35,21 @@ public class EventSceneButtonView : MonoBehaviour
     public void Interactable(bool eble)
     {
         _button.interactable = eble;
+    }
+
+    private void SetUnitScene(SceneName sceneName)
+    {
+        switch (sceneName)
+        {
+            case SceneName.BattleScene:
+                _battle.SetActive(true);
+                break;
+            case SceneName.ShopScene:
+                _shop.SetActive(true);
+                break;
+            default:
+                break;
+        }
     }
 
     private void SetMoney(int money)
