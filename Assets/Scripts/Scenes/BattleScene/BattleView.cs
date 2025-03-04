@@ -30,7 +30,10 @@ namespace Scenes.Battle
         [SerializeField] private BattleFormationPresenter _battleFormationPresenter;
         [SerializeField] private BatleInitalFormationView _battleInitialFormationView;
         [SerializeField] private Button _battlReadyButton;
+        private Subject<bool> _isPlayerWinBattle = new Subject<bool>();
         private FormationType _formationType = FormationType.None;
+
+        public IObservable<bool> IsPlayerWinBattle => _isPlayerWinBattle;
 
         private int[] _enemySpawnPaturnValue = new int[] { 1, 2 };
         private float[] _enemySpawnPaturnWeight = new float[] { 4f, 1f };
@@ -78,7 +81,7 @@ namespace Scenes.Battle
                 .Select(_ => playerModel.All(p => p.CurrentState == UnitCharacter.State.CharacterUnitStateType.Dead)) // すべての survive が false か判定
                 .DistinctUntilChanged()
                 .Where(allDead => allDead)
-                .Subscribe(_ => BattleEnd())
+                .Subscribe(_ => BattleEnd(true))
                 .AddTo(this);
 
 
@@ -86,7 +89,7 @@ namespace Scenes.Battle
                 .Select(_ => enemyModel.All(p => p.CurrentState == UnitCharacter.State.CharacterUnitStateType.Dead)) // すべての survive が false か判定
                 .DistinctUntilChanged()
                 .Where(allDead => allDead)
-                .Subscribe(_ => BattleEnd())
+                .Subscribe(_ => BattleEnd(false))
                 .AddTo(this);
 
             InitalFormation(playerPresenter.Concat(enemyPresenter).ToList()).Forget();
@@ -105,8 +108,9 @@ namespace Scenes.Battle
             });
         }
 
-        private void BattleEnd()
+        private void BattleEnd(bool playerWin)
         {
+            _isPlayerWinBattle.OnNext(playerWin);
             _rewardView.gameObject.SetActive(true);
         }
 

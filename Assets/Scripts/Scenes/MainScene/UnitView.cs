@@ -15,10 +15,15 @@ namespace Scenes.MainScene
         private Image _image;
         private EventUnit _unit;
         private CharacterIconView _iconView;
-        private Subject<EventUnit> _clickEvent = new Subject<EventUnit>();
         public EventUnit eventUnit { get { return _unit; } }
-        public IObservable<EventUnit> OnClickEvent => _clickEvent;
         private EnemyLevel _enemyLevel;
+
+
+        private Subject<EventUnit> _clickEvent = new Subject<EventUnit>();
+        private Subject<bool> _isPlayerWinBattle = new Subject<bool>();
+
+        public IObservable<EventUnit> OnClickEvent => _clickEvent;
+        public IObservable<bool> IsPlayerWinBattle => _isPlayerWinBattle;
 
         public void Intaractable(bool value)
         {
@@ -86,7 +91,10 @@ namespace Scenes.MainScene
                 {
                     Debug.LogWarning("BattlePresenter が見つからない！");
                 }
-
+                if(_enemyLevel == EnemyLevel.Boss)
+                {
+                    battlePresenter.IsPlayerWinBattle.Subscribe(isWin => _isPlayerWinBattle.OnNext(isWin)).AddTo(this);
+                }
                 SceneManager.sceneLoaded -= OnSceneLoaded;
             }
         }

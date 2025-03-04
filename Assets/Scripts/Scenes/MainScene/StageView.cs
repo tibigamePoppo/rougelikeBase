@@ -13,12 +13,17 @@ namespace Scenes.MainScene
         [SerializeField] private CharacterIconView _iconView;
         [SerializeField] private GameObject _layerUnit;
         [SerializeField] private UnitLineView _unitLineView;
+        [SerializeField] private GameObject _stageClearText;
+        [SerializeField] private GameObject _stageDefeatText;
+
         private List<UnitView> _instanceEventUnitList = new List<UnitView>();
         private Subject<EventUnit> _eventForword = new Subject<EventUnit>();
         public IObservable<EventUnit> OnEventForword => _eventForword ;
 
         public void Init(List<EventUnit>[] unitInfo)
         {
+            _stageClearText.SetActive(false);
+            _stageDefeatText.SetActive(false);
             InstanceUnits(unitInfo);
             LinqUnitLine();
         }
@@ -36,10 +41,29 @@ namespace Scenes.MainScene
                     {
                         _eventForword.OnNext(d);
                     }).AddTo(this);
+
                     unit.gameObject.name = $"unit_{i}_{j}";
+
                     if (i != 0)
                     {
                         unit.Intaractable(false);
+                    }
+
+                    // to Battle end boss
+                    if(unitInfo[i][j].unitType == UnitType.Boss)
+                    {
+                        unit.IsPlayerWinBattle.Subscribe(isWin =>
+                        {
+                            if (isWin)
+                            {
+                                _stageClearText.SetActive(true);
+                            }
+                            else
+                            {
+                                _stageDefeatText.SetActive(false);
+
+                            }
+                        }).AddTo(this);
                     }
 
                     _instanceEventUnitList.Add(unit);
