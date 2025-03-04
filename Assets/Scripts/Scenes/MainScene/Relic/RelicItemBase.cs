@@ -4,10 +4,10 @@ namespace Scenes.MainScene.Relic
 {
     public abstract class  RelicItemBase : MonoBehaviour
     {
-        public int _relicItemId;
-        public string _relicItemName;
-        public Sprite _sprite;
-        public string _effectText;
+        public int relicItemId;
+        public string relicItemName;
+        public Sprite sprite;
+        public string effectText;
         public virtual void Init() { }
     }
 }

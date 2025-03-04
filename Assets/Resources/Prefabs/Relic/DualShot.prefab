@@ -15,7 +15,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &391174524313515746
 Transform:
@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be226fddd9c1f4d1a80053afd7097cfa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _relicItemId: 1
-  _relicItemName: "\u30C7\u30E5\u30A2\u30EB\u30B7\u30E7\u30C3\u30C8"
-  _sprite: {fileID: 21300000, guid: 3fbd5dd16579643279d05ce17c1f3b75, type: 3}
-  _effectText: "\uFF11\u5EA6\u306E\u653B\u6483\uFF12\u56DE\u5C04\u6483\u3059\u308B"
+  relicItemId: 1
+  relicItemName: "\u30C7\u30E5\u30A2\u30EB\u30B7\u30E7\u30C3\u30C8"
+  sprite: {fileID: 21300000, guid: 3fbd5dd16579643279d05ce17c1f3b75, type: 3}
+  effectText: "\uFF11\u5EA6\u3067\uFF12\u767A\u5C04\u6483\u3059\u308B"

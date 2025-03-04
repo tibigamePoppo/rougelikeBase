@@ -8,6 +8,7 @@ using System;
 using UnityEngine.SceneManagement;
 using Scenes.MainScene.Decks;
 using Scenes.MainScene.Upgrade;
+using Scenes.MainScene.Relic;
 
 namespace Scenes.MainScene.Player
 {
@@ -33,9 +34,9 @@ namespace Scenes.MainScene.Player
             _menuButton.OnClickAsObservable().Subscribe(_ => MenuActive()).AddTo(this);
         }
 
-        public void OpenDeckView(List<UnitData> playerCard)
+        public void OpenDeckView(List<UnitData> playerCard, List<RelicItemBase> relicItems)
         {
-            _deckView.ActiveWindow(playerCard);
+            _deckView.ActiveWindow(playerCard,relicItems);
         }
 
         public void UpdatePopularityText(int newPopularity)

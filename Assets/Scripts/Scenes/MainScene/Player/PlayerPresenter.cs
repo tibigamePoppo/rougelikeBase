@@ -27,7 +27,7 @@ namespace Scenes.MainScene.Player
                 _view.UpdateMoneyText(v);
                 _singleton.SetCurrentMoney(v);
             }).AddTo(this);
-            _view.OnDeckButtonClick.Subscribe(_ => _view.OpenDeckView(_model.CurrentCardDataList)).AddTo(this);
+            _view.OnDeckButtonClick.Subscribe(_ => _view.OpenDeckView(_model.CurrentCardDataList,_model.CurrentRelicItemList)).AddTo(this);
 
             _model.OnDeckChange.Subscribe(_ => _singleton.SetCurrentDeck(_model.CurrentCardDataList));
             _model.OnUpdateRelicItem.Subscribe(r => _singleton.SetCurrentRelic(r));

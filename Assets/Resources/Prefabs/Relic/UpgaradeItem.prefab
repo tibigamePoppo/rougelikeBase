@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9ea99926bd8048788e44b9a9650caca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _relicItemId: 0
-  _relicItemName: "\u4EBA\u99AC\u4E00\u4F53"
-  _sprite: {fileID: 21300000, guid: 108554afa72c442b1a30ccb249a184c3, type: 3}
-  _effectText: "\u7372\u5F97\u6642\u3001\u6B69\u5175\u304C\u5168\u3066\u9A0E\u5175\u306B\u5909\u5316\u3059\u308B"
+  relicItemId: 0
+  relicItemName: "\u9A0E\u4E57"
+  sprite: {fileID: 21300000, guid: f77e3917c36ef494d8203eca3d4fbf58, type: 3}
+  effectText: "\u6B69\u5175\u3092\u9A0E\u5175\u306B\u30A2\u30C3\u30D7\u30B0\u30EC\u30FC\u30C9\u3059\u308B"

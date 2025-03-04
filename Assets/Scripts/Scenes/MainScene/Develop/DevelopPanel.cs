@@ -31,7 +31,7 @@ public class DevelopPanel : MonoBehaviour
         foreach (var item in _relicItem)
         {
             var button = Instantiate(_button, _panelButtonTransform);
-            button.GetComponentInChildren<TextMeshProUGUI>().text = item._relicItemName;
+            button.GetComponentInChildren<TextMeshProUGUI>().text = item.relicItemName;
             var relic = Instantiate(item, _panelTransform);
             button.OnClickAsObservable().First().Subscribe(_ => relic.Init()).AddTo(this);
         }

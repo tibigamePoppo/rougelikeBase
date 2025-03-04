@@ -190,7 +190,7 @@ namespace Scenes.Battle.UnitCharacter
         private bool HasRelicItem(int id)
         {
             if (_unitGroup == UnitGroup.Enemy) return false;
-            return PlayerSingleton.Instance.CurrentRelic.Select(c => c._relicItemId).Contains(id);
+            return PlayerSingleton.Instance.CurrentRelic.Select(c => c.relicItemId).Contains(id);
         }
 
     }

@@ -23,6 +23,7 @@ namespace Scenes.MainScene.Player
         public int CurrentPopularity { get { return _popularity.Value; } }
         public int CurrentMoney { get { return _money.Value; } }
         public List<UnitData> CurrentCardDataList { get { return _cardDataList; } }
+        public List<RelicItemBase> CurrentRelicItemList { get { return _relicItems; } }
 
         public void Init()
         {

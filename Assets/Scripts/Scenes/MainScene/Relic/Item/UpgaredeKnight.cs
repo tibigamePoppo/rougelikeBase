@@ -16,6 +16,7 @@ namespace Scenes.MainScene.Relic.Item
                 PlayerSingleton.Instance.RemoveCard(Sowrdman);
                 PlayerSingleton.Instance.AddCard(HorceKnight);
             }
+            PlayerSingleton.Instance.AddRelicItem(this);
         }
     }
 }
