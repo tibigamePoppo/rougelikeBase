@@ -17,7 +17,7 @@ MonoBehaviour:
     sprite: {fileID: 0}
     text: 
     type: 0
-    group: 0
+    group: 1
     hp: 60
     attack: 15
     attackRange: 5

@@ -19787,6 +19787,18 @@ PrefabInstance:
       propertyPath: _prefab
       value: 
       objectReference: {fileID: 128572, guid: 16fa0cf1091874d4fa2ebcb91985dfd9, type: 3}
+    - target: {fileID: 716743430273904553, guid: 3f74fb982824f4ad190ac6b993095abb, type: 3}
+      propertyPath: _impactParticle
+      value: 
+      objectReference: {fileID: 1341525123640686, guid: d9e3deb54a0d566438734cb2731448ea, type: 3}
+    - target: {fileID: 716743430273904553, guid: 3f74fb982824f4ad190ac6b993095abb, type: 3}
+      propertyPath: _muzzleParticle
+      value: 
+      objectReference: {fileID: 113646, guid: 512bd2deb75bf0140b908d937524f690, type: 3}
+    - target: {fileID: 716743430273904553, guid: 3f74fb982824f4ad190ac6b993095abb, type: 3}
+      propertyPath: _projectileParticle
+      value: 
+      objectReference: {fileID: 1671877646272590, guid: bcd7f1f45336e164389fb03909715d12, type: 3}
     - target: {fileID: 5865546912439903420, guid: 3f74fb982824f4ad190ac6b993095abb, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -19864,6 +19876,18 @@ PrefabInstance:
       propertyPath: _prefab
       value: 
       objectReference: {fileID: 128572, guid: f2e09a31aba444a7789acda1567bee40, type: 3}
+    - target: {fileID: 716743430273904553, guid: 3f74fb982824f4ad190ac6b993095abb, type: 3}
+      propertyPath: _impactParticle
+      value: 
+      objectReference: {fileID: 1444128857353730, guid: d2751e617f2191a4da790e7429534835, type: 3}
+    - target: {fileID: 716743430273904553, guid: 3f74fb982824f4ad190ac6b993095abb, type: 3}
+      propertyPath: _muzzleParticle
+      value: 
+      objectReference: {fileID: 117382, guid: f6fd7c6469f235a4595c9be5430ef7d9, type: 3}
+    - target: {fileID: 716743430273904553, guid: 3f74fb982824f4ad190ac6b993095abb, type: 3}
+      propertyPath: _projectileParticle
+      value: 
+      objectReference: {fileID: 1887154481864212, guid: 73d9f4ee08774eb49bec9a482d3873b0, type: 3}
     - target: {fileID: 5865546912439903420, guid: 3f74fb982824f4ad190ac6b993095abb, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -19937,6 +19961,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: ArrowEffect
       objectReference: {fileID: 0}
+    - target: {fileID: 716743430273904553, guid: 3f74fb982824f4ad190ac6b993095abb, type: 3}
+      propertyPath: _impactParticle
+      value: 
+      objectReference: {fileID: 1636806931387756, guid: 448e8d4f82f29da4298ec7ad31825184, type: 3}
+    - target: {fileID: 716743430273904553, guid: 3f74fb982824f4ad190ac6b993095abb, type: 3}
+      propertyPath: _muzzleParticle
+      value: 
+      objectReference: {fileID: 193574, guid: 5c2bdcf6f0badc34f9f192b0995e4a79, type: 3}
+    - target: {fileID: 716743430273904553, guid: 3f74fb982824f4ad190ac6b993095abb, type: 3}
+      propertyPath: _projectileParticle
+      value: 
+      objectReference: {fileID: 1692925882083106, guid: d2e12f11e1f9a8f41a018e2f56fd9589, type: 3}
     - target: {fileID: 5865546912439903420, guid: 3f74fb982824f4ad190ac6b993095abb, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
