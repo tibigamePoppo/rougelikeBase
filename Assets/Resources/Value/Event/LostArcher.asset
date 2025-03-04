@@ -29,7 +29,7 @@ MonoBehaviour:
     changeScene: 0
     units: []
     relic: {fileID: 0}
-  - text: "\u5F7C\u306E\u8377\u7269\u3092\u72D9\u3046(\u6226\u95D8\u306B\u7A81\u5165)"
+  - text: "\u5F7C\u306E\u8377\u7269\u3092\u72D9\u3046"
     playerPopularityChange: 0
     playerMoneyChange: 0
     changeScene: 1

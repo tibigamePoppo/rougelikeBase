@@ -19712,6 +19712,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: ArrowEffect
       objectReference: {fileID: 0}
+    - target: {fileID: 716743430273904553, guid: 3f74fb982824f4ad190ac6b993095abb, type: 3}
+      propertyPath: _impactParticle
+      value: 
+      objectReference: {fileID: 1753279311565200, guid: a5986da717b87c046b2b6f8a0c583b45, type: 3}
+    - target: {fileID: 716743430273904553, guid: 3f74fb982824f4ad190ac6b993095abb, type: 3}
+      propertyPath: _muzzleParticle
+      value: 
+      objectReference: {fileID: 1559235166260600, guid: 49b34aad5b5e23341a5eef46fc10eca8, type: 3}
+    - target: {fileID: 716743430273904553, guid: 3f74fb982824f4ad190ac6b993095abb, type: 3}
+      propertyPath: _projectileParticle
+      value: 
+      objectReference: {fileID: 1550477657380252, guid: b08423cf60cb91c45a09d2875c834ca9, type: 3}
     - target: {fileID: 5865546912439903420, guid: 3f74fb982824f4ad190ac6b993095abb, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

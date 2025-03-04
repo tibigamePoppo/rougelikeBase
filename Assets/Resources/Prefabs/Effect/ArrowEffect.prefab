@@ -44,4 +44,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9af78beef400c4c358654b96dc332fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _prefab: {fileID: 128572, guid: 6b7d0574d0afa41a3978d8b3d59181d2, type: 3}
+  _impactParticle: {fileID: 1462625049709940, guid: ceb9843b0bd156647a2d829e876f7058, type: 3}
+  _projectileParticle: {fileID: 1550477657380252, guid: b754cb6e007692245bcdfa629b37e171, type: 3}
+  _muzzleParticle: {fileID: 1668480529526046, guid: 547c0eca96ede3142b594e4be6255053, type: 3}
