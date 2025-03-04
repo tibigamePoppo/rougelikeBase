@@ -15,7 +15,7 @@ MonoBehaviour:
   status:
     name: "\u9B54\u6CD5\u4F7F\u3044"
     sprite: {fileID: 21300000, guid: cb81b4d3282684886afcf86a630a9eb0, type: 3}
-    text: 
+    text: "\u653B\u6483\u529B\u304C\u9AD8\u3044"
     type: 0
     group: 0
     hp: 50
