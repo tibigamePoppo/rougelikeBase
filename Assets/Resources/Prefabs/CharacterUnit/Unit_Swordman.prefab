@@ -19779,6 +19779,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SwordSlashEffect
       objectReference: {fileID: 0}
+    - target: {fileID: 2245516699010585579, guid: 65150c702573d4eb0b328ca8641fa383, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5796129713619882608, guid: 65150c702573d4eb0b328ca8641fa383, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
