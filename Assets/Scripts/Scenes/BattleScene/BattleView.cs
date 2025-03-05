@@ -81,7 +81,7 @@ namespace Scenes.Battle
                 .Select(_ => playerModel.All(p => p.CurrentState == UnitCharacter.State.CharacterUnitStateType.Dead)) // すべての survive が false か判定
                 .DistinctUntilChanged()
                 .Where(allDead => allDead)
-                .Subscribe(_ => BattleEnd(true))
+                .Subscribe(_ => BattleEnd(false))
                 .AddTo(this);
 
 
@@ -89,7 +89,7 @@ namespace Scenes.Battle
                 .Select(_ => enemyModel.All(p => p.CurrentState == UnitCharacter.State.CharacterUnitStateType.Dead)) // すべての survive が false か判定
                 .DistinctUntilChanged()
                 .Where(allDead => allDead)
-                .Subscribe(_ => BattleEnd(false))
+                .Subscribe(_ => BattleEnd(true))
                 .AddTo(this);
 
             InitalFormation(playerPresenter.Concat(enemyPresenter).ToList()).Forget();

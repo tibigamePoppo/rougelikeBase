@@ -45,7 +45,9 @@ public class BattleFormationModel
         BattleFormationClac clac = new BattleFormationClac();
         var meleeUnits = _selectUnits.Where(u => u.WeaponType == UnitWeaponType.Melee).ToArray();
         var rangeUnits = _selectUnits.Where(u => u.WeaponType == UnitWeaponType.Range).ToArray();
-        var formationPosition = clac.FormationCurve(meleeUnits.Select(u => u.Transform).ToArray(), rangeUnits.Select(u => u.Transform).ToArray(), vectors);
+        var meleeUnitsTransform = meleeUnits.Length > 0 ? meleeUnits.Select(u => u.Transform).ToArray() : null;
+        var rangeUnitsTransform = rangeUnits.Length > 0 ? rangeUnits.Select(u => u.Transform).ToArray() : null;
+        var formationPosition = clac.FormationCurve(meleeUnitsTransform, rangeUnitsTransform, vectors);
 
         for (int i = 0; i < meleeUnits.Length; i++)
         {

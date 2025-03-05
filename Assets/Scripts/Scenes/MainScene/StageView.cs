@@ -60,7 +60,7 @@ namespace Scenes.MainScene
                             }
                             else
                             {
-                                _stageDefeatText.SetActive(false);
+                                _stageDefeatText.SetActive(true);
 
                             }
                         }).AddTo(this);
@@ -88,6 +88,7 @@ namespace Scenes.MainScene
 
         public void UnitUpdate(EventUnit[] EventUnits)
         {
+            if (EventUnits == null) return;
             var pastEventUnit = _instanceEventUnitList.Where(e => e.eventUnit.depth <= EventUnits.First().depth).ToArray();
             foreach (var units in pastEventUnit)
             {
