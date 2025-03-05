@@ -6,6 +6,7 @@ public class BattleFormationPresenter : MonoBehaviour
 {
     private BattleFormationView _view;
     private BattleFormationModel _model;
+    public bool isStarted = false;
 
     public void Init(CharacterUnitModel[] unitModels)
     {
@@ -13,9 +14,9 @@ public class BattleFormationPresenter : MonoBehaviour
         _view = GetComponent<BattleFormationView>();
         _model.Init(unitModels);
         _view.Init();
-        _view.OnDrawSelectLine.Subscribe(s => _model.SetSelectLine(s)).AddTo(this);
-        _view.OnDrawFormationLine.Subscribe(l => _model.SetFormationLine(l)).AddTo(this);
-        _model.OnFormationChange.Subscribe(f => _view.SetFormation(f)).AddTo(this);
+        _view.OnDrawSelectLine.Where(_ => isStarted).Subscribe(s => _model.SetSelectLine(s)).AddTo(this);
+        _view.OnDrawFormationLine.Where(_ => isStarted).Subscribe(l => _model.SetFormationLine(l)).AddTo(this);
+        _model.OnFormationChange.Where(_ => isStarted).Subscribe(f => _view.SetFormation(f)).AddTo(this);
 
     }
 }

@@ -104,6 +104,7 @@ namespace Scenes.Battle
                 {
                     item.BattleStart();
                 }
+                _battleFormationPresenter.isStarted = true;
                 _battleInitialFormationView.gameObject.SetActive(false);
             });
         }
