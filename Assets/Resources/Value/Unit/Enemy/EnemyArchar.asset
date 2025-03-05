@@ -18,7 +18,7 @@ MonoBehaviour:
     text: 
     type: 0
     group: 1
-    hp: 60
+    hp: 50
     attack: 15
     attackRange: 5
     speed: 2

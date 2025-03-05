@@ -19,7 +19,7 @@ MonoBehaviour:
     type: 0
     group: 1
     hp: 70
-    attack: 15
+    attack: 20
     attackRange: 1
     speed: 2.5
   prefab: {fileID: 4165283848585114273, guid: 9292ff1f6aea345e9ba1de6452e87bce, type: 3}
