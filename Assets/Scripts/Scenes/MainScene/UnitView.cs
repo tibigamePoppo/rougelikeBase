@@ -82,7 +82,7 @@ namespace Scenes.MainScene
         {
             if (scene.name == "BattleScene")
             {
-                BattlePresenter battlePresenter = FindObjectOfType<BattlePresenter>();
+                BattlePresenter battlePresenter = FindFirstObjectByType<BattlePresenter>();
                 if (battlePresenter != null)
                 {
                     battlePresenter.Init(_enemyLevel,PlayerSingleton.Instance.CurrentDeck);

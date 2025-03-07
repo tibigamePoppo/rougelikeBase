@@ -17,6 +17,7 @@ namespace Scenes.Battle.UnitCharacter
         private float _maxHp;
         private float _attackPower;
         private float _attackRange;
+        private float _maxShield;
         private string _unitName;
         private UnitWeaponType _type;
         private UnitGroup _unitGroup;
@@ -27,6 +28,9 @@ namespace Scenes.Battle.UnitCharacter
         private CancellationTokenSource formationMoveSorce ;
 
         private ReactiveProperty<float> _health = new ReactiveProperty<float>();
+        private ReactiveProperty<float> _shield = new ReactiveProperty<float>();
+        private Subject<float> _getDamage = new Subject<float>();
+        private Subject<float> _getHeal = new Subject<float>();
         private ReactiveProperty<CharacterUnitStateType> _stateType = new ReactiveProperty<CharacterUnitStateType>(CharacterUnitStateType.Idle);
         private Subject<AttackArg> _attackTarget = new Subject<AttackArg>();
         private NavMeshAgent _agent;
@@ -37,6 +41,9 @@ namespace Scenes.Battle.UnitCharacter
 
         public UnitWeaponType WeaponType { get { return _type; } }
         public IObservable<float> OnChangeHealth => _health;
+        public IObservable<float> OnChangeSheild => _shield;
+        public IObservable<float> OnDamage => _getDamage;
+        public IObservable<float> OnHeal => _getHeal;
         public IObservable<CharacterUnitStateType> OnChangeStateType => _stateType;
 
         public IObservable<AttackArg> OnAttackTarget => _attackTarget;
@@ -44,6 +51,7 @@ namespace Scenes.Battle.UnitCharacter
         public float AttackPower { get { return _attackPower; } }
         public float CurrentHealth { get { return _health.Value; } }
         public float MaxHealth { get { return _maxHp; } }
+        public float MaxSheild { get { return _maxShield; } }
         public Transform Transform { get { return _originTransfrom; } }
         public CharacterUnitModel TargetUnit { get { return _targetUnit; } }
         public CharacterUnitStateType CurrentState { get { return _stateType.Value; } }
@@ -55,7 +63,9 @@ namespace Scenes.Battle.UnitCharacter
             formationMoveSorce = new CancellationTokenSource();
             _unitName = status.name;
             _maxHp = status.hp;
+            _maxShield = status.shield;
             _health.Value = status.hp;
+            _shield.Value = status.shield;
             _attackPower = status.attack;
             _attackRange = status.attackRange;
             _type = status.type;
@@ -63,11 +73,23 @@ namespace Scenes.Battle.UnitCharacter
             _originTransfrom = originTransfrom;
             _agent = agent;
             _agent.speed = status.speed;
+
+
+            if (HasRelicItem(4))
+            {
+                _maxShield += _maxHp * 0.2f;
+                _shield.Value += _maxHp * 0.2f;
+            }
         }
 
         public void BattleLoopStart()
         {
             MainLoop().Forget();
+            if(HasRelicItem(7))
+            {
+                SubAuotHealLoop().Forget();
+            }
+            if(HasRelicItem(5)) HealPosition().Forget();
         }
 
 
@@ -82,6 +104,10 @@ namespace Scenes.Battle.UnitCharacter
             await UniTask.Delay(TimeSpan.FromSeconds(AttackSpeed() * 0.2f));
 
             target.TakeDamage(_attackPower);
+            if (HasRelicItem(6))
+            {
+                GetHeal(_attackPower * 0.1f);
+            }
             _attackTarget.OnNext(new AttackArg(target.TargetPosition, effect));
 
             if (GetTarget().Length <= 0) return;
@@ -94,6 +120,10 @@ namespace Scenes.Battle.UnitCharacter
                     ChangeState(CharacterUnitStateType.Attak);
                     await UniTask.Delay(TimeSpan.FromSeconds(AttackSpeed() * 0.2f));
                     target.TakeDamage(_attackPower);
+                    if (HasRelicItem(6))
+                    {
+                        GetHeal(_attackPower * 0.1f);
+                    }
                     _attackTarget.OnNext(new AttackArg(target.TargetPosition, 1));
                 }
             }
@@ -101,12 +131,46 @@ namespace Scenes.Battle.UnitCharacter
 
         public void TakeDamage(float damage)
         {
-            _health.Value = _health.Value - damage <= 0 ? 0 : _health.Value - damage;
-            if(_health.Value <= 0)
+            if (_shield.Value > 0)
+            {
+                _shield.Value = _shield.Value - damage <= 0 ? 0 : _shield.Value - damage;
+            }
+            else
+            {
+                _health.Value = _health.Value - damage <= 0 ? 0 : _health.Value - damage;
+            }
+            _getDamage.OnNext(damage);
+            if (_health.Value <= 0)
             {
                 _agent.isStopped = true;
                 ChangeState(CharacterUnitStateType.Dead);
             }
+        }
+
+        public void GetHeal(float value)
+        {
+            if (_stateType.Value == CharacterUnitStateType.Dead) return;
+            var healValue = _health.Value + value >= MaxHealth ? (_health.Value + value >= MaxHealth ? MaxHealth : _health.Value + value) - MaxHealth : value;
+            if (healValue > 0)
+            {
+                _getHeal.OnNext(healValue);
+                _health.Value += healValue;
+            }
+        }
+
+        private async UniTaskVoid SubAuotHealLoop()
+        {
+            while (_health.Value > 0)
+            {
+                await UniTask.Delay(TimeSpan.FromSeconds(1f));
+                GetHeal(MaxHealth * 0.05f);
+            }
+        }
+        private async UniTaskVoid HealPosition()
+        {
+            await UniTask.WaitUntil(() => _health.Value / MaxHealth <= 0.5f);
+            await UniTask.Delay(TimeSpan.FromSeconds(0.2f));
+            GetHeal(MaxHealth * 0.2f);
         }
 
         private async UniTaskVoid MainLoop()

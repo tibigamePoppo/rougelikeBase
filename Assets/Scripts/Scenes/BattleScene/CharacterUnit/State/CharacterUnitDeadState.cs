@@ -14,6 +14,7 @@ namespace Scenes.Battle.UnitCharacter.State
         public override void StateAction()
         {
             view.Animator.SetTrigger(_animIDDead);
+            view.HideHpGauge();
         }
     }
 }

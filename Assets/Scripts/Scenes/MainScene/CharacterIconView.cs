@@ -8,7 +8,7 @@ namespace Scenes.MainScene
 
         public void UpdateIconPosition(Transform transform)
         {
-            this.transform.parent = transform;
+            this.transform.SetParent(transform,false);
             this.transform.localPosition = _offSetPosition;
         }
     }

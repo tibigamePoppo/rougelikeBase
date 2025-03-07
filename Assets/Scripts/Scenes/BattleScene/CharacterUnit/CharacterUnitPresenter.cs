@@ -29,7 +29,10 @@ namespace Scenes.Battle.UnitCharacter
 
             _stateController.Init(_model,_view);
 
-            _model.OnChangeHealth.Subscribe(h => _view.UpdateHpGauge(h/_model.MaxHealth)).AddTo(this);
+            _model.OnChangeSheild.Subscribe(s => _view.UpdateSheildGauge(s / _model.MaxSheild)).AddTo(this);
+            _model.OnChangeHealth.Skip(1).Subscribe(h => _view.UpdateHpGauge(h / _model.MaxHealth)).AddTo(this);
+            _model.OnDamage.Skip(1).Subscribe(d => _view.DamagePopUp(d)).AddTo(this);
+            _model.OnHeal.Skip(1).Subscribe(h => _view.HealPopUp(h)).AddTo(this);
             _model.OnAttackTarget.Subscribe(v => _view.AttackEffect(v)).AddTo(this);
             return this;
         }

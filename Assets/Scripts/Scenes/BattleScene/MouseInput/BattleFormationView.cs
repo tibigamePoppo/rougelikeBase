@@ -62,7 +62,7 @@ public class BattleFormationView : MonoBehaviour
             }
 
             if (token.IsCancellationRequested) break;
-            if (_selectLineRenderer.positionCount < 1) continue;
+            if (_selectLineRenderer.positionCount < 5) continue;
 
             FixCircleLine();
             CreateMeshFromLineRenderer();

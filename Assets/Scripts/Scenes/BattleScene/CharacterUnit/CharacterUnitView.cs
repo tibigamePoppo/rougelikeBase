@@ -8,13 +8,17 @@ using UnityEngine.UI;
 using UnityEngine.AI;
 using UnityEngine.SceneManagement;
 using System.Linq;
+using TMPro;
 
 namespace Scenes.Battle.UnitCharacter
 {
     public class CharacterUnitView : MonoBehaviour
     {
         [SerializeField] private Image _hpGauge;
+        [SerializeField] private Image _shieldGauge;
         [SerializeField] private EffectEmitBase[] _attackEffect;
+        [SerializeField] private TextMeshProUGUI _damagePopup;
+        [SerializeField] private Transform _popupPosition;
         [SerializeField] private Transform _lookCamera;
 
         private Animator _animator;
@@ -52,7 +56,31 @@ namespace Scenes.Battle.UnitCharacter
 
         public void UpdateHpGauge(float fillValue)
         {
-            _hpGauge.fillAmount = fillValue;
+            if (fillValue >= 0)
+            {
+                _hpGauge.fillAmount = fillValue;
+            }
+        }
+
+        public void UpdateSheildGauge(float fillValue)
+        {
+            if (fillValue >= 0)
+            {
+                _shieldGauge.fillAmount = fillValue;
+            }
+        }
+
+        public void DamagePopUp(float value)
+        {
+            var popupText = Instantiate(_damagePopup, _popupPosition);
+            popupText.text = value.ToString();
+            popupText.color = Color.red;
+        }
+        public void HealPopUp(float value)
+        {
+            var popupText = Instantiate(_damagePopup, _popupPosition);
+            popupText.text = value.ToString();
+            popupText.color = new Color(0.72f, 0.82f, 0);
         }
 
         public void AttackEffect(AttackArg arg)
@@ -63,6 +91,11 @@ namespace Scenes.Battle.UnitCharacter
         private void OnAttackEffect(AnimationEvent animationEvent)
         {
             //_attackEffect.Emit(Vector3.zero);
+        }
+
+        public void HideHpGauge()
+        {
+            _lookCamera.gameObject.SetActive(false);
         }
 
         Camera GetCameraInScene(Scene scene)
