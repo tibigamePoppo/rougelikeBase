@@ -48,3 +48,4 @@ MonoBehaviour:
   relicItemName: "\u9A0E\u4E57"
   sprite: {fileID: 21300000, guid: f77e3917c36ef494d8203eca3d4fbf58, type: 3}
   effectText: "\u6B69\u5175\u3092\u9A0E\u5175\u306B\u30A2\u30C3\u30D7\u30B0\u30EC\u30FC\u30C9\u3059\u308B"
+  shopCost: 150
