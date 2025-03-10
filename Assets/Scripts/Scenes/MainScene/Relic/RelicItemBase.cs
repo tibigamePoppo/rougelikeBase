@@ -8,6 +8,7 @@ namespace Scenes.MainScene.Relic
         public string relicItemName;
         public Sprite sprite;
         public string effectText;
+        public int shopCost;
         public virtual void Init() { }
     }
 }
