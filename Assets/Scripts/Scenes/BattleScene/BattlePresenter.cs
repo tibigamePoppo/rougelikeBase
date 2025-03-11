@@ -14,10 +14,10 @@ namespace Scenes.Battle
 
         public IObservable<bool> IsPlayerWinBattle => _isPlayerWinBattle;
 
-        public void Init(EnemyLevel enemyLevel,List<UnitData> playerCards)
+        public void Init(EnemyLevel enemyLevel,List<UnitData> playerCards,EnemyData[] preliminaryEnemyData = null)
         {
             _view = GetComponent<BattleView>();
-            _view.Init(enemyLevel, playerCards);
+            _view.Init(enemyLevel, playerCards, preliminaryEnemyData);
             _view.IsPlayerWinBattle.Subscribe(isWin => _isPlayerWinBattle.OnNext(isWin)).AddTo(this);
         }
     }

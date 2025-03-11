@@ -38,26 +38,33 @@ namespace Scenes.Battle
         private int[] _enemySpawnPaturnValue = new int[] { 1, 2 };
         private float[] _enemySpawnPaturnWeight = new float[] { 4f, 1f };
 
-        public void Init(EnemyLevel enemyLevel, List<UnitData> playerCards)
+        public void Init(EnemyLevel enemyLevel, List<UnitData> playerCards, EnemyData[] preliminaryEnemyData = null)
         {
             _rewardView.Init();
             _rewardView.gameObject.SetActive(false);
 
-            EnemyDataPool dataPool =  Resources.Load<EnemyDataPool>("Value/EnemyPool");
             UnitData[] enemyData = new UnitData[0];
-            switch (enemyLevel)
+            if (preliminaryEnemyData == null)
             {
-                case EnemyLevel.Normal:
-                    enemyData = dataPool.normalPool[UnityEngine.Random.Range(0, dataPool.normalPool.Count)]._unitData;
-                    break;
-                case EnemyLevel.Elite:
-                    enemyData = dataPool.elitePool[UnityEngine.Random.Range(0, dataPool.elitePool.Count)]._unitData;
-                    break;
-                case EnemyLevel.Boss:
-                    enemyData = dataPool.bossPool[UnityEngine.Random.Range(0, dataPool.bossPool.Count)]._unitData;
-                    break;
-                default:
-                    break;
+                EnemyDataPool dataPool = Resources.Load<EnemyDataPool>("Value/EnemyPool");
+                switch (enemyLevel)
+                {
+                    case EnemyLevel.Normal:
+                        enemyData = dataPool.normalPool[UnityEngine.Random.Range(0, dataPool.normalPool.Count)]._unitData;
+                        break;
+                    case EnemyLevel.Elite:
+                        enemyData = dataPool.elitePool[UnityEngine.Random.Range(0, dataPool.elitePool.Count)]._unitData;
+                        break;
+                    case EnemyLevel.Boss:
+                        enemyData = dataPool.bossPool[UnityEngine.Random.Range(0, dataPool.bossPool.Count)]._unitData;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            else
+            {
+                enemyData = preliminaryEnemyData[UnityEngine.Random.Range(0, preliminaryEnemyData.Length)]._unitData;
             }
 
             var playerPresenter = PlayerUnitSpawn(playerCards);

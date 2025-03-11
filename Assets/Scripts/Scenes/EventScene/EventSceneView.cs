@@ -17,6 +17,7 @@ namespace Scenes.EventScene
         [SerializeField] private Image _eventImage;
         [SerializeField] private Transform _buttonPanel;
         private Subject<EventEffectArg> _emitEvent = new Subject<EventEffectArg>();
+        private EnemyData[] _preliminaryEnemyData;
         public IObservable<EventEffectArg> OnEmitEvent => _emitEvent;
         private EnemyLevel _enemyLevel;
 
@@ -33,15 +34,20 @@ namespace Scenes.EventScene
             }
         }
 
-        public void ChangeScene(SceneName sceneName)
+        public void ChangeScene(EventEffectArg effectArg)
         {
 
-            if (sceneName == SceneName.BattleScene)
+            if (effectArg.changeScene == SceneName.BattleScene)
             {
-                _enemyLevel = EnemyLevel.Normal;
+                if (effectArg.enemys != null) _preliminaryEnemyData = effectArg.enemys;
+                else
+                {
+                    _preliminaryEnemyData = null;
+                    _enemyLevel = EnemyLevel.Normal;
+                }
                 SceneManager.sceneLoaded += OnSceneLoaded;
             }
-            SceneManager.LoadScene(sceneName.ToString(), LoadSceneMode.Additive);
+            SceneManager.LoadScene(effectArg.changeScene.ToString(), LoadSceneMode.Additive);
         }
 
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -51,7 +57,7 @@ namespace Scenes.EventScene
                 BattlePresenter battlePresenter = FindFirstObjectByType<BattlePresenter>();
                 if (battlePresenter != null)
                 {
-                    battlePresenter.Init(_enemyLevel, PlayerSingleton.Instance.CurrentDeck);
+                    battlePresenter.Init(_enemyLevel, PlayerSingleton.Instance.CurrentDeck, _preliminaryEnemyData);
                 }
                 else
                 {

@@ -9,9 +9,9 @@ namespace Scenes.EventScene
     public class EventSceneModel
     {
         private EventData _sceneEvent;
-        private Subject<SceneName> _changeScene = new Subject<SceneName>();
+        private Subject<EventEffectArg> _changeScene = new Subject<EventEffectArg>();
         public EventData SceneEvent { get { return _sceneEvent; } }
-        public IObservable<SceneName> ChangeScene => _changeScene;
+        public IObservable<EventEffectArg> ChangeScene => _changeScene;
 
         public void Init()
         {
@@ -41,7 +41,7 @@ namespace Scenes.EventScene
 
             if (arg.changeScene != SceneName.None)
             {
-                _changeScene.OnNext(arg.changeScene);
+                _changeScene.OnNext(arg);
             }
             foreach (var unit in arg.units)
             {

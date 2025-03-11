@@ -21,10 +21,13 @@ MonoBehaviour:
     playerMoneyChange: -30
     changeScene: 0
     units: []
+    enemys: []
     relic: {fileID: 0}
   - text: "\u62B5\u6297\u3059\u308B"
     playerPopularityChange: 0
     playerMoneyChange: 0
     changeScene: 1
     units: []
+    enemys:
+    - {fileID: 11400000, guid: 907f23ba45cbc47739ef9d575d4921d3, type: 2}
     relic: {fileID: 0}
