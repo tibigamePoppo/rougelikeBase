@@ -18,7 +18,7 @@ public class ProjectileEffect : EffectEmitBase
         muzzle = Instantiate(_muzzleParticle, transform.position, Quaternion.identity, transform);
         Destroy(muzzle, 1.5f);
         float hight = Vector3.Distance(transform.position, vector3);
-        projectile.transform.DOJump(vector3, hight * _hightRatio / 3, 1, 0.2f).OnComplete(Impact);
+        projectile.transform.DOJump(vector3, hight * _hightRatio / 5, 1, 0.2f).OnComplete(Impact);
     }
 
     private void Impact()

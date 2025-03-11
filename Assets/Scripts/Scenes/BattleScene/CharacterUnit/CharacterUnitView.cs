@@ -70,11 +70,11 @@ namespace Scenes.Battle.UnitCharacter
             }
         }
 
-        public void DamagePopUp(float value)
+        public void DamagePopUp(DamageArg value)
         {
             var popupText = Instantiate(_damagePopup, _popupPosition);
-            popupText.text = value.ToString();
-            popupText.color = Color.red;
+            popupText.text = value.damage.ToString();
+            popupText.color = value.color;
         }
         public void HealPopUp(float value)
         {

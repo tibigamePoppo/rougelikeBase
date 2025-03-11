@@ -6,7 +6,7 @@ namespace Scenes.Battle.UnitCharacter
     {
         float CurrentHealth { get; }
         float MaxHealth { get; } 
-        void TakeDamage(float damage);
+        void TakeDamage(float damage,Color color);
         void GetHeal(float value);
         Vector3 TargetPosition { get; }
     }

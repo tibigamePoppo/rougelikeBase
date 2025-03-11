@@ -31,7 +31,7 @@ namespace Scenes.Battle.UnitCharacter
 
         private ReactiveProperty<float> _health = new ReactiveProperty<float>();
         private ReactiveProperty<float> _shield = new ReactiveProperty<float>();
-        private Subject<float> _getDamage = new Subject<float>();
+        private Subject<DamageArg> _getDamage = new Subject<DamageArg>();
         private Subject<float> _getHeal = new Subject<float>();
         private ReactiveProperty<CharacterUnitStateType> _stateType = new ReactiveProperty<CharacterUnitStateType>(CharacterUnitStateType.Idle);
         private Subject<AttackArg> _attackTarget = new Subject<AttackArg>();
@@ -40,11 +40,13 @@ namespace Scenes.Battle.UnitCharacter
         private CharacterUnitModel[] _enemyGroup;
         private CharacterUnitModel _targetUnit;
         private const float ATTACKSPEED = 2f;
+        private Color pinkColor = new Color(0.96f,0.65f,0.65f);
+        private Color blueColor = new Color(0, 0.55f, 0.95f);
 
         public UnitWeaponType WeaponType { get { return _type; } }
         public IObservable<float> OnChangeHealth => _health;
         public IObservable<float> OnChangeSheild => _shield;
-        public IObservable<float> OnDamage => _getDamage;
+        public IObservable<DamageArg> OnDamage => _getDamage;
         public IObservable<float> OnHeal => _getHeal;
         public IObservable<CharacterUnitStateType> OnChangeStateType => _stateType;
 
@@ -107,11 +109,11 @@ namespace Scenes.Battle.UnitCharacter
             _enemyGroup = enemyGroup;
         }
 
-        public async UniTaskVoid Attack(IDamagable target,int effect = 0)
+        public async UniTaskVoid Attack(IDamagable target, Color color, int effect = 0)
         {
             await UniTask.Delay(TimeSpan.FromSeconds(AttackSpeed() * 0.2f));
 
-            target.TakeDamage(_attackPower);
+            target.TakeDamage(_attackPower, color);
             if (HasRelicItem(6))
             {
                 GetHeal(_attackPower * 0.1f);
@@ -127,7 +129,7 @@ namespace Scenes.Battle.UnitCharacter
                     await UniTask.Delay(TimeSpan.FromTicks(1));
                     ChangeState(CharacterUnitStateType.Attak);
                     await UniTask.Delay(TimeSpan.FromSeconds(AttackSpeed() * 0.2f));
-                    target.TakeDamage(_attackPower);
+                    target.TakeDamage(_attackPower, pinkColor);
                     if (HasRelicItem(6))
                     {
                         GetHeal(_attackPower * 0.1f);
@@ -137,7 +139,7 @@ namespace Scenes.Battle.UnitCharacter
             }
         }
 
-        public void TakeDamage(float damage)
+        public void TakeDamage(float damage,Color color)
         {
             if (_shield.Value > 0)
             {
@@ -147,7 +149,7 @@ namespace Scenes.Battle.UnitCharacter
             {
                 _health.Value = _health.Value - damage <= 0 ? 0 : _health.Value - damage;
             }
-            _getDamage.OnNext(damage);
+            _getDamage.OnNext(new DamageArg(damage, color));
             if (_health.Value <= 0)
             {
                 _agent.isStopped = true;
@@ -201,12 +203,12 @@ namespace Scenes.Battle.UnitCharacter
                 {
                     ChangeState(CharacterUnitStateType.Attak);
                     _agent.isStopped = true;
-                    Attack(taregt[0]).Forget();
+                    Attack(taregt[0],Color.red).Forget();
                     if(_type == UnitWeaponType.Range)
                     {
                         if(HasRelicItem(2) && attackableTarget.Length > 1)
                         {
-                            Attack(taregt[1],2).Forget();
+                            Attack(taregt[1], blueColor, 2).Forget();
                         }
                     }
                     await UniTask.Delay(TimeSpan.FromSeconds(AttackSpeed()));
@@ -295,6 +297,16 @@ namespace Scenes.Battle.UnitCharacter
             this.target = target;
             this.effectNum = effectNum;
         }
+    }
 
+    public class DamageArg
+    {
+        public float damage;
+        public Color color;
+        public DamageArg(float damage,Color color)
+        {
+            this.damage = damage;
+            this.color = color;
+        }
     }
 }

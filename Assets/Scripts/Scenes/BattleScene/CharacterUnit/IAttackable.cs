@@ -1,10 +1,11 @@
 using Cysharp.Threading.Tasks;
+using UnityEngine;
 
 namespace Scenes.Battle.UnitCharacter
 {
     public interface  IAttacker
     {
         float AttackPower { get; }
-        UniTaskVoid Attack(IDamagable target,int effect = 0);
+        UniTaskVoid Attack(IDamagable target,Color color,int effect = 0);
     }
 }
