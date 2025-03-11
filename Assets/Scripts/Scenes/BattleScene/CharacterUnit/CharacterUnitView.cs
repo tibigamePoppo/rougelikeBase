@@ -9,6 +9,7 @@ using UnityEngine.AI;
 using UnityEngine.SceneManagement;
 using System.Linq;
 using TMPro;
+using Random = UnityEngine.Random;
 
 namespace Scenes.Battle.UnitCharacter
 {
@@ -20,6 +21,7 @@ namespace Scenes.Battle.UnitCharacter
         [SerializeField] private TextMeshProUGUI _damagePopup;
         [SerializeField] private Transform _popupPosition;
         [SerializeField] private Transform _lookCamera;
+        private Vector3 _randomPupupOffset = new Vector3(0.5f, 0.5f, 0);
 
         private Animator _animator;
         public Animator Animator { get { return _animator; } }
@@ -72,7 +74,8 @@ namespace Scenes.Battle.UnitCharacter
 
         public void DamagePopUp(DamageArg value)
         {
-            var popupText = Instantiate(_damagePopup, _popupPosition);
+            Vector3 noise = new Vector3(Random.Range(-_randomPupupOffset.x, _randomPupupOffset.x),Random.Range(-_randomPupupOffset.y, _randomPupupOffset.y), Random.Range(-_randomPupupOffset.z, _randomPupupOffset.z));
+            var popupText = Instantiate(_damagePopup, _popupPosition.transform.position + noise, _popupPosition.rotation, _popupPosition);
             popupText.text = value.damage.ToString();
             popupText.color = value.color;
         }
@@ -80,7 +83,7 @@ namespace Scenes.Battle.UnitCharacter
         {
             var popupText = Instantiate(_damagePopup, _popupPosition);
             popupText.text = value.ToString();
-            popupText.color = new Color(0.72f, 0.82f, 0);
+            popupText.color = new Color(0.4352f, 0.9255f, 0.4667f);
         }
 
         public void AttackEffect(AttackArg arg)

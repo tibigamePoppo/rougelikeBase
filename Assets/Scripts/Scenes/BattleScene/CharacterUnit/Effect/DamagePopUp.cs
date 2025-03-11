@@ -5,12 +5,12 @@ public class DamagePopUp : MonoBehaviour
 {
     void Start()
     {
-        Vector3 randomNoise = new Vector3(Random.Range(-1,1), 0,0) * 10;
-        transform.DOLocalJump(randomNoise,-40,1,0.4f).SetEase(Ease.InOutSine).OnComplete(Destroy);
+        //transform.DOLocalJump(transform.position,-40,1,0.4f).SetEase(Ease.InOutSine).OnComplete(Destroy);
+        transform.DOLocalMoveY(-50, 0.25f).SetDelay(0.15f).SetEase(Ease.OutSine).OnComplete(Destroy);
     }
 
     public void Destroy()
     {
-        Destroy(this.gameObject);
+        Destroy(this.gameObject,0.1f);
     }
 }

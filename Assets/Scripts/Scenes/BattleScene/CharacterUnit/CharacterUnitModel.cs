@@ -40,8 +40,9 @@ namespace Scenes.Battle.UnitCharacter
         private CharacterUnitModel[] _enemyGroup;
         private CharacterUnitModel _targetUnit;
         private const float ATTACKSPEED = 2f;
-        private Color pinkColor = new Color(0.96f,0.65f,0.65f);
-        private Color blueColor = new Color(0, 0.55f, 0.95f);
+        private Color orangeColor = new Color(1, 0.8706f, 0.2392f);
+        private Color pinkColor = new Color(0.8745f,0.3216f,0.5255f);
+        private Color blueColor = new Color(0.2392f, 0.4078f, 1f);
 
         public UnitWeaponType WeaponType { get { return _type; } }
         public IObservable<float> OnChangeHealth => _health;
@@ -203,7 +204,7 @@ namespace Scenes.Battle.UnitCharacter
                 {
                     ChangeState(CharacterUnitStateType.Attak);
                     _agent.isStopped = true;
-                    Attack(taregt[0],Color.red).Forget();
+                    Attack(taregt[0], orangeColor).Forget();
                     if(_type == UnitWeaponType.Range)
                     {
                         if(HasRelicItem(2) && attackableTarget.Length > 1)
