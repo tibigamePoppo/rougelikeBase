@@ -114,14 +114,13 @@ public class BattleFormationView : MonoBehaviour
         }
         _arrowInstanceList.Clear();
     }
-     
+
     private void FixCircleLine()
     {
-        if (Vector3.Distance(_selectLineRenderer.GetPosition(0), _selectLineRenderer.GetPosition(_selectLineRenderer.positionCount - 1)) < 1.5f)
-        {
-            _selectLineRenderer.positionCount += 1;
-            _selectLineRenderer.SetPosition(_selectLineRenderer.positionCount - 1, _selectLineRenderer.GetPosition(0));
-        }
+        _selectLineRenderer.positionCount += 1;
+        _selectLineRenderer.SetPosition(_selectLineRenderer.positionCount - 1, _selectLineRenderer.GetPosition(0));
+        _selectLineRenderer.positionCount += 1;
+        _selectLineRenderer.SetPosition(_selectLineRenderer.positionCount - 1, _selectLineRenderer.GetPosition(0));
     }
 
     private void AddEdgeLine(LineRenderer renderer)
@@ -165,7 +164,6 @@ public class BattleFormationView : MonoBehaviour
     {
         Vector3[] points = new Vector3[_selectLineRenderer.positionCount];
         _selectLineRenderer.GetPositions(points);
-
         mesh = new Mesh();
         Vector3[] vertices = new Vector3[points.Length + 1];
         int[] triangles = new int[(points.Length - 1) * 3];
