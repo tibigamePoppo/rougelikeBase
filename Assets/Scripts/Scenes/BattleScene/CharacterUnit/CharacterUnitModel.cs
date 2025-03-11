@@ -22,9 +22,11 @@ namespace Scenes.Battle.UnitCharacter
         private UnitWeaponType _type;
         private UnitGroup _unitGroup;
 
+        private const float REACTIONDISTANCE = 3f;
         private Transform _originTransfrom;
-        private bool isHoldPosition = false;
+        private bool isHoldPosition = true;
         private bool isHoldFormationPosition = false;
+        private Vector3 _holdPosition;
         private CancellationTokenSource formationMoveSorce ;
 
         private ReactiveProperty<float> _health = new ReactiveProperty<float>();
@@ -84,12 +86,18 @@ namespace Scenes.Battle.UnitCharacter
 
         public void BattleLoopStart()
         {
+            _holdPosition = Transform.position;
             MainLoop().Forget();
             if(HasRelicItem(7))
             {
                 SubAuotHealLoop().Forget();
             }
             if(HasRelicItem(5)) HealPosition().Forget();
+        }
+
+        public void Charge()
+        {
+            isHoldPosition = false;
         }
 
 
@@ -204,8 +212,9 @@ namespace Scenes.Battle.UnitCharacter
                     await UniTask.Delay(TimeSpan.FromSeconds(AttackSpeed()));
                     ChangeState(CharacterUnitStateType.Idle);
                 }
-                else if (isHoldPosition) // Idle
+                else if (isHoldPosition && !ReactionInEnemy() && IsHoldPosition()) // Idle
                 {
+                    if (_holdPosition != Transform.position) _holdPosition = Transform.position;
                     _agent.isStopped = true;
                     ChangeState(CharacterUnitStateType.Idle);
                 }
@@ -213,7 +222,11 @@ namespace Scenes.Battle.UnitCharacter
                 {
                     _agent.isStopped = false;
                     ChangeState(CharacterUnitStateType.Move);
-                    if (!isHoldFormationPosition) MoveAtTarget();
+                    if (!isHoldFormationPosition)
+                    {
+                        if (ReactionInEnemy() || !isHoldPosition) MoveAtTarget();
+                        else MoveAtHoldPosition();
+                    }
                 }
 
                 await UniTask.Delay(TimeSpan.FromSeconds(0.1f));
@@ -233,6 +246,11 @@ namespace Scenes.Battle.UnitCharacter
         private void MoveAtTarget()
         {
             _agent.SetDestination(_targetUnit.Transform.position);
+        }
+
+        private void MoveAtHoldPosition()
+        {
+            _agent.SetDestination(_holdPosition); 
         }
 
         public async UniTaskVoid SetFormationPoint(Vector3 vector)
@@ -257,6 +275,15 @@ namespace Scenes.Battle.UnitCharacter
             return PlayerSingleton.Instance.CurrentRelic.Select(c => c.relicItemId).Contains(id);
         }
 
+        private bool ReactionInEnemy()
+        {
+            return Vector3.Distance(_targetUnit.Transform.position, Transform.position) <= REACTIONDISTANCE;
+        }
+
+        private bool IsHoldPosition()
+        {
+            return Vector3.Distance(_holdPosition, Transform.position) <= 0.2f;
+        }
     }
 
     public class AttackArg

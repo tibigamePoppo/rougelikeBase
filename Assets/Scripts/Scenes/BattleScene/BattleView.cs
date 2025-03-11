@@ -29,6 +29,7 @@ namespace Scenes.Battle
         [SerializeField] private RewardView _rewardView;
         [SerializeField] private BattleFormationPresenter _battleFormationPresenter;
         [SerializeField] private BatleInitalFormationView _battleInitialFormationView;
+        [SerializeField] private OnBattleFormationView _onBattleFormationView;
         [SerializeField] private Button _battlReadyButton;
         private Subject<bool> _isPlayerWinBattle = new Subject<bool>();
         private FormationType _formationType = FormationType.None;
@@ -73,6 +74,7 @@ namespace Scenes.Battle
             var enemyModel = enemyPresenter.Select(p => p.CharacterUnitModel).ToArray();
 
             _battleInitialFormationView.Init(playerModel);
+            _onBattleFormationView.Init();
             _battleFormationPresenter.Init(playerModel);
 
             foreach (var pp in playerPresenter)
@@ -82,6 +84,10 @@ namespace Scenes.Battle
             foreach (var ep in enemyPresenter)
             {
                 ep.SetGroup(enemyModel, playerModel);
+            }
+            foreach (var model in enemyModel)
+            {
+                model.Charge();
             }
 
             this.UpdateAsObservable()
@@ -99,6 +105,14 @@ namespace Scenes.Battle
                 .Subscribe(_ => BattleEnd(true))
                 .AddTo(this);
 
+            _onBattleFormationView.OnCharge.Subscribe(_ =>
+            {
+                foreach (var model in playerModel)
+                {
+                    model.Charge();
+                }
+            }).AddTo(this);
+
             InitalFormation(playerPresenter.Concat(enemyPresenter).ToList()).Forget();
         }
 
@@ -112,6 +126,7 @@ namespace Scenes.Battle
                     item.BattleStart();
                 }
                 _battleFormationPresenter.isStarted = true;
+                _onBattleFormationView.Active();
                 _battleInitialFormationView.gameObject.SetActive(false);
             });
         }
