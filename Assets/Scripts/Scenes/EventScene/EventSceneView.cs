@@ -29,7 +29,7 @@ namespace Scenes.EventScene
             {
                 var button = Instantiate(_button, _buttonPanel);
                 button.Init(eventUnit);
-                button.Interactable(-eventUnit.playerMoneyChange < PlayerSingleton.Instance.CurrentMoney);
+                button.Interactable(-eventUnit.playerMoneyChange <= PlayerSingleton.Instance.CurrentMoney);
                 button.OnClick.Subscribe(_ => _emitEvent.OnNext(eventUnit)).AddTo(this);
             }
         }

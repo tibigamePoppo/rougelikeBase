@@ -38,12 +38,12 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 12
+  serializedVersion: 13
+  m_BakeOnSceneLoad: 0
   m_GISettings:
     serializedVersion: 2
     m_BounceScale: 1
@@ -414,7 +414,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 0.2901961, a: 0.16862746}
+  m_Color: {r: 1, g: 1, b: 0.2901961, a: 0}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -559,7 +559,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _backMainSceneButton: {fileID: 738983768}
-  _shopItemView: {fileID: 5608683305078765772, guid: e00960cebaffc409e8727fff088a6ab8, type: 3}
+  _shopUnitItemView: {fileID: 5608683305078765772, guid: e00960cebaffc409e8727fff088a6ab8, type: 3}
   _shopRelicItemView: {fileID: 2233804158688435968, guid: 2ef92095a5e0c42c3b3d4b715734be85, type: 3}
   _itemPanel: {fileID: 414954071}
   _relicItemPanel: {fileID: 743822861}

@@ -1,34 +1,51 @@
+using System;
+using TMPro;
+using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
-using Scenes.MainScene.Cards;
-using Scenes.MainScene.Player;
-using UniRx;
-using UniRx.Triggers;
 
-public class ShopItemView : MonoBehaviour
+public abstract class ShopItemView : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI _costText;
-    [SerializeField] private CardView _cardView;
     [SerializeField] private Image _soldImage;
+    [SerializeField] private TextMeshProUGUI _costText;
+    protected int _shopCost;
     private bool _isBought = false;
+    private Subject<Unit> _boughtEvent = new Subject<Unit>();
+    public IObservable<Unit> OnBoughtEvent => _boughtEvent;
 
-    public void Init(UnitData unit)
+    protected void BaseInit()
     {
         _soldImage.gameObject.SetActive(false);
-        _costText.text = $"{unit.shopCost} G";
-        _cardView.Init(unit.status);
-
+        _costText.text = $"{_shopCost} G";
         Button button = GetComponent<Button>();
-        button.OnClickAsObservable().Subscribe(_ =>
+        if (PlayerSingleton.Instance.CurrentMoney >= _shopCost)
         {
-            if(PlayerSingleton.Instance.CurrentMoney >= unit.shopCost && !_isBought)
+            button.OnClickAsObservable().Where(_ => !_isBought && PlayerSingleton.Instance.CurrentMoney >= _shopCost).Subscribe(_ =>
             {
-                PlayerSingleton.Instance.AddCard(unit);
-                PlayerSingleton.Instance.ChangeMoney(-unit.shopCost);
-                _isBought = true;
-                _soldImage.gameObject.SetActive(true);
-            }
-        }).AddTo(this);
+                Bought();
+            }).AddTo(this);
+        }
+        else
+        {
+            UpdateText();
+        }
+    }
+
+    public virtual void Bought()
+    {
+        _isBought = true;
+        _soldImage.gameObject.SetActive(true);
+        PlayerSingleton.Instance.ChangeMoney(-_shopCost);
+        _boughtEvent.OnNext(default);
+    }
+
+    public void UpdateText()
+    {
+        if (PlayerSingleton.Instance.CurrentMoney < _shopCost)
+        {
+            _costText.color = Color.red;
+            Button button = GetComponent<Button>();
+            button.interactable = false;
+        }
     }
 }
