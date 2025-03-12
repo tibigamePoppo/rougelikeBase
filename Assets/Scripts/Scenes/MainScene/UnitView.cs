@@ -50,22 +50,27 @@ namespace Scenes.MainScene
             Intaractable(false);
             _image.color = Color.gray;
             _iconView.UpdateIconPosition(transform);
+            if (_unit.unitType != UnitType.Start) FadeSceneSingleton.Instance.FadeInEffet(() => SceneLoad());
+            else _clickEvent.OnNext(eventUnit);
+            
+        }
+
+        private void SceneLoad()
+        {
+            SceneManager.sceneLoaded += OnSceneLoaded;
             switch (_unit.unitType)
             {
                 case UnitType.Battle:
                     SceneManager.LoadScene("BattleScene", LoadSceneMode.Additive);
                     _enemyLevel = EnemyLevel.Normal;
-                    SceneManager.sceneLoaded += OnSceneLoaded;
                     break;
                 case UnitType.Boss:
                     SceneManager.LoadScene("BattleScene", LoadSceneMode.Additive);
                     _enemyLevel = EnemyLevel.Boss;
-                    SceneManager.sceneLoaded += OnSceneLoaded;
                     break;
                 case UnitType.Elite:
                     SceneManager.LoadScene("BattleScene", LoadSceneMode.Additive);
                     _enemyLevel = EnemyLevel.Elite;
-                    SceneManager.sceneLoaded += OnSceneLoaded;
                     break;
                 case UnitType.Shop:
                     SceneManager.LoadScene("ShopScene", LoadSceneMode.Additive);
@@ -73,13 +78,13 @@ namespace Scenes.MainScene
                 case UnitType.Event:
                     SceneManager.LoadScene("EventScene", LoadSceneMode.Additive);
                     break;
-
             }
             _clickEvent.OnNext(eventUnit);
         }
 
         void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
+            FadeSceneSingleton.Instance.FadeOutEffet();
             if (scene.name == "BattleScene")
             {
                 BattlePresenter battlePresenter = FindFirstObjectByType<BattlePresenter>();
@@ -95,8 +100,8 @@ namespace Scenes.MainScene
                 {
                     battlePresenter.IsPlayerWinBattle.Subscribe(isWin => _isPlayerWinBattle.OnNext(isWin)).AddTo(this);
                 }
-                SceneManager.sceneLoaded -= OnSceneLoaded;
             }
+            SceneManager.sceneLoaded -= OnSceneLoaded;
         }
     }
 }

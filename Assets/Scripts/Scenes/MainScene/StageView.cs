@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UniRx;
 using UnityEngine;
 using System.Linq;
+using UnityEngine.SceneManagement;
 
 namespace Scenes.MainScene
 {
@@ -26,6 +27,7 @@ namespace Scenes.MainScene
             _stageDefeatText.SetActive(false);
             InstanceUnits(unitInfo);
             LinqUnitLine();
+            SceneManager.LoadScene("FadeSceneEffect", LoadSceneMode.Additive);
         }
 
         private void InstanceUnits(List<EventUnit>[] unitInfo)

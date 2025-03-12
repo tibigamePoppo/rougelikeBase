@@ -26,5 +26,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/TutorialMainScene.unity
     guid: 6a362211ca7c643d1a981512738dfd83
+  - enabled: 1
+    path: Assets/Scenes/UnitScene/FadeSceneEffect.unity
+    guid: 0b778dc9f93794b72a805ac4b30471c9
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0
