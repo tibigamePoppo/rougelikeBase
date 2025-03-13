@@ -14,15 +14,17 @@ namespace Scenes.EventScene
         [SerializeField] private TextMeshProUGUI _text;
         [SerializeField] private Image _eventImage;
         [SerializeField] private Transform _buttonPanel;
+        private int _depth;
         private Subject<EventEffectArg> _emitEvent = new Subject<EventEffectArg>();
         private EnemyData[] _preliminaryEnemyData;
         public IObservable<EventEffectArg> OnEmitEvent => _emitEvent;
         private EnemyLevel _enemyLevel;
 
-        public void Init(EventData eventData)
+        public void Init(EventData eventData,int depth)
         {
             _text.text = eventData.text;
             _eventImage.sprite = eventData.sprite;
+            _depth = depth;
             foreach (var eventUnit in eventData.eventEffectArgs)
             {
                 var button = Instantiate(_button, _buttonPanel);
@@ -55,7 +57,7 @@ namespace Scenes.EventScene
                 BattlePresenter battlePresenter = FindFirstObjectByType<BattlePresenter>();
                 if (battlePresenter != null)
                 {
-                    battlePresenter.Init(_enemyLevel, PlayerSingleton.Instance.CurrentDeck, _preliminaryEnemyData);
+                    battlePresenter.Init(_enemyLevel, PlayerSingleton.Instance.CurrentDeck, _depth, _preliminaryEnemyData);
                 }
                 else
                 {

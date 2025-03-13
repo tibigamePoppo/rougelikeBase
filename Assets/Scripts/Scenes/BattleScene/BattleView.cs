@@ -39,7 +39,7 @@ namespace Scenes.Battle
         private int[] _enemySpawnPaturnValue = new int[] { 1, 2 };
         private float[] _enemySpawnPaturnWeight = new float[] { 4f, 1f };
 
-        public void Init(EnemyLevel enemyLevel, List<UnitData> playerCards, EnemyData[] preliminaryEnemyData = null)
+        public void Init(EnemyLevel enemyLevel, List<UnitData> playerCards,int stageDepth, EnemyData[] preliminaryEnemyData = null)
         {
             _rewardView.Init();
             _rewardView.gameObject.SetActive(false);
@@ -51,13 +51,16 @@ namespace Scenes.Battle
                 switch (enemyLevel)
                 {
                     case EnemyLevel.Normal:
-                        enemyData = dataPool.normalPool[UnityEngine.Random.Range(0, dataPool.normalPool.Count)]._unitData;
+                        var depthFilterNormal = dataPool.normalPool.Where(pool => pool.minStageDepth <= stageDepth && pool.maxStageDepth >= stageDepth).Select(pool => pool._unitData).ToArray();
+                        enemyData = depthFilterNormal[UnityEngine.Random.Range(0, depthFilterNormal.Length)];
                         break;
                     case EnemyLevel.Elite:
-                        enemyData = dataPool.elitePool[UnityEngine.Random.Range(0, dataPool.elitePool.Count)]._unitData;
+                        var depthFilterElite = dataPool.elitePool.Where(pool => pool.minStageDepth <= stageDepth && pool.maxStageDepth >= stageDepth).Select(pool => pool._unitData).ToArray();
+                        enemyData = depthFilterElite[UnityEngine.Random.Range(0, depthFilterElite.Length)];
                         break;
                     case EnemyLevel.Boss:
-                        enemyData = dataPool.bossPool[UnityEngine.Random.Range(0, dataPool.bossPool.Count)]._unitData;
+                        var depthFilterBoss = dataPool.bossPool.Where(pool => pool.minStageDepth <= stageDepth && pool.maxStageDepth >= stageDepth).Select(pool => pool._unitData).ToArray();
+                        enemyData = depthFilterBoss[UnityEngine.Random.Range(0, depthFilterBoss.Length)];
                         break;
                     default:
                         break;

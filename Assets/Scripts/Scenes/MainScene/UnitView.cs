@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 using System;
 using System.Linq;
 using Scenes.Battle;
+using Scenes.EventScene;
 
 namespace Scenes.MainScene
 {
@@ -90,7 +91,7 @@ namespace Scenes.MainScene
                 BattlePresenter battlePresenter = FindFirstObjectByType<BattlePresenter>();
                 if (battlePresenter != null)
                 {
-                    battlePresenter.Init(_enemyLevel,PlayerSingleton.Instance.CurrentDeck);
+                    battlePresenter.Init(_enemyLevel,PlayerSingleton.Instance.CurrentDeck, _unit.depth);
                 }
                 else
                 {
@@ -100,6 +101,11 @@ namespace Scenes.MainScene
                 {
                     battlePresenter.IsPlayerWinBattle.Subscribe(isWin => _isPlayerWinBattle.OnNext(isWin)).AddTo(this);
                 }
+            }
+            else if(scene.name == "EventScene")
+            {
+                EventScenePtesenter eventPresenter = FindFirstObjectByType<EventScenePtesenter>();
+                eventPresenter.Init(_unit.depth);
             }
             SceneManager.sceneLoaded -= OnSceneLoaded;
         }
