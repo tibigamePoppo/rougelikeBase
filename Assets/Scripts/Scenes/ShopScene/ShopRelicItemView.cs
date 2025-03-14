@@ -11,6 +11,7 @@ public class ShopRelicItemView : ShopItemView
         _relic = relic;
         _shopCost = relic.shopCost;
         _relicView.Init(relic);
+        _copyObject = _relicView.icon.gameObject;
         BaseInit();
     }
     public override void Bought()

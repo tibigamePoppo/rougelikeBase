@@ -12,6 +12,7 @@ public class ShopUnitItemView : ShopItemView
         _unit = unit;
         _shopCost = _unit.shopCost;
         _cardView.Init(_unit.status);
+        _copyObject = _cardView.gameObject;
         BaseInit();
     }
 

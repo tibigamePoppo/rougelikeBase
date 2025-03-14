@@ -10,6 +10,7 @@ namespace Scenes.MainScene.Relic
         [SerializeField] private Image _icon;
         [SerializeField] private TextMeshProUGUI _name;
         [SerializeField] private TextMeshProUGUI _text;
+        public GameObject icon { get { return _icon.gameObject; } }
 
         public void Init(RelicItemBase relic)
         {

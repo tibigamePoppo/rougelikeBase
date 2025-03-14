@@ -11,6 +11,8 @@ public abstract class ShopItemView : MonoBehaviour
     protected int _shopCost;
     private bool _isBought = false;
     private Subject<Unit> _boughtEvent = new Subject<Unit>();
+    protected GameObject _copyObject;
+    public GameObject copyObject { get { return _copyObject; } }
     public IObservable<Unit> OnBoughtEvent => _boughtEvent;
     public int shopCost { get { return _shopCost; } }
 

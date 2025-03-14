@@ -15,6 +15,7 @@ namespace Scenes.Shopscene
         [SerializeField] private ShopRelicItemView _shopRelicItemView;
         [SerializeField] private Transform _itemPanel;
         [SerializeField] private Transform _relicItemPanel;
+        [SerializeField] private Transform _deckPositionMarker;
         private List<ShopItemView> shopItemViewList = new List<ShopItemView>();
         private const int ITEMCOUNT = 7;
         private const int RELICITEMCOUNT = 3;
@@ -43,6 +44,7 @@ namespace Scenes.Shopscene
                 item.OnBoughtEvent.Subscribe(_ =>
                 {
                     UpdateCost();
+                    BuyItemAnimation(item.copyObject);
                     if (!IsBuyableItem())
                     {
                         BackButtonAnimation();
@@ -78,6 +80,16 @@ namespace Scenes.Shopscene
         private bool IsBuyableItem()
         {
             return shopItemViewList.Any(item => item.shopCost <= PlayerSingleton.Instance.CurrentMoney);
+        }
+
+        private void BuyItemAnimation(GameObject item)
+        {
+            var CopyItemPrefab = Instantiate(item, item.transform.position, Quaternion.identity, _deckPositionMarker);
+            const float duration = 1f;
+            CopyItemPrefab.transform.DOMove(_deckPositionMarker.position, duration).SetEase(Ease.InSine);
+            CopyItemPrefab.transform.DOScale(_deckPositionMarker.localScale * 0.2f, duration * 0.75f).From(item.transform.localScale*2).SetDelay(duration * 0.25f);
+            CopyItemPrefab.transform.DORotate(new Vector3(0,0,180), duration * 0.8f,RotateMode.FastBeyond360).SetDelay(duration * 0.2f);
+            Destroy(CopyItemPrefab, duration);
         }
     }
 }
