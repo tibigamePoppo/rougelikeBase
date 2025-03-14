@@ -3,6 +3,8 @@ using UnityEngine.UI;
 using UniRx;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
+using System.Linq;
+using DG.Tweening;
 
 namespace Scenes.Shopscene
 {
@@ -26,7 +28,6 @@ namespace Scenes.Shopscene
                 var shopItem = Instantiate(_shopUnitItemView, _itemPanel);
                 shopItem.Init(randomUnit);
                 shopItemViewList.Add(shopItem);
-                shopItem.OnBoughtEvent.Subscribe(_ => UpdateCost()).AddTo(this);
             }
             var _relicDataList = Resources.Load<RelicItemPool>("Value/RelicItemPool").relicItem;
             for (int i = 0; i < RELICITEMCOUNT; i++)
@@ -35,9 +36,31 @@ namespace Scenes.Shopscene
                 var shopRelicItem = Instantiate(_shopRelicItemView, _relicItemPanel);
                 shopRelicItem.Init(randomRelic);
                 shopItemViewList.Add(shopRelicItem);
-                shopRelicItem.OnBoughtEvent.Subscribe(_ => UpdateCost()).AddTo(this);
+            }
+
+            foreach (var item in shopItemViewList)
+            {
+                item.OnBoughtEvent.Subscribe(_ =>
+                {
+                    UpdateCost();
+                    if (!IsBuyableItem())
+                    {
+                        BackButtonAnimation();
+                    }
+                }).AddTo(this);
+            }
+            if (!IsBuyableItem())
+            {
+                BackButtonAnimation();
             }
         }
+
+        private void BackButtonAnimation()
+        {
+            var currentScale = _backMainSceneButton.transform.localScale;
+            _backMainSceneButton.transform.DOScale(currentScale * 1.2f, 0.3f).SetLoops(2, LoopType.Yoyo).SetEase(Ease.InOutSine).SetDelay(0.2f);
+        }
+
 
         private void BackMainScene()
         {
@@ -50,6 +73,11 @@ namespace Scenes.Shopscene
             {
                 item.UpdateText();
             }
+        }
+
+        private bool IsBuyableItem()
+        {
+            return shopItemViewList.Any(item => item.shopCost <= PlayerSingleton.Instance.CurrentMoney);
         }
     }
 }
