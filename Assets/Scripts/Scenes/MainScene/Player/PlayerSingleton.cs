@@ -14,9 +14,12 @@ public class PlayerSingleton : SingletonAbstract<PlayerSingleton>
     private Subject<UnitData> _removeUnit = new Subject<UnitData>();
     private Subject<RelicItemBase> _addRelicItem = new Subject<RelicItemBase>();
     private Subject<RelicItemBase> _removeRelicItem = new Subject<RelicItemBase>();
+    private Subject<string> _addPassEventName = new Subject<string>();
     private List<UnitData> _currentDeck = new List<UnitData>();
     private RelicItemBase[] _currentRelicItem = new RelicItemBase[0];
+    private string[] _currentPassEvent = new string[0];
     private int _playerMoney;
+    private int _playerPopularity;
 
     public IObservable<int> OnChangePopularityEvent => _changePopularity;
     public IObservable<int> OnChangeMoneyEvent => _changeMoney;
@@ -24,9 +27,12 @@ public class PlayerSingleton : SingletonAbstract<PlayerSingleton>
     public IObservable<UnitData> OnRemoveCardEvent => _removeUnit;
     public IObservable<RelicItemBase> OnAddRelicItemEvent => _addRelicItem;
     public IObservable<RelicItemBase> OnRemoveRelicItemEvent => _removeRelicItem;
+    public IObservable<string> OnAddPassEventName => _addPassEventName;
     public List<UnitData> CurrentDeck { get { return _currentDeck; } }
-    public RelicItemBase[] CurrentRelic { get { return _currentRelicItem; } } 
+    public RelicItemBase[] CurrentRelic { get { return _currentRelicItem; } }
+    public string[] CurrentPassEvent { get { return _currentPassEvent; } }
     public int CurrentMoney { get {return _playerMoney; } }
+    public int CurrentPopularity { get { return _playerPopularity; } }
 
     public void ChangePopularity(int value)
     {
@@ -54,6 +60,11 @@ public class PlayerSingleton : SingletonAbstract<PlayerSingleton>
         _addRelicItem.OnNext(relicItem);
     }
 
+    public void AddPassEventName(string name)
+    {
+        _addPassEventName.OnNext(name);
+    }
+
     public void RemoveRelicItem(RelicItemBase relicItem )
     {
         _removeRelicItem.OnNext(relicItem);
@@ -74,4 +85,15 @@ public class PlayerSingleton : SingletonAbstract<PlayerSingleton>
     {
         _currentDeck = currentDeck;
     }
+
+    public void SetCurrentPassEvent(string[] events)
+    {
+        _currentPassEvent = events;
+    }
+
+    public void SetCurrentPopularity(int popularity)
+    {
+        _playerPopularity = popularity;
+    }
+
 }

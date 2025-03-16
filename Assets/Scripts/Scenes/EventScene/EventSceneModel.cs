@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UniRx;
 using System;
+using System.Linq;
 
 namespace Scenes.EventScene
 {
@@ -22,8 +23,26 @@ namespace Scenes.EventScene
         {
             List<EventBase> events = new List<EventBase>();
             var _eventDataList = Resources.Load<EventDataPool>("Value/EventPool").events.ToArray();
+            _eventDataList = LimitFilterEvent(_eventDataList);
             int randomIndex = UnityEngine.Random.Range(0, _eventDataList.Length);
             return _eventDataList[randomIndex];
+        }
+
+        private EventData[] LimitFilterEvent(EventData[] events)
+        {
+            var data = events.Where(e =>
+                                    e.limit.underLimitMoney <= PlayerSingleton.Instance.CurrentMoney &&
+                                    (e.limit.upperLimitMoney == 0 || e.limit.upperLimitMoney >= PlayerSingleton.Instance.CurrentMoney) &&
+                                    e.limit.underLimitPopularity <= PlayerSingleton.Instance.CurrentPopularity &&
+                                    (e.limit.upperLimitPopularity == 0 || e.limit.upperLimitPopularity >= PlayerSingleton.Instance.CurrentPopularity) &&
+                                    (e.limit.containRelic.Length == 0 || e.limit.containRelic.All(relic => PlayerSingleton.Instance.CurrentRelic.Contains(relic))) &&
+                                    (e.limit.uncontainRelic.Length == 0 || !e.limit.uncontainRelic.Any(relic => PlayerSingleton.Instance.CurrentRelic.Contains(relic))) &&
+                                    (e.limit.containUnits.Length == 0 || e.limit.containUnits.All(unit => PlayerSingleton.Instance.CurrentDeck.Contains(unit))) &&
+                                    (e.limit.uncontainUnits.Length == 0 || !e.limit.uncontainUnits.Any(unit => PlayerSingleton.Instance.CurrentDeck.Contains(unit))) &&
+                                    (e.limit.passEvent.Length == 0 || e.limit.passEvent.All(eventName => PlayerSingleton.Instance.CurrentPassEvent.Contains(eventName))) &&
+                                    (e.limit.notPassEvent.Length == 0 || !e.limit.notPassEvent.Any(eventName => PlayerSingleton.Instance.CurrentPassEvent.Contains(eventName))) 
+                                ).ToArray();
+            return data;
         }
 
         public void EventProcess(EventEffectArg arg)

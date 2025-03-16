@@ -14,12 +14,15 @@ namespace Scenes.MainScene.Player
         private Subject<Unit> _updateDeck = new Subject<Unit>();
         private List<UnitData> _cardDataList = new List<UnitData>();
         private List<RelicItemBase> _relicItems = new List<RelicItemBase>();
+        private List<String> _passEventName = new List<string>();
         private Subject<RelicItemBase[]> _updateRelicItem = new Subject<RelicItemBase[]>();
+        private Subject<String[]> _updatePassEventName = new Subject<string[]>();
 
         public IObservable<int> OnPopularityChange => _popularity;
         public IObservable<int> OnMoneyChange => _money;
         public IObservable<Unit> OnDeckChange => _updateDeck;
         public IObservable<RelicItemBase[]> OnUpdateRelicItem => _updateRelicItem;
+        public IObservable<string[]> OnUpdatePassEventName => _updatePassEventName;
         public int CurrentPopularity { get { return _popularity.Value; } }
         public int CurrentMoney { get { return _money.Value; } }
         public List<UnitData> CurrentCardDataList { get { return _cardDataList; } }
@@ -72,6 +75,12 @@ namespace Scenes.MainScene.Player
         {
             _relicItems.Remove(relicItem);
             _updateRelicItem.OnNext(_relicItems.ToArray());
+        }
+
+        public void AddPassEvent(String eventName)
+        {
+            _passEventName.Add(eventName);
+            _updatePassEventName.OnNext(_passEventName.ToArray());
         }
     }
 }

@@ -15,15 +15,17 @@ MonoBehaviour:
   eventName: "\u50AD\u5175\u52DF\u96C6"
   text: "\u9152\u5834\u3067\u6211\u3053\u305D\u306F\uFF01\u3068\u3044\u3046\u50AD\u5175\u3092\u96C7\u3046\u3053\u3068\u306B\u3057\u305F\u3002"
   sprite: {fileID: 21300000, guid: 87efc40f9448d45a9a66bdc25477f671, type: 3}
-  eventRequirement:
-    _limitUnderMoney: 80
-    _limitUpperMoney: 0
-    _limitUnderPopularity: 0
-    _limitUpperPopularity: 0
-    _limitContainPlayerDeck: {fileID: 0}
-    _limitNonContainPlayerDeck: {fileID: 0}
-    _limitContainPlayerRelic: {fileID: 0}
-    _limitNonContainPlayerRelic: {fileID: 0}
+  limit:
+    upperLimitMoney: 0
+    underLimitMoney: 80
+    upperLimitPopularity: 0
+    underLimitPopularity: 0
+    containUnits: []
+    uncontainUnits: []
+    containRelic: []
+    uncontainRelic: []
+    passEvent: []
+    notPassEvent: []
   eventEffectArgs:
   - text: "\u6226\u72C2\u306E\u51F1\u65CB\u968A(\u6B69\u5175+3)"
     playerPopularityChange: 0
@@ -33,6 +35,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: b84817daad219474fa548e89a0220cae, type: 2}
     - {fileID: 11400000, guid: b84817daad219474fa548e89a0220cae, type: 2}
     - {fileID: 11400000, guid: b84817daad219474fa548e89a0220cae, type: 2}
+    enemys: []
     relic: {fileID: 0}
   - text: "\u96F7\u9CF4\u306E\u69CD\u3092\u96C7\u3046(\u9A0E\u5175+2)"
     playerPopularityChange: 0
@@ -41,10 +44,12 @@ MonoBehaviour:
     units:
     - {fileID: 11400000, guid: 58936007ad9e745b588c606ba4acd414, type: 2}
     - {fileID: 11400000, guid: 58936007ad9e745b588c606ba4acd414, type: 2}
+    enemys: []
     relic: {fileID: 0}
   - text: "\u96C7\u308F\u306A\u3044"
     playerPopularityChange: 0
     playerMoneyChange: 0
     changeScene: 0
     units: []
+    enemys: []
     relic: {fileID: 0}

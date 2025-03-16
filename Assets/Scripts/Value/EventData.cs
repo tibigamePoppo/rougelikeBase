@@ -9,5 +9,6 @@ public class EventData : ScriptableObject
     [TextArea]
     public string text;
     public Sprite sprite;
+    public EventLimit limit;
     public List<EventEffectArg> eventEffectArgs;
 }
