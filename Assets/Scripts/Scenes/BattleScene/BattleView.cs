@@ -30,6 +30,7 @@ namespace Scenes.Battle
         [SerializeField] private BattleFormationPresenter _battleFormationPresenter;
         [SerializeField] private BatleInitalFormationView _battleInitialFormationView;
         [SerializeField] private OnBattleFormationView _onBattleFormationView;
+        [SerializeField] private UnitCommandCardView _unitCommandCardView;
         [SerializeField] private Button _battlReadyButton;
         private Subject<bool> _isPlayerWinBattle = new Subject<bool>();
         private FormationType _formationType = FormationType.None;
@@ -42,6 +43,7 @@ namespace Scenes.Battle
         public void Init(EnemyLevel enemyLevel, List<UnitData> playerCards,int stageDepth, EnemyData[] preliminaryEnemyData = null)
         {
             _rewardView.Init();
+            _unitCommandCardView.gameObject.SetActive(false);
             _rewardView.gameObject.SetActive(false);
 
             UnitData[] enemyData = new UnitData[0];
@@ -75,6 +77,7 @@ namespace Scenes.Battle
             var enemyPresenter = EnemyUnitSpawn(enemyData);
             var playerModel = playerPresenter.Select(p => p.CharacterUnitModel).ToArray();
             var enemyModel = enemyPresenter.Select(p => p.CharacterUnitModel).ToArray();
+            _unitCommandCardView.Init(playerCards, playerModel);
 
             _battleInitialFormationView.Init(playerModel);
             _onBattleFormationView.Init();
@@ -128,6 +131,7 @@ namespace Scenes.Battle
                 {
                     item.BattleStart();
                 }
+                _unitCommandCardView.gameObject.SetActive(true);
                 _battleFormationPresenter.isStarted = true;
                 _onBattleFormationView.Active();
                 _battleInitialFormationView.gameObject.SetActive(false);

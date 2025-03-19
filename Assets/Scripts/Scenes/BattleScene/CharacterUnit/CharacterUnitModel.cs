@@ -24,10 +24,10 @@ namespace Scenes.Battle.UnitCharacter
 
         private const float REACTIONDISTANCE = 3f;
         private Transform _originTransfrom;
-        private bool isHoldPosition = true;
         private bool isHoldFormationPosition = false;
         private Vector3 _holdPosition;
         private CancellationTokenSource formationMoveSorce ;
+        private MoveCommand _moveCommand = MoveCommand.Stop;
 
         private ReactiveProperty<float> _health = new ReactiveProperty<float>();
         private ReactiveProperty<float> _shield = new ReactiveProperty<float>();
@@ -43,6 +43,8 @@ namespace Scenes.Battle.UnitCharacter
         private Color orangeColor = new Color(1, 0.8706f, 0.2392f);
         private Color pinkColor = new Color(0.8745f,0.3216f,0.5255f);
         private Color blueColor = new Color(0.2392f, 0.4078f, 1f);
+
+        private CancellationTokenSource _commandTokenSorce;
 
         public UnitWeaponType WeaponType { get { return _type; } }
         public IObservable<float> OnChangeHealth => _health;
@@ -100,9 +102,28 @@ namespace Scenes.Battle.UnitCharacter
 
         public void Charge()
         {
-            isHoldPosition = false;
+            CommandCancel();
+            _moveCommand = MoveCommand.Charge;
         }
 
+        public void Back()
+        {
+            CommandCancel();
+            _moveCommand = MoveCommand.Back;
+        }
+
+        public void Lark()
+        {
+            CommandCancel();
+            _moveCommand = MoveCommand.Lark;
+        }
+
+        private void CommandCancel()
+        {
+            _commandTokenSorce?.Cancel();
+            _commandTokenSorce = new CancellationTokenSource();
+
+        }
 
         public void SetGroup(CharacterUnitModel[] teamGroup, CharacterUnitModel[] enemyGroup)
         {
@@ -200,7 +221,7 @@ namespace Scenes.Battle.UnitCharacter
                     _targetUnit = taregt[0];
                 }
                 var attackableTarget = taregt.Where(enemy => Vector3.Distance(enemy.Transform.position, Transform.position) <= _attackRange).ToArray();
-                if (attackableTarget.Length > 0) // Attack
+                if (attackableTarget.Length > 0 && _moveCommand != MoveCommand.Back) // Attack
                 {
                     ChangeState(CharacterUnitStateType.Attak);
                     _agent.isStopped = true;
@@ -215,9 +236,9 @@ namespace Scenes.Battle.UnitCharacter
                     await UniTask.Delay(TimeSpan.FromSeconds(AttackSpeed()));
                     ChangeState(CharacterUnitStateType.Idle);
                 }
-                else if (isHoldPosition && !ReactionInEnemy() && IsHoldPosition()) // Idle
+                else if (_moveCommand == MoveCommand.Stop && !ReactionInEnemy() && !IsMoving()) // Idle
                 {
-                    if (_holdPosition != Transform.position) _holdPosition = Transform.position;
+                    //if (_holdPosition != Transform.position) _holdPosition = Transform.position;
                     _agent.isStopped = true;
                     ChangeState(CharacterUnitStateType.Idle);
                 }
@@ -227,7 +248,10 @@ namespace Scenes.Battle.UnitCharacter
                     ChangeState(CharacterUnitStateType.Move);
                     if (!isHoldFormationPosition)
                     {
-                        if (ReactionInEnemy() || !isHoldPosition) MoveAtTarget();
+                        if (_moveCommand == MoveCommand.Back) await MoveAtBack(_commandTokenSorce.Token);
+                        else if (ReactionInEnemy() || _moveCommand == MoveCommand.Charge) MoveAtTarget();
+                        else if (_moveCommand == MoveCommand.Lark) await MoveAtLark(_commandTokenSorce.Token);
+                        else if (!IsMoving()) _moveCommand = MoveCommand.Stop;
                         else MoveAtHoldPosition();
                     }
                 }
@@ -249,6 +273,41 @@ namespace Scenes.Battle.UnitCharacter
         private void MoveAtTarget()
         {
             _agent.SetDestination(_targetUnit.Transform.position);
+        }
+
+        private async UniTask MoveAtBack(CancellationToken token)
+        {
+            Vector3 backDirection = (Transform.position - _targetUnit.Transform.position).normalized;
+            float backLength = 10f;
+            _agent.SetDestination(Transform.position + backDirection * backLength);
+
+            await UniTask.WaitUntil(() => !IsMoving(), cancellationToken: token);
+            _moveCommand = MoveCommand.Stop;
+        }
+
+        private async UniTask MoveAtLark(CancellationToken token)
+        {
+            var taregt = GetTarget();
+            Vector3 center = taregt.Select(t => t.Transform.position).Aggregate(Vector3.zero, (sum, point) => sum + point) / taregt.Length;
+            Vector3 larkDirection = (center - Transform.position).normalized;
+            larkDirection = new Vector3(-larkDirection.x, 0, 0).normalized;
+            Debug.Log(larkDirection);
+
+            float backLength = 10f;
+            _agent.SetDestination(Transform.position + larkDirection * backLength);
+            float currentDistance = TargetDistance(taregt[taregt.Length - 1]);
+            
+            await UniTask.Delay(TimeSpan.FromSeconds(3), cancellationToken: token);
+            center = taregt.Select(t => t.Transform.position).Aggregate(Vector3.zero, (sum, point) => sum + point) / taregt.Length;
+            var farthestPoint = taregt.Select(t => t.Transform.position).OrderByDescending(point => Vector3.Distance(center, point)).First();
+            _agent.SetDestination(farthestPoint);
+            await UniTask.WaitUntil(() => !IsMoving(_attackRange), cancellationToken: token);
+            _moveCommand = MoveCommand.Charge;
+        }
+
+        private float TargetDistance(CharacterUnitModel model)
+        {
+            return Vector3.Distance(Transform.position, model.Transform.position);
         }
 
         private void MoveAtHoldPosition()
@@ -283,9 +342,9 @@ namespace Scenes.Battle.UnitCharacter
             return Vector3.Distance(_targetUnit.Transform.position, Transform.position) <= REACTIONDISTANCE;
         }
 
-        private bool IsHoldPosition()
+        private bool IsMoving(float distance = 0.2f)
         {
-            return Vector3.Distance(_holdPosition, Transform.position) <= 0.2f;
+            return _agent.remainingDistance > distance;
         }
     }
 

@@ -23,14 +23,33 @@ namespace Scenes.Battle
 
         public void Init(CharacterUnitModel[] units)
         {
-            _meleeUnits = units.Where(u => u.WeaponType == MainScene.Player.UnitWeaponType.Melee).Select(u => u.Transform).ToArray();
-            _rangeUnits = units.Where(u => u.WeaponType == MainScene.Player.UnitWeaponType.Range).Select(u => u.Transform).ToArray();
+            var meleeModels = units.Where(u => u.WeaponType == MainScene.Player.UnitWeaponType.Melee).OrderBy(u => u.UnitName).ToArray();
+            _meleeUnits = OrderUnit(meleeModels).Select(u => u.Transform).ToArray();
+            _rangeUnits = units.Where(u => u.WeaponType == MainScene.Player.UnitWeaponType.Range).OrderBy(u => u.UnitName).Select(u => u.Transform).ToArray();
             _formationO.OnClickAsObservable().Subscribe(_ => Formation(FormationType.FormationO)).AddTo(this);
             _formationI.OnClickAsObservable().Subscribe(_ => Formation(FormationType.FormationI)).AddTo(this);
             _formationV.OnClickAsObservable().Subscribe(_ => Formation(FormationType.FormationV)).AddTo(this);
             _formationA.OnClickAsObservable().Subscribe(_ => Formation(FormationType.FormationA)).AddTo(this);
 
             unitsScale = 1 + Math.Max(_meleeUnits.Length, _rangeUnits.Length) / 2;
+        }
+
+        private CharacterUnitModel[] OrderUnit(CharacterUnitModel[] units)
+        {
+            List<CharacterUnitModel> newList1 = new List<CharacterUnitModel>();
+            List<CharacterUnitModel> newList2 = new List<CharacterUnitModel>();
+            int count = 0;
+            while (true)
+            {
+                newList1.Add(units[count]);
+                count++;
+                if (count >= units.Length) break;
+                newList2.Add(units[count]);
+                count++;
+                if (count >= units.Length) break;
+            }
+            newList2.Reverse();
+            return newList1.Concat(newList2).ToArray();
         }
 
         private void Formation(FormationType type)
