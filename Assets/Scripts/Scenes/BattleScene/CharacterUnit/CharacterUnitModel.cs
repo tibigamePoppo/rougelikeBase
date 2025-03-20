@@ -174,8 +174,14 @@ namespace Scenes.Battle.UnitCharacter
             _getDamage.OnNext(new DamageArg(damage, color));
             if (_health.Value <= 0)
             {
-                _agent.isStopped = true;
                 ChangeState(CharacterUnitStateType.Dead);
+                if(_agent.enabled)
+                {
+                    _commandTokenSorce.Cancel();
+                    _commandTokenSorce.Dispose();
+                    _agent.isStopped = true;
+                    _agent.enabled = false;
+                }
             }
         }
 

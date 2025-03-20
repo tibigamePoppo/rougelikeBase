@@ -24,6 +24,7 @@ namespace Scenes.Battle.UnitCharacter
         [SerializeField] private Transform _lookCamera;
         private Vector3 _randomPupupOffset = new Vector3(0.5f, 0.5f, 0);
         private BoxCollider _collider;
+        private NavMeshAgent _agent;
 
         private Animator _animator;
         public Animator Animator { get { return _animator; } }
@@ -35,6 +36,7 @@ namespace Scenes.Battle.UnitCharacter
 
         public void Init(NavMeshAgent agent )
         {
+            _agent = agent;
             _animator = GetComponent<Animator>();
             _animIDSpeed = Animator.StringToHash("Speed");
             _collider = GetComponent<BoxCollider>();
