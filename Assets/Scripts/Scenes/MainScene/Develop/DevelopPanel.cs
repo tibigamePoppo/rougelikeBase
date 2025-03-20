@@ -16,8 +16,10 @@ public class DevelopPanel : MonoBehaviour
     [SerializeField] private Button _closeButton;
     [SerializeField] private Button _openButton;
     [SerializeField] private Button _upgradeButton;
-    [SerializeField] private Button _getMoneyButton;
-    [SerializeField] private Button _getPopularityButton;
+    [SerializeField] private Button _get100MoneyButton;
+    [SerializeField] private Button _get1000MoneyButton;
+    [SerializeField] private Button _get100PopularityButton;
+    [SerializeField] private Button _get1000PopularityButton;
     [SerializeField] private Button _battleButton;
     [SerializeField] private Button _battleEliteButton;
     [SerializeField] private Button _battleBossButton;
@@ -36,8 +38,10 @@ public class DevelopPanel : MonoBehaviour
         _closeButton.OnClickAsObservable().Subscribe(_ => gameObject.SetActive(false)).AddTo(this);
         _openButton.OnClickAsObservable().Subscribe(_ => gameObject.SetActive(true)).AddTo(this);
         _upgradeButton.OnClickAsObservable().Subscribe(_ => _upgradeWindow.SetActive(true)).AddTo(this);
-        _getMoneyButton.OnClickAsObservable().Subscribe(_ => PlayerSingleton.Instance.ChangeMoney(100));
-        _getPopularityButton.OnClickAsObservable().Subscribe(_ => PlayerSingleton.Instance.ChangePopularity(100));
+        _get100MoneyButton.OnClickAsObservable().Subscribe(_ => PlayerSingleton.Instance.ChangeMoney(100));
+        _get100PopularityButton.OnClickAsObservable().Subscribe(_ => PlayerSingleton.Instance.ChangePopularity(100));
+        _get1000MoneyButton.OnClickAsObservable().Subscribe(_ => PlayerSingleton.Instance.ChangeMoney(1000));
+        _get1000PopularityButton.OnClickAsObservable().Subscribe(_ => PlayerSingleton.Instance.ChangePopularity(1000));
         _battleButton.OnClickAsObservable().Subscribe(_ => SceneLoad(UnitType.Battle)).AddTo(this);
         _battleEliteButton.OnClickAsObservable().Subscribe(_ => SceneLoad(UnitType.Elite)).AddTo(this);
         _battleBossButton.OnClickAsObservable().Subscribe(_ => SceneLoad(UnitType.Boss)).AddTo(this);
@@ -48,9 +52,17 @@ public class DevelopPanel : MonoBehaviour
         foreach (var item in _relicItem)
         {
             var button = Instantiate(_button, _panelButtonTransform);
-            button.GetComponentInChildren<TextMeshProUGUI>().text = item.relicItemName;
+            button.GetComponentInChildren<TextMeshProUGUI>().text = $"[R] {item.relicItemName}";
             var relic = Instantiate(item, _panelTransform);
             button.OnClickAsObservable().First().Subscribe(_ => relic.Init()).AddTo(this);
+        }
+        var _cardDataList = Resources.Load<CardPool>("Value/ShopUnitPool").CardList();
+        foreach (var unit in _cardDataList)
+        {
+            var button = Instantiate(_button, _panelButtonTransform);
+            button.GetComponentInChildren<TextMeshProUGUI>().text = $"[U] {unit.status.name}";
+            var unitCard = Instantiate(unit, _panelTransform);
+            button.OnClickAsObservable().First().Subscribe(_ => PlayerSingleton.Instance.AddCard(unitCard)).AddTo(this);
         }
     }
 
