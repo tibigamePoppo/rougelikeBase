@@ -15,6 +15,8 @@ namespace Scenes.Battle.UnitCharacter.State
         {
             view.Animator.SetTrigger(_animIDDead);
             view.HideHpGauge();
+            view.HideGroupColorCircle();
+            view.ColliderActive(false);
         }
     }
 }

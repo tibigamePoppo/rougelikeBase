@@ -5,13 +5,14 @@ using UnityEngine;
 using System.Linq;
 using UnityEngine.EventSystems;
 using Scenes.Battle.UnitCharacter;
+using UnityEngine.UI;
 
 namespace Scenes.Battle
 {
     public class UnitCommandCardView : MonoBehaviour,IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler
     {
         [SerializeField] private CardView _cardView;
-        [SerializeField] private Transform _cardTransform;
+        [SerializeField] private HorizontalLayoutGroup _cardTransform;
         [SerializeField] private GameObject _commandView;
         [SerializeField] private GameObject _chargeCommand;
         [SerializeField] private GameObject _backCommand;
@@ -20,9 +21,12 @@ namespace Scenes.Battle
         private Dictionary<GameObject,string> card = new Dictionary<GameObject, string>();
         private string _pastUnitName = null;
         private CharacterUnitModel[] _playerCharacters;
+        private const float cardWidth = 300;
+        float _layoutWidth;
 
         public void Init(List<UnitData> playerCards, CharacterUnitModel[] playerCharacters)
         {
+            _layoutWidth = _cardTransform.GetComponent<RectTransform>().rect.width;
             _playerCharacters = playerCharacters;
             _commandView.SetActive(false);
              var cards = playerCards.Distinct().ToArray();
@@ -104,10 +108,21 @@ namespace Scenes.Battle
         {
             foreach (var item in units)
             {
-                var unitObject = Instantiate(_cardView, _cardTransform);
+                var unitObject = Instantiate(_cardView, _cardTransform.transform);
                 unitObject.Init(item.status);
                 card.Add(unitObject.gameObject,item.status.name);
             }
+            if(card.Count > _layoutWidth / cardWidth)
+            {
+                FixLayoutWidth();
+            }
+        }
+
+        private void FixLayoutWidth()
+        {
+            float diff = card.Count * cardWidth - _layoutWidth;
+            float overlap = diff / (card.Count - 1);
+            _cardTransform.spacing = -overlap;
         }
     }
 

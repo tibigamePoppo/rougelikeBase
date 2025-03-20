@@ -282,7 +282,7 @@ namespace Scenes.Battle.UnitCharacter
             _agent.SetDestination(Transform.position + backDirection * backLength);
 
             await UniTask.WaitUntil(() => !IsMoving(), cancellationToken: token);
-            _moveCommand = MoveCommand.Stop;
+            if(_moveCommand == MoveCommand.Back) _moveCommand = MoveCommand.Stop;
         }
 
         private async UniTask MoveAtLark(CancellationToken token)

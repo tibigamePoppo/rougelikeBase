@@ -2248,7 +2248,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _cardView: {fileID: 6446685985685881535, guid: 1258777014be748729945aaff0da8340, type: 3}
-  _cardTransform: {fileID: 1438255254}
+  _cardTransform: {fileID: 1438255255}
   _commandView: {fileID: 287643264}
   _chargeCommand: {fileID: 793582111}
   _backCommand: {fileID: 439780819}
@@ -2427,7 +2427,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2488,7 +2488,7 @@ MonoBehaviour:
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 1
+  m_ChildAlignment: 3
   m_Spacing: 0
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
@@ -2593,8 +2593,8 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1293555270}
   - {fileID: 1346303348}
+  - {fileID: 1293555270}
   - {fileID: 1166816011}
   - {fileID: 865210729}
   m_Father: {fileID: 0}

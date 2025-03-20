@@ -6579,6 +6579,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _hpGauge: {fileID: 1495715375255149350}
   _shieldGauge: {fileID: 2614348425410323408}
+  _groupColorCircle: {fileID: 1996558585899699940}
   _attackEffect:
   - {fileID: 4609201629555521580}
   _damagePopup: {fileID: 4369320805400402653, guid: d5774a1a2ac5a3749b62718d9252ec02, type: 3}
@@ -20108,6 +20109,11 @@ MonoBehaviour:
 --- !u!224 &1911847000175309786 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 809047999283270209, guid: 926f2798d327d4f22ab6c4924edb51eb, type: 3}
+  m_PrefabInstance: {fileID: 1275203045874819483}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1996558585899699940 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 722648645695156095, guid: 926f2798d327d4f22ab6c4924edb51eb, type: 3}
   m_PrefabInstance: {fileID: 1275203045874819483}
   m_PrefabAsset: {fileID: 0}
 --- !u!224 &2140111506891266966 stripped

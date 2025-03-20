@@ -17,11 +17,13 @@ namespace Scenes.Battle.UnitCharacter
     {
         [SerializeField] private Image _hpGauge;
         [SerializeField] private Image _shieldGauge;
+        [SerializeField] private GameObject _groupColorCircle;
         [SerializeField] private EffectEmitBase[] _attackEffect;
         [SerializeField] private TextMeshProUGUI _damagePopup;
         [SerializeField] private Transform _popupPosition;
         [SerializeField] private Transform _lookCamera;
         private Vector3 _randomPupupOffset = new Vector3(0.5f, 0.5f, 0);
+        private BoxCollider _collider;
 
         private Animator _animator;
         public Animator Animator { get { return _animator; } }
@@ -35,6 +37,7 @@ namespace Scenes.Battle.UnitCharacter
         {
             _animator = GetComponent<Animator>();
             _animIDSpeed = Animator.StringToHash("Speed");
+            _collider = GetComponent<BoxCollider>();
 
             Scene currentScene = gameObject.scene;
             sceneCamera = GetCameraInScene(currentScene);
@@ -99,6 +102,16 @@ namespace Scenes.Battle.UnitCharacter
         public void HideHpGauge()
         {
             _lookCamera.gameObject.SetActive(false);
+        }
+
+        public void HideGroupColorCircle()
+        {
+            _groupColorCircle.SetActive(false);
+        }
+
+        public void ColliderActive(bool value)
+        {
+            _collider.enabled = value;
         }
 
         Camera GetCameraInScene(Scene scene)
