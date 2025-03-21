@@ -83,6 +83,10 @@ public class PlayerSingleton : SingletonAbstract<PlayerSingleton>
 
     public void SetCurrentDeck(List<UnitData> currentDeck)
     {
+        foreach (var unit in currentDeck)
+        {
+            Debug.Log(unit.status.name);
+        }
         _currentDeck = currentDeck;
     }
 

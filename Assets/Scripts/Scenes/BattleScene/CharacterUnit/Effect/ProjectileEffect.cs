@@ -19,12 +19,19 @@ public class ProjectileEffect : EffectEmitBase
         Destroy(muzzle, 1.5f);
         float hight = Vector3.Distance(transform.position, vector3);
         projectile.transform.DOJump(vector3, hight * _hightRatio / 5, 1, 0.2f).OnComplete(Impact);
+        Destroy(projectile,0.21f);
     }
 
     private void Impact()
     {
         impact = Instantiate(_impactParticle, projectile.transform.position, Quaternion.identity, transform);
-        Destroy(projectile);
         Destroy(impact,3.5f);
+    }
+
+    public void OnDestroy()
+    {
+        Destroy(impact);
+        Destroy(projectile);
+        Destroy(muzzle);
     }
 }
