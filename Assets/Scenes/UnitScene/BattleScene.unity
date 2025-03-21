@@ -2640,6 +2640,7 @@ MonoBehaviour:
   _onBattleFormationView: {fileID: 865210730}
   _unitCommandCardView: {fileID: 1346303347}
   _battlReadyButton: {fileID: 1895650621}
+  _battleCamera: {fileID: 177403633}
 --- !u!1 &1627055530
 GameObject:
   m_ObjectHideFlags: 0

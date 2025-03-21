@@ -42,7 +42,7 @@ namespace Scenes.MainScene
             _iconView = iconView;
             _button = GetComponent<Button>();
             _image = GetComponent<Image>();
-            _button.OnClickAsObservable().Subscribe(_ => Click());
+            _button.OnClickAsObservable().Where(_ => !IsActiveOtherScene()).Subscribe(_ => Click());
             _image.sprite = _spritePool.sprites.FirstOrDefault(v => v.name == _unit.unitType.ToString());
         }
 
@@ -108,6 +108,13 @@ namespace Scenes.MainScene
                 eventPresenter.Init(_unit.depth);
             }
             SceneManager.sceneLoaded -= OnSceneLoaded;
+        }
+
+        private bool IsActiveOtherScene()
+        {
+            return Enumerable.Range(0, SceneManager.sceneCount)
+                             .Select(SceneManager.GetSceneAt)
+                             .Any(scene => scene.name == "BattleScene" || scene.name == "ShopScene" || scene.name == "EventScene");
         }
     }
 }

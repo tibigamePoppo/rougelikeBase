@@ -32,6 +32,9 @@ namespace Scenes.Battle
         [SerializeField] private OnBattleFormationView _onBattleFormationView;
         [SerializeField] private UnitCommandCardView _unitCommandCardView;
         [SerializeField] private Button _battlReadyButton;
+        [SerializeField] private Camera _battleCamera;
+        private const float MAXCAMERAVIEW = 80;
+        private const float MINCAMERAVIEW = 40;
         private Subject<bool> _isPlayerWinBattle = new Subject<bool>();
         private FormationType _formationType = FormationType.None;
 
@@ -110,6 +113,14 @@ namespace Scenes.Battle
                 .Where(allDead => allDead)
                 .Subscribe(_ => BattleEnd(true))
                 .AddTo(this);
+
+            this.UpdateAsObservable()
+                .Where(_ => Input.GetKey(KeyCode.DownArrow) && _battleCamera.fieldOfView >= MINCAMERAVIEW)
+                .Subscribe(_ => _battleCamera.fieldOfView -= 10f * Time.deltaTime).AddTo(this);
+
+            this.UpdateAsObservable()
+                .Where(_ => Input.GetKey(KeyCode.UpArrow) && _battleCamera.fieldOfView <= MAXCAMERAVIEW)
+                .Subscribe(_ => _battleCamera.fieldOfView += 10f * Time.deltaTime).AddTo(this);
 
             _onBattleFormationView.OnCharge.Subscribe(_ =>
             {

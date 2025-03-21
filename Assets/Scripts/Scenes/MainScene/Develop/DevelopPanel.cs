@@ -8,6 +8,7 @@ using TMPro;
 using UnityEngine.SceneManagement;
 using Scenes.Battle;
 using Scenes.EventScene;
+using System.Linq;
 
 public class DevelopPanel : MonoBehaviour
 {
@@ -35,18 +36,18 @@ public class DevelopPanel : MonoBehaviour
 
     public void Init()
     {
-        _closeButton.OnClickAsObservable().Subscribe(_ => gameObject.SetActive(false)).AddTo(this);
-        _openButton.OnClickAsObservable().Subscribe(_ => gameObject.SetActive(true)).AddTo(this);
-        _upgradeButton.OnClickAsObservable().Subscribe(_ => _upgradeWindow.SetActive(true)).AddTo(this);
-        _get100MoneyButton.OnClickAsObservable().Subscribe(_ => PlayerSingleton.Instance.ChangeMoney(100));
-        _get100PopularityButton.OnClickAsObservable().Subscribe(_ => PlayerSingleton.Instance.ChangePopularity(100));
-        _get1000MoneyButton.OnClickAsObservable().Subscribe(_ => PlayerSingleton.Instance.ChangeMoney(1000));
-        _get1000PopularityButton.OnClickAsObservable().Subscribe(_ => PlayerSingleton.Instance.ChangePopularity(1000));
-        _battleButton.OnClickAsObservable().Subscribe(_ => SceneLoad(UnitType.Battle)).AddTo(this);
-        _battleEliteButton.OnClickAsObservable().Subscribe(_ => SceneLoad(UnitType.Elite)).AddTo(this);
-        _battleBossButton.OnClickAsObservable().Subscribe(_ => SceneLoad(UnitType.Boss)).AddTo(this);
-        _shopButton.OnClickAsObservable().Subscribe(_ => SceneLoad(UnitType.Shop)).AddTo(this);
-        _eventButton.OnClickAsObservable().Subscribe(_ => SceneLoad(UnitType.Event)).AddTo(this);
+        _closeButton.OnClickAsObservable().Where(_ => !IsActiveOtherScene()).Subscribe(_ => gameObject.SetActive(false)).AddTo(this);
+        _openButton.OnClickAsObservable().Where(_ => !IsActiveOtherScene()).Subscribe(_ => gameObject.SetActive(true)).AddTo(this);
+        _upgradeButton.OnClickAsObservable().Where(_ => !IsActiveOtherScene()).Subscribe(_ => _upgradeWindow.SetActive(true)).AddTo(this);
+        _get100MoneyButton.OnClickAsObservable().Where(_ => !IsActiveOtherScene()).Subscribe(_ => PlayerSingleton.Instance.ChangeMoney(100));
+        _get100PopularityButton.OnClickAsObservable().Where(_ => !IsActiveOtherScene()).Subscribe(_ => PlayerSingleton.Instance.ChangePopularity(100));
+        _get1000MoneyButton.OnClickAsObservable().Where(_ => !IsActiveOtherScene()).Subscribe(_ => PlayerSingleton.Instance.ChangeMoney(1000));
+        _get1000PopularityButton.OnClickAsObservable().Where(_ => !IsActiveOtherScene()).Subscribe(_ => PlayerSingleton.Instance.ChangePopularity(1000));
+        _battleButton.OnClickAsObservable().Where(_ => !IsActiveOtherScene()).Subscribe(_ => SceneLoad(UnitType.Battle)).AddTo(this);
+        _battleEliteButton.OnClickAsObservable().Where(_ => !IsActiveOtherScene()).Subscribe(_ => SceneLoad(UnitType.Elite)).AddTo(this);
+        _battleBossButton.OnClickAsObservable().Where(_ => !IsActiveOtherScene()).Subscribe(_ => SceneLoad(UnitType.Boss)).AddTo(this);
+        _shopButton.OnClickAsObservable().Where(_ => !IsActiveOtherScene()).Subscribe(_ => SceneLoad(UnitType.Shop)).AddTo(this);
+        _eventButton.OnClickAsObservable().Where(_ => !IsActiveOtherScene()).Subscribe(_ => SceneLoad(UnitType.Event)).AddTo(this);
         gameObject.SetActive(false);
         _relicItem = Resources.Load<RelicItemPool>("Value/RelicItemPool").relicItem;
         foreach (var item in _relicItem)
@@ -54,7 +55,7 @@ public class DevelopPanel : MonoBehaviour
             var button = Instantiate(_button, _panelButtonTransform);
             button.GetComponentInChildren<TextMeshProUGUI>().text = $"[R] {item.relicItemName}";
             var relic = Instantiate(item, _panelTransform);
-            button.OnClickAsObservable().First().Subscribe(_ => relic.Init()).AddTo(this);
+            button.OnClickAsObservable().Where(_ => !IsActiveOtherScene()).First().Subscribe(_ => relic.Init()).AddTo(this);
         }
         var _cardDataList = Resources.Load<CardPool>("Value/ShopUnitPool").CardList();
         foreach (var unit in _cardDataList)
@@ -62,7 +63,7 @@ public class DevelopPanel : MonoBehaviour
             var button = Instantiate(_button, _panelButtonTransform);
             button.GetComponentInChildren<TextMeshProUGUI>().text = $"[U] {unit.status.name}";
             var unitCard = Instantiate(unit, _panelTransform);
-            button.OnClickAsObservable().First().Subscribe(_ => PlayerSingleton.Instance.AddCard(unitCard)).AddTo(this);
+            button.OnClickAsObservable().Where(_ => !IsActiveOtherScene()).First().Subscribe(_ => PlayerSingleton.Instance.AddCard(unitCard)).AddTo(this);
         }
     }
 
@@ -110,5 +111,12 @@ public class DevelopPanel : MonoBehaviour
             eventPresenter.Init(0);
         }
         SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private bool IsActiveOtherScene()
+    {
+        return Enumerable.Range(0, SceneManager.sceneCount)
+                         .Select(SceneManager.GetSceneAt)
+                         .Any(scene => scene.name == "BattleScene" || scene.name == "ShopScene" || scene.name == "EventScene");
     }
 }

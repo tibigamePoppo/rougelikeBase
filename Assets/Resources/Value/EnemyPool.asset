@@ -21,4 +21,3 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f1e8b997721544f1da211e228d138c36, type: 2}
   bossPool:
   - {fileID: 11400000, guid: 9243d12df25a84a898b93beb4f5e5925, type: 2}
-  - {fileID: 11400000, guid: 8a016c384ce324cda92f9adbb84da4d9, type: 2}
