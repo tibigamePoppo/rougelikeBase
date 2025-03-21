@@ -59,10 +59,15 @@ namespace Scenes.Battle
             switch (type)
             {
                 case FormationType.FormationO:
-                    path = new Vector3[] {new Vector3(1, 0, 0), new Vector3(0.82f, 0, 0.82f), new Vector3(0, 0, 1),
-                                          new Vector3(-0.82f, 0, 0.82f), new Vector3(-1, 0, 0), new Vector3(-0.82f, 0, -0.82f),
-                                          new Vector3(0, 0, -1), new Vector3(0.82f, 0, -0.82f) };
-                    path = path.Select(v => v * unitsScale).ToArray();
+                    int points = (int)unitsScale / 2 > 18 ? (int)unitsScale / 2 : 18;
+                    path = new Vector3[points];
+                    for (int i = 0; i < points; i++)
+                    {
+                        float angle = i * (360f / (points - 1));
+                        path[i] = new Vector3(Mathf.Cos(angle * Mathf.Deg2Rad), 0, Mathf.Sin(angle * Mathf.Deg2Rad));
+                    }
+                    float radius = unitsScale / 2 > 3f ? unitsScale / 2 : 3;
+                    path = path.Select(v => v * radius).ToArray();
                     clac.FormationO(_meleeUnits, _rangeUnits, path);
                     break;
                 case FormationType.FormationI:

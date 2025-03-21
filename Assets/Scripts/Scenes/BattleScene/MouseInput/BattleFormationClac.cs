@@ -22,19 +22,17 @@ public class BattleFormationClac
 
         meleeUnitsPoints.Add(path[0]);
         rangeUnitsPoints.Add(path[0] - (path[0] - center) / 4);
-
         float remainingDistance = meleeInterval;
         for (int i = 0; i < path.Length - 1; i++)
         {
             Vector3 start = path[i];
             Vector3 end = path[i + 1];
             float segmentLength = Vector3.Distance(start, end);
-
             while (remainingDistance <= segmentLength)
             {
                 Vector3 point = Vector3.Lerp(start, end, remainingDistance / segmentLength);
                 meleeUnitsPoints.Add(point);
-                remainingDistance += rangenterval;
+                remainingDistance += meleeInterval;
             }
             remainingDistance -= segmentLength;
         }
