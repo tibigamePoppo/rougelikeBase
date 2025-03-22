@@ -16,6 +16,7 @@ namespace Scenes.MainScene.Upgrade
         [SerializeField] private CardView[] _upgradeUnits = new CardView[2];
         [SerializeField] private Button _windowClose;
         private List<UnitStatus> _instatiatedView = new List<UnitStatus>();
+        private Dictionary<string, GameObject> _instantiatedCardView = new Dictionary<string, GameObject>();
 
         
         private UnitStatus _unitStatus1;
@@ -31,17 +32,37 @@ namespace Scenes.MainScene.Upgrade
             gameObject.SetActive(false);
             _upgradeUnits[0].gameObject.SetActive(false);
             _upgradeUnits[1].gameObject.SetActive(false);
+            _windowClose.OnClickAsObservable().Subscribe(_ => HideUpgradeUnitsPanel()).AddTo(this);
+
             _upgradeUnits[0].GetComponent<Button>().OnClickAsObservable().Subscribe(_ =>
             {
                 _updateUnit.OnNext(_unitStatus1.name);
-                gameObject.SetActive(false);
+                HideUpgradeUnitsPanel();
             }).AddTo(this);
             _upgradeUnits[1].GetComponent<Button>().OnClickAsObservable().Subscribe(_ =>
             {
                 _updateUnit.OnNext(_unitStatus2.name);
-                gameObject.SetActive(false);
+                HideUpgradeUnitsPanel();
             }).AddTo(this);
-            _windowClose.OnClickAsObservable().Subscribe(_ => gameObject.SetActive(false)).AddTo(this);
+            
+        }
+
+        private void HideUpgradeUnitsPanel()
+        {
+            gameObject.SetActive(false);
+            _upgradeUnits[0].gameObject.SetActive(false);
+            _upgradeUnits[1].gameObject.SetActive(false);
+        }
+
+        public void OpenPanel()
+        {
+            var playerDeck = PlayerSingleton.Instance.CurrentDeck;
+            foreach (var cardView in _instantiatedCardView)
+            {
+                cardView.Value.SetActive(playerDeck.Any(p => p.status.name == cardView.Key));
+            }
+            
+            gameObject.SetActive(true);
         }
 
         public void DisplayUpgradeDialog(UnitStatus[] updateUnit)
@@ -64,6 +85,7 @@ namespace Scenes.MainScene.Upgrade
                 var instance = Instantiate(_unitView, _unitBaseTransform);
                 instance.Init(unit);
                 _instatiatedView.Add(unit);
+                _instantiatedCardView.Add(unit.name, instance.gameObject);
                 var button = instance.gameObject.AddComponent<Button>();
                 button.OnClickAsObservable().Subscribe(_ => _baseSelectUnit.OnNext(unit.name)).AddTo(this);
             }

@@ -19,7 +19,7 @@ namespace Scenes.MainScene.Upgrade
             _upgradeInfos = Resources.Load<UnitUpgradeInfoPool>("Value/UnitUpgradePool").upgradeInfos;
         }
 
-        public void BeginUpgradeUnit(String unitName)
+        public void BeginUpgradeUnit(string unitName)
         {
             var targetBaseUnit = _upgradeInfos.FirstOrDefault(u => u.baseUnit.status.name == unitName);
             if (targetBaseUnit == null || targetBaseUnit == default) return;

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using Scenes.MainScene.Relic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,6 +7,7 @@ using UnityEngine.SceneManagement;
 using Scenes.Battle;
 using Scenes.EventScene;
 using System.Linq;
+using Scenes.MainScene.Upgrade;
 
 public class DevelopPanel : MonoBehaviour
 {
@@ -28,7 +27,7 @@ public class DevelopPanel : MonoBehaviour
     [SerializeField] private Button _eventButton;
     [SerializeField] private Transform _panelTransform;
     [SerializeField] private Transform _panelButtonTransform;
-    [SerializeField] private GameObject _upgradeWindow;
+    [SerializeField] private UnitUpgradeView _upgradeWindow;
     void Start()
     {
         Init();
@@ -38,7 +37,7 @@ public class DevelopPanel : MonoBehaviour
     {
         _closeButton.OnClickAsObservable().Where(_ => !IsActiveOtherScene()).Subscribe(_ => gameObject.SetActive(false)).AddTo(this);
         _openButton.OnClickAsObservable().Where(_ => !IsActiveOtherScene()).Subscribe(_ => gameObject.SetActive(true)).AddTo(this);
-        _upgradeButton.OnClickAsObservable().Where(_ => !IsActiveOtherScene()).Subscribe(_ => _upgradeWindow.SetActive(true)).AddTo(this);
+        _upgradeButton.OnClickAsObservable().Where(_ => !IsActiveOtherScene()).Subscribe(_ => _upgradeWindow.OpenPanel()).AddTo(this);
         _get100MoneyButton.OnClickAsObservable().Where(_ => !IsActiveOtherScene()).Subscribe(_ => PlayerSingleton.Instance.ChangeMoney(100));
         _get100PopularityButton.OnClickAsObservable().Where(_ => !IsActiveOtherScene()).Subscribe(_ => PlayerSingleton.Instance.ChangePopularity(100));
         _get1000MoneyButton.OnClickAsObservable().Where(_ => !IsActiveOtherScene()).Subscribe(_ => PlayerSingleton.Instance.ChangeMoney(1000));
