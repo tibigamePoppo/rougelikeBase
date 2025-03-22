@@ -23,34 +23,41 @@ public class BattleFormationClac
         meleeUnitsPoints.Add(path[0]);
         rangeUnitsPoints.Add(path[0] - (path[0] - center) / 4);
         float remainingDistance = meleeInterval;
-        for (int i = 0; i < path.Length - 1; i++)
+        if (meleeUnits.Length > 0)
         {
-            Vector3 start = path[i];
-            Vector3 end = path[i + 1];
-            float segmentLength = Vector3.Distance(start, end);
-            while (remainingDistance <= segmentLength)
+            for (int i = 0; i < path.Length - 1; i++)
             {
-                Vector3 point = Vector3.Lerp(start, end, remainingDistance / segmentLength);
-                meleeUnitsPoints.Add(point);
-                remainingDistance += meleeInterval;
+                Vector3 start = path[i];
+                Vector3 end = path[i + 1];
+                float segmentLength = Vector3.Distance(start, end);
+                while (remainingDistance <= segmentLength)
+                {
+                    Vector3 point = Vector3.Lerp(start, end, remainingDistance / segmentLength);
+                    meleeUnitsPoints.Add(point);
+                    remainingDistance += meleeInterval;
+                }
+                remainingDistance -= segmentLength;
             }
-            remainingDistance -= segmentLength;
         }
-        remainingDistance = rangenterval;
-        for (int i = 0; i < path.Length - 1; i++)
+        if(rangeUnits.Length > 0)
         {
-            Vector3 start = path[i];
-            Vector3 end = path[i + 1];
-            float segmentLength = Vector3.Distance(start, end);
+            remainingDistance = rangenterval;
+            for (int i = 0; i < path.Length - 1; i++)
+            {
+                Vector3 start = path[i];
+                Vector3 end = path[i + 1];
+                float segmentLength = Vector3.Distance(start, end);
 
-            while (remainingDistance <= segmentLength)
-            {
-                Vector3 point = Vector3.Lerp(start, end, remainingDistance / segmentLength);
-                rangeUnitsPoints.Add(point - (point - center) / 4);
-                remainingDistance += rangenterval;
+                while (remainingDistance <= segmentLength)
+                {
+                    Vector3 point = Vector3.Lerp(start, end, remainingDistance / segmentLength);
+                    rangeUnitsPoints.Add(point - (point - center) / 4);
+                    remainingDistance += rangenterval;
+                }
+                remainingDistance -= segmentLength;
             }
-            remainingDistance -= segmentLength;
         }
+
 
         meleeUnitsPoints.Add(path.Last());
         rangeUnitsPoints.Add(path.Last() - (path.Last() - center) / 4);
@@ -73,37 +80,42 @@ public class BattleFormationClac
         meleeUnitsPoints.Add(path[0]);
         rangeUnitsPoints.Add(path[0] + rightAngleDir);
 
-        float melleeRemainingDistance = meleeInterval;
-        for (int i = 0; i < path.Length - 1; i++)
+        if (meleeUnits.Length > 0)
         {
-            Vector3 start = path[i];
-            Vector3 end = path[i + 1];
-            float segmentLength = Vector3.Distance(start, end);
-
-            while (melleeRemainingDistance <= segmentLength)
+            float melleeRemainingDistance = meleeInterval;
+            for (int i = 0; i < path.Length - 1; i++)
             {
-                Vector3 point = Vector3.Lerp(start, end, melleeRemainingDistance / segmentLength);
-                meleeUnitsPoints.Add(point);
-                melleeRemainingDistance += meleeInterval;
+                Vector3 start = path[i];
+                Vector3 end = path[i + 1];
+                float segmentLength = Vector3.Distance(start, end);
+
+                while (melleeRemainingDistance <= segmentLength)
+                {
+                    Vector3 point = Vector3.Lerp(start, end, melleeRemainingDistance / segmentLength);
+                    meleeUnitsPoints.Add(point);
+                    melleeRemainingDistance += meleeInterval;
+                }
+                melleeRemainingDistance -= segmentLength;
             }
-            melleeRemainingDistance -= segmentLength;
         }
-        float rangeRemainingDistance = rangenterval;
-        for (int i = 0; i < path.Length - 1; i++)
+        if (rangeUnits.Length > 0)
         {
-            Vector3 start = path[i];
-            Vector3 end = path[i + 1];
-            float segmentLength = Vector3.Distance(start, end);
-
-            while (rangeRemainingDistance <= segmentLength)
+            float rangeRemainingDistance = rangenterval;
+            for (int i = 0; i < path.Length - 1; i++)
             {
-                Vector3 point = Vector3.Lerp(start, end, rangeRemainingDistance / segmentLength);
-                rangeUnitsPoints.Add(point + rightAngleDir);
-                rangeRemainingDistance += rangenterval;
-            }
-            rangeRemainingDistance -= segmentLength;
-        }
+                Vector3 start = path[i];
+                Vector3 end = path[i + 1];
+                float segmentLength = Vector3.Distance(start, end);
 
+                while (rangeRemainingDistance <= segmentLength)
+                {
+                    Vector3 point = Vector3.Lerp(start, end, rangeRemainingDistance / segmentLength);
+                    rangeUnitsPoints.Add(point + rightAngleDir);
+                    rangeRemainingDistance += rangenterval;
+                }
+                rangeRemainingDistance -= segmentLength;
+            }
+        }
         meleeUnitsPoints.Add(path.Last());
         rangeUnitsPoints.Add(path.Last() + rightAngleDir);
         SetPosition(meleeUnits,rangeUnits,meleeUnitsPoints, rangeUnitsPoints);

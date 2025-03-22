@@ -2888,7 +2888,7 @@ MonoBehaviour:
   _eventButton: {fileID: 2091009361}
   _panelTransform: {fileID: 875150254}
   _panelButtonTransform: {fileID: 576498784}
-  _upgradeWindow: {fileID: 401930731}
+  _upgradeWindow: {fileID: 401930734}
 --- !u!114 &875150256
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -40,8 +40,8 @@ namespace Scenes.Battle
 
         public IObservable<bool> IsPlayerWinBattle => _isPlayerWinBattle;
 
-        private int[] _enemySpawnPaturnValue = new int[] { 1, 2 };
-        private float[] _enemySpawnPaturnWeight = new float[] { 4f, 1f };
+        private int[] _enemySpawnPaturnValue = new int[] { 0, 1, 2, 3 };
+        private float[] _enemySpawnPaturnWeight = new float[] { 1f, 1f, 1f, 1f };
 
         public void Init(EnemyLevel enemyLevel, List<UnitData> playerCards,int stageDepth, EnemyData[] preliminaryEnemyData = null)
         {
@@ -130,6 +130,8 @@ namespace Scenes.Battle
                 }
             }).AddTo(this);
 
+            int enemySpawnPaturn = WeightRandom.RandomInt(_enemySpawnPaturnValue, _enemySpawnPaturnWeight);
+            _battleInitialFormationView.EnemyInitialFormation(enemySpawnPaturn, enemyModel);
             InitalFormation(playerPresenter.Concat(enemyPresenter).ToList()).Forget();
         }
 
@@ -170,23 +172,9 @@ namespace Scenes.Battle
         private List<CharacterUnitPresenter> EnemyUnitSpawn(UnitData[] enemyData)
         {
             List<CharacterUnitPresenter> enemyList = new List<CharacterUnitPresenter>();
-            int enemySpawnPaturn = WeightRandom.RandomInt(_enemySpawnPaturnValue, _enemySpawnPaturnWeight);
             foreach (var enemy in enemyData)
             {
                 Vector3 random = Vector3.zero;
-                switch (enemySpawnPaturn)
-                {
-                    case 1:
-                        random = new Vector3(UnityEngine.Random.Range(-5, 5), 0, 30 + UnityEngine.Random.Range(-5, 5)); 
-                        break;
-                    case 2:
-                        random = new Vector3(UnityEngine.Random.Range(-5, 5), 0, UnityEngine.Random.Range(-5, 5)).normalized * 15;
-                        break;
-                    default:
-                        random = new Vector3(UnityEngine.Random.Range(-5, 5), 0, UnityEngine.Random.Range(-5, 5)).normalized * 15;
-                        break;
-                }
-
                 var instanceUnit = Instantiate(enemy.prefab, random, Quaternion.identity, _playerUnitSpawnTransfrom);
                 enemyList.Add(instanceUnit.Init(enemy.status));
             }
