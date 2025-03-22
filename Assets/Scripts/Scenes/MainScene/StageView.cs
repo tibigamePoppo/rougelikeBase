@@ -12,10 +12,10 @@ namespace Scenes.MainScene
         [SerializeField] private Transform _stagContent;
         [SerializeField] private UnitView _unit;
         [SerializeField] private CharacterIconView _iconView;
+        [SerializeField] private StageStartView _stageStartView;
+        [SerializeField] private StageEndView _stageEndView;
         [SerializeField] private GameObject _layerUnit;
         [SerializeField] private UnitLineView _unitLineView;
-        [SerializeField] private GameObject _stageClearText;
-        [SerializeField] private GameObject _stageDefeatText;
 
         private List<UnitView> _instanceEventUnitList = new List<UnitView>();
         private Subject<EventUnit> _eventForword = new Subject<EventUnit>();
@@ -23,8 +23,8 @@ namespace Scenes.MainScene
 
         public void Init(List<EventUnit>[] unitInfo)
         {
-            _stageClearText.SetActive(false);
-            _stageDefeatText.SetActive(false);
+            _stageStartView.Init();
+            _stageEndView.Init();
             InstanceUnits(unitInfo);
             LinqUnitLine();
             SceneManager.LoadScene("FadeSceneEffect", LoadSceneMode.Additive);
@@ -58,11 +58,11 @@ namespace Scenes.MainScene
                         {
                             if (isWin)
                             {
-                                _stageClearText.SetActive(true);
+                                _stageEndView.ActiveWindow(EndType.Win);
                             }
                             else
                             {
-                                _stageDefeatText.SetActive(true);
+                                _stageEndView.ActiveWindow(EndType.Defeat);
 
                             }
                         }).AddTo(this);
