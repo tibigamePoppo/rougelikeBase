@@ -6580,6 +6580,7 @@ MonoBehaviour:
   _hpGauge: {fileID: 1495715375255149350}
   _shieldGauge: {fileID: 2614348425410323408}
   _groupColorCircle: {fileID: 1996558585899699940}
+  _footStepPrefab: {fileID: 4835017225919833730, guid: 842bcadce2faf4538938b5bf477ebf8b, type: 3}
   _attackEffect:
   - {fileID: 4609201629555521580}
   _damagePopup: {fileID: 4369320805400402653, guid: d5774a1a2ac5a3749b62718d9252ec02, type: 3}

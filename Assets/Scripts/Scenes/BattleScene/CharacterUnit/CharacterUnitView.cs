@@ -18,10 +18,12 @@ namespace Scenes.Battle.UnitCharacter
         [SerializeField] private Image _hpGauge;
         [SerializeField] private Image _shieldGauge;
         [SerializeField] private GameObject _groupColorCircle;
+        [SerializeField] private GameObject _footStepPrefab;
         [SerializeField] private EffectEmitBase[] _attackEffect;
         [SerializeField] private TextMeshProUGUI _damagePopup;
         [SerializeField] private Transform _popupPosition;
         [SerializeField] private Transform _lookCamera;
+
         private Vector3 _randomPupupOffset = new Vector3(0.5f, 0.5f, 0);
         private BoxCollider _collider;
         private NavMeshAgent _agent;
@@ -99,6 +101,13 @@ namespace Scenes.Battle.UnitCharacter
         private void OnAttackEffect(AnimationEvent animationEvent)
         {
             //_attackEffect.Emit(Vector3.zero);
+        }
+
+        private void FootStep(AnimationEvent animationEvent)
+        {
+            if (_footStepPrefab == null) return;
+            var footStep = Instantiate(_footStepPrefab, transform);
+            Destroy(footStep, 2);
         }
 
         public void HideHpGauge()
