@@ -41,8 +41,6 @@ namespace Scenes.Battle
             {
                 _pastUnitName = dragUnit.Value;
             }
-
-            Debug.Log($"dragUnit {dragUnit}");
         }
 
         public void OnDrag(PointerEventData eventData)
@@ -79,21 +77,18 @@ namespace Scenes.Battle
             switch (command)
             {
                 case MoveCommand.Charge:
-                    Debug.Log("Command Charge!");
                     foreach (var unit in commandUnits)
                     {
                         unit.Charge();
                     }
                     break;
                 case MoveCommand.Back:
-                    Debug.Log("Command Back!");
                     foreach (var unit in commandUnits)
                     {
                         unit.Back();
                     }
                     break;
                 case MoveCommand.Lark:
-                    Debug.Log("Command Lark!");
                     foreach (var unit in commandUnits)
                     {
                         unit.Lark();

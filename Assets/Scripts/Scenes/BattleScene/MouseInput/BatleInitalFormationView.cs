@@ -94,8 +94,6 @@ namespace Scenes.Battle
         {
             var _enemyMeleeUnits = units.Where(u => u.WeaponType == MainScene.Player.UnitWeaponType.Melee).OrderBy(u => u.UnitName).Select(u => u.Transform).ToArray();
             var _enemyRangeUnits = units.Where(u => u.WeaponType == MainScene.Player.UnitWeaponType.Range).OrderBy(u => u.UnitName).Select(u => u.Transform).ToArray();
-            Debug.Log($"units {units.Length},{_enemyMeleeUnits.Length},{_enemyRangeUnits.Length}");
-            Debug.Log($"units {units[0].UnitName} {units[0].WeaponType}");
 
             var enemyUnitsScale = 1 + Math.Max(_enemyMeleeUnits.Length, _enemyRangeUnits.Length) / 2;
             Vector3[] path;

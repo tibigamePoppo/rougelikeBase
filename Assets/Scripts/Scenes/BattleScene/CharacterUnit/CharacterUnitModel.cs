@@ -121,6 +121,7 @@ namespace Scenes.Battle.UnitCharacter
         private void CommandCancel()
         {
             _commandTokenSorce?.Cancel();
+            _commandTokenSorce?.Dispose();
             _commandTokenSorce = new CancellationTokenSource();
 
         }
@@ -254,9 +255,9 @@ namespace Scenes.Battle.UnitCharacter
                     ChangeState(CharacterUnitStateType.Move);
                     if (!isHoldFormationPosition)
                     {
-                        if (_moveCommand == MoveCommand.Back) await MoveAtBack(_commandTokenSorce.Token);
+                        if (_moveCommand == MoveCommand.Back) await MoveAtBack();
                         else if (ReactionInEnemy() || _moveCommand == MoveCommand.Charge) MoveAtTarget();
-                        else if (_moveCommand == MoveCommand.Lark) await MoveAtLark(_commandTokenSorce.Token);
+                        else if (_moveCommand == MoveCommand.Lark) await MoveAtLark();
                         else if (!IsMoving()) _moveCommand = MoveCommand.Stop;
                         else MoveAtHoldPosition();
                     }
@@ -281,34 +282,52 @@ namespace Scenes.Battle.UnitCharacter
             _agent.SetDestination(_targetUnit.Transform.position);
         }
 
-        private async UniTask MoveAtBack(CancellationToken token)
+        private async UniTask MoveAtBack()
         {
             Vector3 backDirection = (Transform.position - _targetUnit.Transform.position).normalized;
             float backLength = 10f;
             _agent.SetDestination(Transform.position + backDirection * backLength);
 
-            await UniTask.WaitUntil(() => !IsMoving(), cancellationToken: token);
-            if(_moveCommand == MoveCommand.Back) _moveCommand = MoveCommand.Stop;
+            try
+            {
+                await UniTask.WaitUntil(() => !IsMoving() || _moveCommand != MoveCommand.Back, cancellationToken: _commandTokenSorce.Token);
+            }
+            catch (OperationCanceledException) { }
+            finally
+            {
+                if (_moveCommand == MoveCommand.Back) _moveCommand = MoveCommand.Stop;
+            }
         }
 
-        private async UniTask MoveAtLark(CancellationToken token)
+        private async UniTask MoveAtLark()
         {
             var taregt = GetTarget();
             Vector3 center = taregt.Select(t => t.Transform.position).Aggregate(Vector3.zero, (sum, point) => sum + point) / taregt.Length;
             Vector3 larkDirection = (center - Transform.position).normalized;
-            larkDirection = new Vector3(-larkDirection.x, 0, 0).normalized;
-            Debug.Log(larkDirection);
+            larkDirection = new Vector3(-larkDirection.x, 0, Mathf.Abs(larkDirection.x)).normalized;
 
             float backLength = 10f;
             _agent.SetDestination(Transform.position + larkDirection * backLength);
             float currentDistance = TargetDistance(taregt[taregt.Length - 1]);
-            
-            await UniTask.Delay(TimeSpan.FromSeconds(3), cancellationToken: token);
-            center = taregt.Select(t => t.Transform.position).Aggregate(Vector3.zero, (sum, point) => sum + point) / taregt.Length;
-            var farthestPoint = taregt.Select(t => t.Transform.position).OrderByDescending(point => Vector3.Distance(center, point)).First();
-            _agent.SetDestination(farthestPoint);
-            await UniTask.WaitUntil(() => !IsMoving(_attackRange), cancellationToken: token);
-            _moveCommand = MoveCommand.Charge;
+            try
+            {
+                await UniTask.Delay(TimeSpan.FromSeconds(3), cancellationToken: _commandTokenSorce.Token);
+
+                while (true)
+                {
+                    if (_commandTokenSorce.Token.IsCancellationRequested || !IsMoving(_attackRange) || _moveCommand != MoveCommand.Lark) break;
+                    center = taregt.Select(t => t.Transform.position).Aggregate(Vector3.zero, (sum, point) => sum + point) / taregt.Length;
+                    var farthestPoint = taregt.Select(t => t.Transform.position).OrderByDescending(point => Vector3.Distance(center, point)).First();
+                    _agent.SetDestination(farthestPoint);
+
+                    await UniTask.Delay(TimeSpan.FromSeconds(0.1f));
+                }
+            }
+            catch (OperationCanceledException) { }
+            finally
+            {
+                if (_moveCommand == MoveCommand.Lark) _moveCommand = MoveCommand.Charge;
+            }
         }
 
         private float TargetDistance(CharacterUnitModel model)

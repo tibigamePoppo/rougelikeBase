@@ -7,8 +7,8 @@ public class BattleFormationClac
     public void FormationO(Transform[] meleeUnits,Transform[] rangeUnits, Vector3[] path)
     {
         float circumference = path.Zip(path.Skip(1), Vector3.Distance).Sum();
-        float meleeInterval = circumference / (meleeUnits.Length - 1);
-        float rangenterval = circumference / (rangeUnits.Length - 1);
+        float meleeInterval = circumference / (meleeUnits.Length);
+        float rangenIterval = circumference / (rangeUnits.Length);
         List<Vector3> meleeUnitsPoints = new List<Vector3>();
         List<Vector3> rangeUnitsPoints = new List<Vector3>();
 
@@ -22,9 +22,9 @@ public class BattleFormationClac
 
         meleeUnitsPoints.Add(path[0]);
         rangeUnitsPoints.Add(path[0] - (path[0] - center) / 4);
-        float remainingDistance = meleeInterval;
         if (meleeUnits.Length > 0)
         {
+            float remainingDistance = meleeInterval;
             for (int i = 0; i < path.Length - 1; i++)
             {
                 Vector3 start = path[i];
@@ -41,20 +41,20 @@ public class BattleFormationClac
         }
         if(rangeUnits.Length > 0)
         {
-            remainingDistance = rangenterval;
+            var rangeRemainingDistance = rangenIterval;
             for (int i = 0; i < path.Length - 1; i++)
             {
                 Vector3 start = path[i];
                 Vector3 end = path[i + 1];
                 float segmentLength = Vector3.Distance(start, end);
 
-                while (remainingDistance <= segmentLength)
+                while (rangeRemainingDistance <= segmentLength)
                 {
-                    Vector3 point = Vector3.Lerp(start, end, remainingDistance / segmentLength);
+                    Vector3 point = Vector3.Lerp(start, end, rangeRemainingDistance / segmentLength);
                     rangeUnitsPoints.Add(point - (point - center) / 4);
-                    remainingDistance += rangenterval;
+                    rangeRemainingDistance += rangenIterval;
                 }
-                remainingDistance -= segmentLength;
+                rangeRemainingDistance -= segmentLength;
             }
         }
 
