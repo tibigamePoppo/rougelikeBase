@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
 using Scenes.MainScene.Player;
@@ -246,7 +244,6 @@ namespace Scenes.Battle.UnitCharacter
                 }
                 else if (_moveCommand.Value == MoveCommand.Stop && !ReactionInEnemy() && !IsMoving()) // Idle
                 {
-                    //if (_holdPosition != Transform.position) _holdPosition = Transform.position;
                     _agent.isStopped = true;
                     ChangeState(CharacterUnitStateType.Idle);
                 }
@@ -307,8 +304,8 @@ namespace Scenes.Battle.UnitCharacter
             Vector3 larkDirection = (center - Transform.position).normalized;
             larkDirection = new Vector3(-larkDirection.x, 0, Mathf.Abs(larkDirection.x)).normalized;
 
-            float backLength = 10f;
-            _agent.SetDestination(Transform.position + larkDirection * backLength);
+            float larkLength = 10f;
+            _agent.SetDestination(Transform.position + larkDirection * larkLength);
             float currentDistance = TargetDistance(taregt[taregt.Length - 1]);
             try
             {
@@ -316,12 +313,11 @@ namespace Scenes.Battle.UnitCharacter
 
                 while (true)
                 {
-                    if (_commandTokenSorce.Token.IsCancellationRequested || !IsMoving(_attackRange) || _moveCommand.Value != MoveCommand.Lark) break;
-                    center = taregt.Select(t => t.Transform.position).Aggregate(Vector3.zero, (sum, point) => sum + point) / taregt.Length;
-                    var farthestPoint = taregt.Select(t => t.Transform.position).OrderByDescending(point => Vector3.Distance(center, point)).First();
-                    _agent.SetDestination(farthestPoint);
-
+                    var backestPoint = taregt.Select(t => t.Transform.position).OrderByDescending(point => point.z).First();
+                    _agent.SetDestination(backestPoint);
                     await UniTask.Delay(TimeSpan.FromSeconds(0.1f));
+                    if (_commandTokenSorce.Token.IsCancellationRequested || !IsMoving(_attackRange) || _moveCommand.Value != MoveCommand.Lark) break;
+
                 }
             }
             catch (OperationCanceledException) { }
