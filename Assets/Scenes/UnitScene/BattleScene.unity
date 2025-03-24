@@ -2247,7 +2247,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa35c3287f72345e9a73b733272f50ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cardView: {fileID: 6446685985685881535, guid: 1258777014be748729945aaff0da8340, type: 3}
+  _cardView: {fileID: 2177419707801081797, guid: 52be64863894a4046a73cfa76f10ea6d, type: 3}
   _cardTransform: {fileID: 1438255255}
   _commandView: {fileID: 287643264}
   _chargeCommand: {fileID: 793582111}
@@ -2488,7 +2488,7 @@ MonoBehaviour:
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 3
+  m_ChildAlignment: 4
   m_Spacing: 0
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1

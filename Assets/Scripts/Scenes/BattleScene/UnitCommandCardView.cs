@@ -11,14 +11,14 @@ namespace Scenes.Battle
 {
     public class UnitCommandCardView : MonoBehaviour,IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler
     {
-        [SerializeField] private CardView _cardView;
+        [SerializeField] private CommandCardView _cardView;
         [SerializeField] private HorizontalLayoutGroup _cardTransform;
         [SerializeField] private GameObject _commandView;
         [SerializeField] private GameObject _chargeCommand;
         [SerializeField] private GameObject _backCommand;
         [SerializeField] private GameObject _larkCommand;
 
-        private Dictionary<GameObject,string> card = new Dictionary<GameObject, string>();
+        private Dictionary<GameObject,string> _commandUnitDictionary = new Dictionary<GameObject, string>();
         private string _pastUnitName = null;
         private CharacterUnitModel[] _playerCharacters;
         private const float cardWidth = 300;
@@ -36,7 +36,7 @@ namespace Scenes.Battle
         public void OnBeginDrag(PointerEventData eventData)
         {
             _commandView.SetActive(true);
-            var dragUnit = card.FirstOrDefault(c => c.Key == eventData.pointerEnter);
+            var dragUnit = _commandUnitDictionary.FirstOrDefault(c => c.Key == eventData.pointerEnter);
             if(dragUnit.Key != default && dragUnit.Key != null)
             {
                 _pastUnitName = dragUnit.Value;
@@ -104,10 +104,10 @@ namespace Scenes.Battle
             foreach (var item in units)
             {
                 var unitObject = Instantiate(_cardView, _cardTransform.transform);
-                unitObject.Init(item.status);
-                card.Add(unitObject.gameObject,item.status.name);
+                unitObject.Init(item.status, _playerCharacters.FirstOrDefault(u => u.UnitName == item.status.name));
+                _commandUnitDictionary.Add(unitObject.gameObject,item.status.name);
             }
-            if(card.Count > _layoutWidth / cardWidth)
+            if(_commandUnitDictionary.Count > _layoutWidth / cardWidth)
             {
                 FixLayoutWidth();
             }
@@ -115,8 +115,8 @@ namespace Scenes.Battle
 
         private void FixLayoutWidth()
         {
-            float diff = card.Count * cardWidth - _layoutWidth;
-            float overlap = diff / (card.Count - 1);
+            float diff = _commandUnitDictionary.Count * cardWidth - _layoutWidth;
+            float overlap = diff / (_commandUnitDictionary.Count - 1);
             _cardTransform.spacing = -overlap;
         }
     }
