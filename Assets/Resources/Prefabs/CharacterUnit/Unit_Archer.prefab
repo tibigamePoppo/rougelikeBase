@@ -6587,7 +6587,7 @@ MonoBehaviour:
   - {fileID: 4609201629555521580}
   - {fileID: 632911764117480901}
   - {fileID: 963031540196172142}
-  _damagePopup: {fileID: 4369320805400402653, guid: d5774a1a2ac5a3749b62718d9252ec02, type: 3}
+  _damagePopup: {fileID: 1875170086829103877, guid: d5774a1a2ac5a3749b62718d9252ec02, type: 3}
   _popupPosition: {fileID: 6178436264845131363}
   _lookCamera: {fileID: 8465520327612040324}
 --- !u!65 &2522297024425728205
@@ -20340,7 +20340,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3395392794124123934, guid: 926f2798d327d4f22ab6c4924edb51eb, type: 3}
       propertyPath: m_Color.g
-      value: 0.6779736
+      value: 0.6784314
       objectReference: {fileID: 0}
     - target: {fileID: 3395392794124123934, guid: 926f2798d327d4f22ab6c4924edb51eb, type: 3}
       propertyPath: m_Color.r

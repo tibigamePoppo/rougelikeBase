@@ -3351,7 +3351,7 @@ MonoBehaviour:
   _footStepPrefab: {fileID: 4835017225919833730, guid: 842bcadce2faf4538938b5bf477ebf8b, type: 3}
   _attackEffect:
   - {fileID: 8836900827440633381}
-  _damagePopup: {fileID: 4369320805400402653, guid: d5774a1a2ac5a3749b62718d9252ec02, type: 3}
+  _damagePopup: {fileID: 1875170086829103877, guid: d5774a1a2ac5a3749b62718d9252ec02, type: 3}
   _popupPosition: {fileID: 8630601150993126291}
   _lookCamera: {fileID: 6270040837599783284}
 --- !u!65 &6828477051118364265
@@ -22446,7 +22446,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3170523350939412646, guid: 926f2798d327d4f22ab6c4924edb51eb, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1
+      value: -80
       objectReference: {fileID: 0}
     - target: {fileID: 3395392794124123934, guid: 926f2798d327d4f22ab6c4924edb51eb, type: 3}
       propertyPath: m_Color.b

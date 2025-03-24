@@ -17298,7 +17298,7 @@ MonoBehaviour:
   _footStepPrefab: {fileID: 4835017225919833730, guid: 842bcadce2faf4538938b5bf477ebf8b, type: 3}
   _attackEffect:
   - {fileID: 5669626616391860798}
-  _damagePopup: {fileID: 4369320805400402653, guid: d5774a1a2ac5a3749b62718d9252ec02, type: 3}
+  _damagePopup: {fileID: 1875170086829103877, guid: d5774a1a2ac5a3749b62718d9252ec02, type: 3}
   _popupPosition: {fileID: 6283200570076823077}
   _lookCamera: {fileID: 8644605943686087874}
 --- !u!65 &-1645021217909014134

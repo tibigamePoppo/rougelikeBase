@@ -9784,7 +9784,7 @@ MonoBehaviour:
   _footStepPrefab: {fileID: 4835017225919833730, guid: 842bcadce2faf4538938b5bf477ebf8b, type: 3}
   _attackEffect:
   - {fileID: 2331735268414180183}
-  _damagePopup: {fileID: 4369320805400402653, guid: d5774a1a2ac5a3749b62718d9252ec02, type: 3}
+  _damagePopup: {fileID: 1875170086829103877, guid: d5774a1a2ac5a3749b62718d9252ec02, type: 3}
   _popupPosition: {fileID: 8789188447941774518}
   _lookCamera: {fileID: 6430259273067886161}
 --- !u!65 &8440868238567326850

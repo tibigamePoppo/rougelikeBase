@@ -41,6 +41,7 @@ namespace Scenes.Battle.UnitCharacter
         private Color orangeColor = new Color(1, 0.8706f, 0.2392f);
         private Color pinkColor = new Color(0.8745f,0.3216f,0.5255f);
         private Color blueColor = new Color(0.2392f, 0.4078f, 1f);
+        private Color redColor = new Color(1f, 0.3f, 0.32f); 
 
         private CancellationTokenSource _commandTokenSorce;
 
@@ -171,7 +172,9 @@ namespace Scenes.Battle.UnitCharacter
             {
                 _health.Value = _health.Value - damage <= 0 ? 0 : _health.Value - damage;
             }
-            _getDamage.OnNext(new DamageArg(damage, color));
+            if (_unitGroup == UnitGroup.Player) color = redColor;
+            var damageAnimation = _unitGroup == UnitGroup.Player ? DamageAnimation.Shake : DamageAnimation.Jump;
+            _getDamage.OnNext(new DamageArg(damage, color, damageAnimation));
             if (_health.Value <= 0)
             {
                 ChangeState(CharacterUnitStateType.Dead);
@@ -385,10 +388,18 @@ namespace Scenes.Battle.UnitCharacter
     {
         public float damage;
         public Color color;
-        public DamageArg(float damage,Color color)
+        public DamageAnimation damageAnimation;
+        public DamageArg(float damage,Color color, DamageAnimation damageAnimation)
         {
             this.damage = damage;
             this.color = color;
+            this.damageAnimation = damageAnimation;
         }
+    }
+
+    public enum DamageAnimation
+    {
+        Jump,
+        Shake
     }
 }

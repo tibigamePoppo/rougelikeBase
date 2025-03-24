@@ -58,6 +58,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94572864f625c0945bf3e06a09947d09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _damagePopup: {fileID: 4369320805400402653}
 --- !u!114 &4369320805400402653
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -105,8 +106,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 72
-  m_fontSizeBase: 72
+  m_fontSize: 40
+  m_fontSizeBase: 40
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

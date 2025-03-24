@@ -328,8 +328,8 @@ Camera:
   near clip plane: 0.3
   far clip plane: 60
   field of view: 60
-  orthographic: 0
-  orthographic size: 100
+  orthographic: 1
+  orthographic size: 15
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
@@ -353,13 +353,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 177403631}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.5, y: 0, z: 0, w: 0.8660254}
-  m_LocalPosition: {x: 0, y: 25, z: -5}
+  m_LocalRotation: {x: 0.5735764, y: 0, z: 0, w: 0.8191521}
+  m_LocalPosition: {x: 0, y: 25, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 60, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 70, y: 0, z: 0}
 --- !u!114 &177403635
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -372,6 +372,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6cca077a34b34c219935dc352efb642, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _battleCamera: {fileID: 177403633}
 --- !u!1001 &189869731
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -390,7 +391,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1939514935419584345, guid: 9efab5ba22815485ab3df355bfa3eda9, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 14.84
       objectReference: {fileID: 0}
     - target: {fileID: 1939514935419584345, guid: 9efab5ba22815485ab3df355bfa3eda9, type: 3}
       propertyPath: m_LocalRotation.w
@@ -494,7 +495,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1939514935419584345, guid: 7f6373d8ba1ba4bd991fd076eb6bbd5d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 8.200001
       objectReference: {fileID: 0}
     - target: {fileID: 1939514935419584345, guid: 7f6373d8ba1ba4bd991fd076eb6bbd5d, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2640,7 +2641,6 @@ MonoBehaviour:
   _onBattleFormationView: {fileID: 865210730}
   _unitCommandCardView: {fileID: 1346303347}
   _battlReadyButton: {fileID: 1895650621}
-  _battleCamera: {fileID: 177403633}
 --- !u!1 &1627055530
 GameObject:
   m_ObjectHideFlags: 0

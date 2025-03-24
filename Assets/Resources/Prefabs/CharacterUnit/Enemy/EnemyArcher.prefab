@@ -2466,7 +2466,7 @@ MonoBehaviour:
   _footStepPrefab: {fileID: 4835017225919833730, guid: 842bcadce2faf4538938b5bf477ebf8b, type: 3}
   _attackEffect:
   - {fileID: 4609201629555521580}
-  _damagePopup: {fileID: 4369320805400402653, guid: d5774a1a2ac5a3749b62718d9252ec02, type: 3}
+  _damagePopup: {fileID: 1875170086829103877, guid: d5774a1a2ac5a3749b62718d9252ec02, type: 3}
   _popupPosition: {fileID: 4091734413966869507}
   _lookCamera: {fileID: 1733151570354945764}
 --- !u!65 &2522297024425728205
@@ -7788,6 +7788,18 @@ PrefabInstance:
     - target: {fileID: 865072084909799949, guid: 926f2798d327d4f22ab6c4924edb51eb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3395392794124123934, guid: 926f2798d327d4f22ab6c4924edb51eb, type: 3}
+      propertyPath: m_Color.b
+      value: 0.4862745
+      objectReference: {fileID: 0}
+    - target: {fileID: 3395392794124123934, guid: 926f2798d327d4f22ab6c4924edb51eb, type: 3}
+      propertyPath: m_Color.g
+      value: 0.43529412
+      objectReference: {fileID: 0}
+    - target: {fileID: 3395392794124123934, guid: 926f2798d327d4f22ab6c4924edb51eb, type: 3}
+      propertyPath: m_Color.r
+      value: 0.83137256
       objectReference: {fileID: 0}
     - target: {fileID: 7633206199017897844, guid: 926f2798d327d4f22ab6c4924edb51eb, type: 3}
       propertyPath: m_Name

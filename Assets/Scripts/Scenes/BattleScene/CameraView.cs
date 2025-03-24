@@ -6,9 +6,12 @@ using UniRx.Triggers;
 
 public class CameraView : MonoBehaviour
 {
+    [SerializeField] private Camera _battleCamera;
     private float _moveSpeed = 15f;
     private Vector3 moveDirection;
     private float edgeThreshold = 0.05f; // 画面端と判定する割合（5%）
+    private const float MAXCAMERAVIEW = 25;
+    private const float MINCAMERAVIEW = 10;
 
     void Start()
     {
@@ -38,5 +41,12 @@ public class CameraView : MonoBehaviour
                 moveDirection.z = 1;
             transform.position += moveDirection * _moveSpeed * Time.deltaTime;
         }).AddTo(this);
+        this.UpdateAsObservable()
+            .Where(_ => Input.GetKey(KeyCode.DownArrow) && _battleCamera.orthographicSize >= MINCAMERAVIEW)
+            .Subscribe(_ => _battleCamera.orthographicSize -= 5f * Time.deltaTime).AddTo(this);
+
+        this.UpdateAsObservable()
+            .Where(_ => Input.GetKey(KeyCode.UpArrow) && _battleCamera.orthographicSize <= MAXCAMERAVIEW)
+            .Subscribe(_ => _battleCamera.orthographicSize += 5f * Time.deltaTime).AddTo(this);
     }
 }

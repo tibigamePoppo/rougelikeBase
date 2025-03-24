@@ -20,11 +20,11 @@ namespace Scenes.Battle.UnitCharacter
         [SerializeField] private GameObject _groupColorCircle;
         [SerializeField] private GameObject _footStepPrefab;
         [SerializeField] private EffectEmitBase[] _attackEffect;
-        [SerializeField] private TextMeshProUGUI _damagePopup;
+        [SerializeField] private DamagePopUp _damagePopup;
         [SerializeField] private Transform _popupPosition;
         [SerializeField] private Transform _lookCamera;
 
-        private Vector3 _randomPupupOffset = new Vector3(0.5f, 0.5f, 0);
+        private Vector3 _randomPupupOffset = new Vector3(0.8f, 0.8f, 0);
         private BoxCollider _collider;
         private NavMeshAgent _agent;
 
@@ -83,14 +83,13 @@ namespace Scenes.Battle.UnitCharacter
         {
             Vector3 noise = new Vector3(Random.Range(-_randomPupupOffset.x, _randomPupupOffset.x),Random.Range(-_randomPupupOffset.y, _randomPupupOffset.y), Random.Range(-_randomPupupOffset.z, _randomPupupOffset.z));
             var popupText = Instantiate(_damagePopup, _popupPosition.transform.position + noise, _popupPosition.rotation, _popupPosition);
-            popupText.text = value.damage.ToString();
-            popupText.color = value.color;
+            popupText.Init(value);
         }
         public void HealPopUp(float value)
         {
             var popupText = Instantiate(_damagePopup, _popupPosition);
-            popupText.text = value.ToString();
-            popupText.color = new Color(0.4352f, 0.9255f, 0.4667f);
+            DamageArg arg = new DamageArg(value, new Color(0.4352f, 0.9255f, 0.4667f), DamageAnimation.Jump);
+            popupText.Init(arg);
         }
 
         public void AttackEffect(AttackArg arg)
