@@ -6423,6 +6423,7 @@ GameObject:
   - component: {fileID: 1853526014605065979}
   - component: {fileID: 4039030071854802766}
   - component: {fileID: 2522297024425728205}
+  - component: {fileID: 6656911742442111571}
   m_Layer: 0
   m_Name: Unit_Archer
   m_TagString: Untagged
@@ -6611,6 +6612,24 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.6, y: 1.5, z: 0.6}
   m_Center: {x: 0, y: 0.75, z: 0}
+--- !u!114 &6656911742442111571
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3670675872048653453}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 1
+  outlineColor: {r: 0.9433962, g: 0.8928794, b: 0.3426486, a: 1}
+  outlineWidth: 6
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &3909436495536018073
 GameObject:
   m_ObjectHideFlags: 0

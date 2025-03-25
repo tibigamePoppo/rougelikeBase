@@ -34,6 +34,7 @@ namespace Scenes.Battle.UnitCharacter
             _model.OnDamage.Skip(1).Subscribe(d => _view.DamagePopUp(d)).AddTo(this);
             _model.OnHeal.Skip(1).Subscribe(h => _view.HealPopUp(h)).AddTo(this);
             _model.OnAttackTarget.Subscribe(v => _view.AttackEffect(v)).AddTo(this);
+            _model.OnIsSelect.Subscribe(s => _view.IsSelect(s)).AddTo(this);
             return this;
         }
 

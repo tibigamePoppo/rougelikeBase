@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 namespace Scenes.Battle
 {
-    public class UnitCommandCardView : MonoBehaviour,IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler
+    public class UnitCommandCardView : MonoBehaviour,IPointerEnterHandler,IPointerExitHandler,IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler
     {
         [SerializeField] private CommandCardView _cardView;
         [SerializeField] private HorizontalLayoutGroup _cardTransform;
@@ -71,6 +71,32 @@ namespace Scenes.Battle
             }
         }
 
+        public void OnPointerEnter(PointerEventData eventData)
+        {
+            var dragUnit = _commandUnitDictionary.FirstOrDefault(c => c.Key == eventData.pointerEnter);
+            if (dragUnit.Key != default && dragUnit.Key != null)
+            {
+                var commandUnits = _playerCharacters.Where(u => u.UnitName == dragUnit.Value).ToArray();
+                foreach (var commandUnit in commandUnits)
+                {
+                    commandUnit.IsSelect(true);
+                }
+            }
+        }
+
+        public void OnPointerExit(PointerEventData eventData)
+        {
+            var dragUnit = _commandUnitDictionary.FirstOrDefault(c => c.Key == eventData.pointerEnter);
+            if (dragUnit.Key != default && dragUnit.Key != null)
+            {
+                var commandUnits = _playerCharacters.Where(u => u.UnitName == dragUnit.Value).ToArray();
+                foreach (var commandUnit in commandUnits)
+                {
+                    commandUnit.IsSelect(false);
+                }
+            }
+        }
+
         private void UnitMoveCommand(MoveCommand command)
         {
             var commandUnits = _playerCharacters.Where(u => u.UnitName == _pastUnitName).ToArray();
@@ -119,6 +145,7 @@ namespace Scenes.Battle
             float overlap = diff / (_commandUnitDictionary.Count - 1);
             _cardTransform.spacing = -overlap;
         }
+
     }
 
     public enum MoveCommand

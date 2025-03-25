@@ -38,8 +38,8 @@ namespace Scenes.Battle
 
         public IObservable<bool> IsPlayerWinBattle => _isPlayerWinBattle;
 
-        private int[] _enemySpawnPaturnValue = new int[] { 0, 1, 2, 3 };
-        private float[] _enemySpawnPaturnWeight = new float[] { 1f, 1f, 1f, 1f };
+        private int[] _enemySpawnPaturnValue = new int[] { 0, 1, 2, 3 };//0 is circle, 1 is I formation, 2 is V formatin,3 is A formation
+        private float[] _enemySpawnPaturnWeight = new float[] { 1f, 3f, 2f, 2f };
 
         public void Init(EnemyLevel enemyLevel, List<UnitData> playerCards,int stageDepth, EnemyData[] preliminaryEnemyData = null)
         {

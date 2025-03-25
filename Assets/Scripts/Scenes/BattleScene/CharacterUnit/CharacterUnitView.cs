@@ -27,6 +27,7 @@ namespace Scenes.Battle.UnitCharacter
         private Vector3 _randomPupupOffset = new Vector3(0.8f, 0.8f, 0);
         private BoxCollider _collider;
         private NavMeshAgent _agent;
+        private QuiqkOutline _quiqkOutline = null;
 
         private Animator _animator;
         public Animator Animator { get { return _animator; } }
@@ -42,6 +43,7 @@ namespace Scenes.Battle.UnitCharacter
             _animator = GetComponent<Animator>();
             _animIDSpeed = Animator.StringToHash("Speed");
             _collider = GetComponent<BoxCollider>();
+            _quiqkOutline = GetComponent<QuiqkOutline>();
 
             Scene currentScene = gameObject.scene;
             sceneCamera = GetCameraInScene(currentScene);
@@ -130,6 +132,12 @@ namespace Scenes.Battle.UnitCharacter
                                             .SelectMany(go => go.GetComponentsInChildren<Camera>())
                                             .ToArray();
             return camerasInScene.Length > 0 ? camerasInScene.First() : null;
+        }
+
+        public void IsSelect(bool value )
+        {
+            if (_quiqkOutline == null) return;
+            _quiqkOutline.enabled = value;
         }
     }
 }

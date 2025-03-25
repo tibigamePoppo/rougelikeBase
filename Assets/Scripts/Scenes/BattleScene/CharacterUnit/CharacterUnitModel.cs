@@ -31,6 +31,7 @@ namespace Scenes.Battle.UnitCharacter
         private ReactiveProperty<float> _shield = new ReactiveProperty<float>();
         private Subject<DamageArg> _getDamage = new Subject<DamageArg>();
         private Subject<float> _getHeal = new Subject<float>();
+        private Subject<bool> _isSelect = new Subject<bool>();
         private ReactiveProperty<CharacterUnitStateType> _stateType = new ReactiveProperty<CharacterUnitStateType>(CharacterUnitStateType.Idle);
         private Subject<AttackArg> _attackTarget = new Subject<AttackArg>();
         private NavMeshAgent _agent;
@@ -51,6 +52,7 @@ namespace Scenes.Battle.UnitCharacter
         public IObservable<float> OnChangeSheild => _shield;
         public IObservable<DamageArg> OnDamage => _getDamage;
         public IObservable<float> OnHeal => _getHeal;
+        public IObservable<bool> OnIsSelect => _isSelect;
         public IObservable<CharacterUnitStateType> OnChangeStateType => _stateType;
 
         public IObservable<AttackArg> OnAttackTarget => _attackTarget;
@@ -180,8 +182,8 @@ namespace Scenes.Battle.UnitCharacter
                 ChangeState(CharacterUnitStateType.Dead);
                 if(_agent.enabled)
                 {
-                    _commandTokenSorce.Cancel();
-                    _commandTokenSorce.Dispose();
+                    _commandTokenSorce?.Cancel();
+                    _commandTokenSorce?.Dispose();
                     _agent.isStopped = true;
                     _agent.enabled = false;
                 }
@@ -370,6 +372,11 @@ namespace Scenes.Battle.UnitCharacter
         private bool IsMoving(float distance = 0.2f)
         {
             return _agent.remainingDistance > distance;
+        }
+
+        public void IsSelect(bool value)
+        {
+            _isSelect.OnNext(value);
         }
     }
 
