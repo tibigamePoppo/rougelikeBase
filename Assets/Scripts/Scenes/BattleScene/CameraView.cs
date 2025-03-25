@@ -9,7 +9,7 @@ public class CameraView : MonoBehaviour
     [SerializeField] private Camera _battleCamera;
     private float _moveSpeed = 15f;
     private Vector3 moveDirection;
-    private float edgeThreshold = 0.05f; // 画面端と判定する割合（5%）
+    private float edgeThreshold = 0.01f; // 画面端と判定する割合（5%）
     private const float MAXCAMERAVIEW = 25;
     private const float MINCAMERAVIEW = 10;
 

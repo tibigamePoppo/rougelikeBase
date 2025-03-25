@@ -21,7 +21,7 @@ MonoBehaviour:
     hp: 120
     shield: 0
     attack: 25
-    attackRange: 3
+    attackRange: 3.5
     speed: 4
   prefab: {fileID: 1292335481141607037, guid: c278e897333b8404382f283fd7418b60, type: 3}
   shopCost: 0

@@ -82,7 +82,7 @@ namespace Scenes.Battle
 
             _battleInitialFormationView.Init(playerModel);
             _onBattleFormationView.Init();
-            _battleFormationPresenter.Init(playerModel);
+            //_battleFormationPresenter.Init(playerModel);
 
             foreach (var pp in playerPresenter)
             {

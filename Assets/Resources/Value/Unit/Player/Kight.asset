@@ -19,8 +19,9 @@ MonoBehaviour:
     type: 1
     group: 0
     hp: 120
+    shield: 0
     attack: 25
-    attackRange: 1.5
+    attackRange: 2.5
     speed: 2
   prefab: {fileID: 4165283848585114273, guid: 361bfb84a2386424d8087463e0dbb3db, type: 3}
   shopCost: 100
