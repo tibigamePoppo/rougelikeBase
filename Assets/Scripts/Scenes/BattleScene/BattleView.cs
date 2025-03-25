@@ -29,6 +29,7 @@ namespace Scenes.Battle
         [SerializeField] private RewardView _rewardView;
         [SerializeField] private BattleFormationPresenter _battleFormationPresenter;
         [SerializeField] private BatleInitalFormationView _battleInitialFormationView;
+        [SerializeField] private BattleSituationView _battleSituationView;
         [SerializeField] private OnBattleFormationView _onBattleFormationView;
         [SerializeField] private UnitCommandCardView _unitCommandCardView;
         [SerializeField] private Button _battlReadyButton;
@@ -124,6 +125,7 @@ namespace Scenes.Battle
             int enemySpawnPaturn = WeightRandom.RandomInt(_enemySpawnPaturnValue, _enemySpawnPaturnWeight);
             _battleInitialFormationView.EnemyInitialFormation(enemySpawnPaturn, enemyModel);
             InitalFormation(playerPresenter.Concat(enemyPresenter).ToList()).Forget();
+            _battleSituationView.Init(playerModel, enemyModel);
         }
 
         public async UniTaskVoid InitalFormation(List<CharacterUnitPresenter> characters)
