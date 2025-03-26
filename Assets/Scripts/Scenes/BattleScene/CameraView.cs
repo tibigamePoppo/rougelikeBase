@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
 using UniRx.Triggers;
@@ -13,6 +11,11 @@ public class CameraView : MonoBehaviour
     private const float MAXCAMERAVIEW = 25;
     private const float MINCAMERAVIEW = 10;
 
+    private const float MAXY = 25;
+    private const float MINY = -40;
+    private const float MAXX = 25;
+    private const float MINX = -25;
+
     void Start()
     {
         Init();
@@ -22,10 +25,10 @@ public class CameraView : MonoBehaviour
     {
         float screenWidth = Screen.width;
         float screenHeight = Screen.height;
-        this.UpdateAsObservable().Where(_ => Input.GetKey(KeyCode.W)).Subscribe(_ => transform.position += new Vector3(0, 0, 1) * _moveSpeed * Time.deltaTime);
-        this.UpdateAsObservable().Where(_ => Input.GetKey(KeyCode.A)).Subscribe(_ => transform.position += new Vector3(-1, 0, 0) * _moveSpeed * Time.deltaTime);
-        this.UpdateAsObservable().Where(_ => Input.GetKey(KeyCode.S)).Subscribe(_ => transform.position += new Vector3(0, 0, -1) * _moveSpeed * Time.deltaTime);
-        this.UpdateAsObservable().Where(_ => Input.GetKey(KeyCode.D)).Subscribe(_ => transform.position += new Vector3(1, 0, 0) * _moveSpeed * Time.deltaTime);
+        this.UpdateAsObservable().Where(_ => Input.GetKey(KeyCode.W)).Subscribe(_ => UpdateTransfrom(Vector3.forward));
+        this.UpdateAsObservable().Where(_ => Input.GetKey(KeyCode.A)).Subscribe(_ => UpdateTransfrom(Vector3.left));
+        this.UpdateAsObservable().Where(_ => Input.GetKey(KeyCode.S)).Subscribe(_ => UpdateTransfrom(Vector3.back));
+        this.UpdateAsObservable().Where(_ => Input.GetKey(KeyCode.D)).Subscribe(_ => UpdateTransfrom(Vector3.right));
         this.UpdateAsObservable().Subscribe(_ =>
         {
             Vector3 mousePos = Input.mousePosition;
@@ -39,7 +42,8 @@ public class CameraView : MonoBehaviour
                 moveDirection.z = -1;
             if (mousePos.y > screenHeight * (1 - edgeThreshold))  // 上端
                 moveDirection.z = 1;
-            transform.position += moveDirection * _moveSpeed * Time.deltaTime;
+
+            UpdateTransfrom(moveDirection);
         }).AddTo(this);
         this.UpdateAsObservable()
             .Where(_ => Input.GetKey(KeyCode.DownArrow) && _battleCamera.orthographicSize >= MINCAMERAVIEW)
@@ -49,4 +53,12 @@ public class CameraView : MonoBehaviour
             .Where(_ => Input.GetKey(KeyCode.UpArrow) && _battleCamera.orthographicSize <= MAXCAMERAVIEW)
             .Subscribe(_ => _battleCamera.orthographicSize += 5f * Time.deltaTime).AddTo(this);
     }
+
+    private void UpdateTransfrom(Vector3 vector)
+    {
+        if ((vector.x > 0 && transform.position.x >= MAXX) || (vector.x < 0 && transform.position.x <= MINX)) vector.x = 0;
+        if ((vector.z > 0 && transform.position.z >= MAXY) || (vector.z < 0 && transform.position.z <= MINY)) vector.z = 0;
+        transform.position += vector * _moveSpeed * Time.deltaTime;
+    }
+
 }
