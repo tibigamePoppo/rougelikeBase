@@ -23,11 +23,11 @@ namespace Scenes.Battle.UnitCharacter
         [SerializeField] private DamagePopUp _damagePopup;
         [SerializeField] private Transform _popupPosition;
         [SerializeField] private Transform _lookCamera;
+        [SerializeField] private QuiqkOutline _quiqkOutline;
 
         private Vector3 _randomPupupOffset = new Vector3(0.8f, 0.8f, 0);
         private BoxCollider _collider;
         private NavMeshAgent _agent;
-        private QuiqkOutline _quiqkOutline = null;
 
         private Animator _animator;
         public Animator Animator { get { return _animator; } }
@@ -43,7 +43,6 @@ namespace Scenes.Battle.UnitCharacter
             _animator = GetComponent<Animator>();
             _animIDSpeed = Animator.StringToHash("Speed");
             _collider = GetComponent<BoxCollider>();
-            _quiqkOutline = GetComponent<QuiqkOutline>();
 
             Scene currentScene = gameObject.scene;
             sceneCamera = GetCameraInScene(currentScene);
