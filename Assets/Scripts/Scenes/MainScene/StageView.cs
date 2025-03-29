@@ -81,8 +81,8 @@ namespace Scenes.MainScene
 
                 foreach (var connectUnit in unit.eventUnit.connect)
                 {
-                    var unitLine = Instantiate(_unitLineView, unit.transform);
-                    unitLine.Init(unit.transform, _instanceEventUnitList.FirstOrDefault(d => connectUnit.Equals(d.eventUnit)).transform);
+                    var unitLine = Instantiate(_unitLineView, unit.imageTransform);
+                    unitLine.Init(unit.imageTransform, _instanceEventUnitList.FirstOrDefault(d => connectUnit.Equals(d.eventUnit)).imageTransform);
                 }
             }
         }

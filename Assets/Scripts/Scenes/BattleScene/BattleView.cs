@@ -48,7 +48,7 @@ namespace Scenes.Battle
             _rewardView.gameObject.SetActive(false);
 
             UnitData[] enemyData = new UnitData[0];
-            if (preliminaryEnemyData == null)
+            if (preliminaryEnemyData == null || preliminaryEnemyData.Length == 0)
             {
                 EnemyDataPool dataPool = Resources.Load<EnemyDataPool>("Value/EnemyPool");
                 switch (enemyLevel)

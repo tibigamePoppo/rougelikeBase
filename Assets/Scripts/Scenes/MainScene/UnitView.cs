@@ -12,12 +12,14 @@ namespace Scenes.MainScene
     public class UnitView : MonoBehaviour
     {
         [SerializeField] private SpritePool _spritePool;
-        private Button _button;
-        private Image _image;
+        [SerializeField] private Button _button;
+        [SerializeField] private Image _image;
         private EventUnit _unit;
         private CharacterIconView _iconView;
         public EventUnit eventUnit { get { return _unit; } }
         private EnemyLevel _enemyLevel;
+        private const float RANDOMVALUEX = 0.5f;
+        private const float RANDOMVALUEY = 0.2f;
 
 
         private Subject<EventUnit> _clickEvent = new Subject<EventUnit>();
@@ -25,6 +27,7 @@ namespace Scenes.MainScene
 
         public IObservable<EventUnit> OnClickEvent => _clickEvent;
         public IObservable<bool> IsPlayerWinBattle => _isPlayerWinBattle;
+
 
         public void Intaractable(bool value)
         {
@@ -40,10 +43,13 @@ namespace Scenes.MainScene
         {
             _unit = unit;
             _iconView = iconView;
-            _button = GetComponent<Button>();
-            _image = GetComponent<Image>();
             _button.OnClickAsObservable().Where(_ => !IsActiveOtherScene()).Subscribe(_ => Click());
             _image.sprite = _spritePool.sprites.FirstOrDefault(v => v.name == _unit.unitType.ToString());
+            if (unit.unitType != UnitType.Start && unit.unitType != UnitType.Boss)
+            {
+                _image.gameObject.transform.position += Vector3.right * UnityEngine.Random.Range(-RANDOMVALUEX, RANDOMVALUEX);
+                _image.gameObject.transform.position += Vector3.up * UnityEngine.Random.Range(-RANDOMVALUEY, RANDOMVALUEY);
+            }
         }
 
         private void Click()
@@ -116,5 +122,7 @@ namespace Scenes.MainScene
                              .Select(SceneManager.GetSceneAt)
                              .Any(scene => scene.name == "BattleScene" || scene.name == "ShopScene" || scene.name == "EventScene");
         }
+
+        public Transform imageTransform { get { return _image.transform; } }
     }
 }
