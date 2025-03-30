@@ -25,6 +25,8 @@ namespace Scenes.Battle
         {
             var meleeModels = units.Where(u => u.WeaponType == MainScene.Player.UnitWeaponType.Melee).OrderBy(u => u.UnitName).ToArray();
             _meleeUnits = OrderUnit(meleeModels).Select(u => u.Transform).ToArray();
+            var riderUnits = units.Where(u => u.WeaponType == MainScene.Player.UnitWeaponType.Rider).OrderBy(u => u.UnitName).Select(u => u.Transform).ToArray();
+            _meleeUnits = _meleeUnits.Concat(riderUnits).ToArray();
             _rangeUnits = units.Where(u => u.WeaponType == MainScene.Player.UnitWeaponType.Range).OrderBy(u => u.UnitName).Select(u => u.Transform).ToArray();
             _formationO.OnClickAsObservable().Subscribe(_ => Formation(FormationType.FormationO)).AddTo(this);
             _formationI.OnClickAsObservable().Subscribe(_ => Formation(FormationType.FormationI)).AddTo(this);

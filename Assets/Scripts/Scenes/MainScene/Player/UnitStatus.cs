@@ -34,7 +34,8 @@ namespace Scenes.MainScene.Player
     public enum UnitWeaponType
     {
         Range,
-        Melee
+        Melee,
+        Rider
     }
 
     public enum UnitGroup

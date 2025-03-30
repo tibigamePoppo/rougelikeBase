@@ -24,6 +24,10 @@ namespace Scenes.Battle.UnitCharacter
         [SerializeField] private Transform _popupPosition;
         [SerializeField] private Transform _lookCamera;
         [SerializeField] private QuiqkOutline _quiqkOutline;
+        [SerializeField] private GameObject _moveMarker;
+        [SerializeField] private LineRenderer _moveLineRenderer;
+        private bool _isDisplayMoveMarker = false;
+        private bool _isDead = false;
 
         private Vector3 _randomPupupOffset = new Vector3(0.8f, 0.8f, 0);
         private BoxCollider _collider;
@@ -43,6 +47,7 @@ namespace Scenes.Battle.UnitCharacter
             _animator = GetComponent<Animator>();
             _animIDSpeed = Animator.StringToHash("Speed");
             _collider = GetComponent<BoxCollider>();
+            _moveMarker.SetActive(false);
 
             Scene currentScene = gameObject.scene;
             sceneCamera = GetCameraInScene(currentScene);
@@ -51,6 +56,35 @@ namespace Scenes.Battle.UnitCharacter
                 LookCamera();
             }).AddTo(this);
 
+            this.UpdateAsObservable()
+                .Where(_ => _isDisplayMoveMarker)
+                //.Distinct(_ => _agent.destination)
+                .Subscribe(_ =>
+                {
+                    if(_agent.isActiveAndEnabled)
+                    { 
+                        NavMeshPath path = _agent.path;
+                        if (path.status == NavMeshPathStatus.PathComplete)
+                        {
+                            _moveLineRenderer.positionCount = path.corners.Length;
+                            _moveLineRenderer.SetPosition(0, Vector3.zero);
+                            for (int i = 1; i <= path.corners.Length; i++)
+                            {
+                                _moveLineRenderer.SetPosition(i - 1, path.corners[i - 1] - transform.position);
+                            }
+                            _moveMarker.transform.position = _agent.destination;
+                            _moveLineRenderer.transform.rotation = Quaternion.identity;
+                        }
+                        else
+                        {
+                            _moveLineRenderer.positionCount = 0;
+                        }
+                    }
+                    else
+                    {
+                        _moveLineRenderer.positionCount = 0;
+                    }
+                }).AddTo(this);
         }
 
         private void LookCamera()
@@ -97,6 +131,14 @@ namespace Scenes.Battle.UnitCharacter
         {
             var effectNum = arg.effectNum >= _attackEffect.Length ? 0: arg.effectNum;
             _attackEffect[effectNum].Emit(arg.target);
+            if(_isDisplayMoveMarker)
+            {
+                _moveMarker.transform.position = arg.target;
+                _moveLineRenderer.positionCount = 2;
+                _moveLineRenderer.SetPosition(0, Vector3.zero);
+                _moveLineRenderer.SetPosition(1, arg.target - transform.position);
+                _moveLineRenderer.transform.rotation = Quaternion.identity;
+            }
         }
         private void OnAttackEffect(AnimationEvent animationEvent)
         {
@@ -118,6 +160,10 @@ namespace Scenes.Battle.UnitCharacter
         public void HideGroupColorCircle()
         {
             _groupColorCircle.SetActive(false);
+            _isDead = true;
+            _moveMarker.SetActive(false);
+            _moveLineRenderer.gameObject.SetActive(false);
+            if (_quiqkOutline != null) _quiqkOutline.enabled = false;
         }
 
         public void ColliderActive(bool value)
@@ -135,8 +181,11 @@ namespace Scenes.Battle.UnitCharacter
 
         public void IsSelect(bool value )
         {
-            if (_quiqkOutline == null) return;
+            if (_quiqkOutline == null && !_isDead) return;
             _quiqkOutline.enabled = value;
+            _moveMarker.SetActive(value);
+            _moveLineRenderer.gameObject.SetActive(value);
+            _isDisplayMoveMarker = value;
         }
     }
 }

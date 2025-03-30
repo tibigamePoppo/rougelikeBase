@@ -27,13 +27,13 @@ namespace Scenes.Battle
             switch (moveCommand)
             {
                 case MoveCommand.Charge :
-                    _commandColor.color = Color.red;
+                    _commandColor.color = Color.blue;
                     break;
                 case MoveCommand.Lark:
                     _commandColor.color = Color.yellow;
                     break;
                 case MoveCommand.Back:
-                    _commandColor.color = Color.blue;
+                    _commandColor.color = Color.red;
                     break;
                 default:
                     _commandColor.color = Color.clear;

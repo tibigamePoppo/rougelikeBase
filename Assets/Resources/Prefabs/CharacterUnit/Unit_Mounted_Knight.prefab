@@ -3286,6 +3286,8 @@ MonoBehaviour:
   _popupPosition: {fileID: 6401545765323700260}
   _lookCamera: {fileID: 8652396859812233923}
   _quiqkOutline: {fileID: 9195522983192707596}
+  _moveMarker: {fileID: 4232413460503275016}
+  _moveLineRenderer: {fileID: 1073358831276155309}
 --- !u!65 &6828477051118364265
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -22525,6 +22527,16 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 926f2798d327d4f22ab6c4924edb51eb, type: 3}
+--- !u!120 &1073358831276155309 stripped
+LineRenderer:
+  m_CorrespondingSourceObject: {fileID: 6704132516929670088, guid: 926f2798d327d4f22ab6c4924edb51eb, type: 3}
+  m_PrefabInstance: {fileID: 6047361414304328293}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &4232413460503275016 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7588572745368226925, guid: 926f2798d327d4f22ab6c4924edb51eb, type: 3}
+  m_PrefabInstance: {fileID: 6047361414304328293}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &6241774090339897560 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 392859200405977789, guid: 926f2798d327d4f22ab6c4924edb51eb, type: 3}

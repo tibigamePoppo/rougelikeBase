@@ -76,7 +76,7 @@ namespace Scenes.Battle
             var dragUnit = _commandUnitDictionary.FirstOrDefault(c => c.Key == eventData.pointerEnter);
             if (dragUnit.Key != default && dragUnit.Key != null)
             {
-                var commandUnits = _playerCharacters.Where(u => u.UnitName == dragUnit.Value).ToArray();
+                var commandUnits = _playerCharacters.Where(u => u.UnitName == dragUnit.Value && u.CurrentState != UnitCharacter.State.CharacterUnitStateType.Dead).ToArray();
                 foreach (var commandUnit in commandUnits)
                 {
                     commandUnit.IsSelect(true);

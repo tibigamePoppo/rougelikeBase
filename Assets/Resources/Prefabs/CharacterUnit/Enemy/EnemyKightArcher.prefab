@@ -6586,6 +6586,9 @@ MonoBehaviour:
   _damagePopup: {fileID: 1875170086829103877, guid: d5774a1a2ac5a3749b62718d9252ec02, type: 3}
   _popupPosition: {fileID: 1911847000175309786}
   _lookCamera: {fileID: 4201181537322813757}
+  _quiqkOutline: {fileID: 0}
+  _moveMarker: {fileID: 8710639928796458486}
+  _moveLineRenderer: {fileID: 5529210231002786387}
 --- !u!65 &2522297024425728205
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -20136,6 +20139,16 @@ MonoBehaviour:
 --- !u!224 &4201181537322813757 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3170523350939412646, guid: 926f2798d327d4f22ab6c4924edb51eb, type: 3}
+  m_PrefabInstance: {fileID: 1275203045874819483}
+  m_PrefabAsset: {fileID: 0}
+--- !u!120 &5529210231002786387 stripped
+LineRenderer:
+  m_CorrespondingSourceObject: {fileID: 6704132516929670088, guid: 926f2798d327d4f22ab6c4924edb51eb, type: 3}
+  m_PrefabInstance: {fileID: 1275203045874819483}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8710639928796458486 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7588572745368226925, guid: 926f2798d327d4f22ab6c4924edb51eb, type: 3}
   m_PrefabInstance: {fileID: 1275203045874819483}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3892603404209149829

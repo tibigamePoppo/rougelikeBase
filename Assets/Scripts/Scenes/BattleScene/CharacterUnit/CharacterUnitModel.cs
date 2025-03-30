@@ -44,7 +44,7 @@ namespace Scenes.Battle.UnitCharacter
         private Color blueColor = new Color(0.2392f, 0.4078f, 1f);
         private Color redColor = new Color(1f, 0.3f, 0.32f); 
 
-        private CancellationTokenSource _commandTokenSorce;
+        private CharacterUnitCommandModel _commandModel;
 
         public UnitWeaponType WeaponType { get { return _type; } }
         public IObservable<MoveCommand> OnChangeCommand => _moveCommand;
@@ -61,6 +61,7 @@ namespace Scenes.Battle.UnitCharacter
         public float CurrentHealth { get { return _health.Value; } }
         public float MaxHealth { get { return _maxHp; } }
         public float MaxSheild { get { return _maxShield; } }
+        public float AttackRange { get { return _attackRange; } }
         public Transform Transform { get { return _originTransfrom; } }
         public CharacterUnitModel TargetUnit { get { return _targetUnit; } }
         public CharacterUnitStateType CurrentState { get { return _stateType.Value; } }
@@ -104,34 +105,26 @@ namespace Scenes.Battle.UnitCharacter
 
         public void Charge()
         {
-            CommandCancel();
             _moveCommand.Value = MoveCommand.Charge;
         }
 
         public void Back()
         {
-            CommandCancel();
             _moveCommand.Value = MoveCommand.Back;
         }
 
         public void Lark()
         {
-            CommandCancel();
             _moveCommand.Value = MoveCommand.Lark;
-        }
-
-        private void CommandCancel()
-        {
-            _commandTokenSorce?.Cancel();
-            _commandTokenSorce?.Dispose();
-            _commandTokenSorce = new CancellationTokenSource();
-
         }
 
         public void SetGroup(CharacterUnitModel[] teamGroup, CharacterUnitModel[] enemyGroup)
         {
             _teamGroup = teamGroup;
             _enemyGroup = enemyGroup;
+
+            _commandModel = new CharacterUnitCommandModel();
+            _commandModel.Init(_agent, _originTransfrom, _teamGroup, _enemyGroup, OnChangeCommand, _attackRange, _unitName, _type);
         }
 
         public async UniTaskVoid Attack(IDamagable target, Color color, int effect = 0)
@@ -182,8 +175,6 @@ namespace Scenes.Battle.UnitCharacter
                 ChangeState(CharacterUnitStateType.Dead);
                 if(_agent.enabled)
                 {
-                    _commandTokenSorce?.Cancel();
-                    _commandTokenSorce?.Dispose();
                     _agent.isStopped = true;
                     _agent.enabled = false;
                 }
@@ -232,20 +223,11 @@ namespace Scenes.Battle.UnitCharacter
                     _targetUnit = taregt[0];
                 }
                 var attackableTarget = taregt.Where(enemy => Vector3.Distance(enemy.Transform.position, Transform.position) <= _attackRange).ToArray();
-                if (attackableTarget.Length > 0 && _moveCommand.Value != MoveCommand.Back) // Attack
+                if (attackableTarget.Length > 0 &&
+                    _moveCommand.Value != MoveCommand.Back &&
+                    !(_moveCommand.Value == MoveCommand.Lark && Vector3.Distance(attackableTarget[0].Transform.position,Transform.position) < (_attackRange - 1) && _type == UnitWeaponType.Range)) // Attack
                 {
-                    ChangeState(CharacterUnitStateType.Attak);
-                    _agent.isStopped = true;
-                    Attack(taregt[0], orangeColor).Forget();
-                    if(_type == UnitWeaponType.Range)
-                    {
-                        if(HasRelicItem(2) && attackableTarget.Length > 1)
-                        {
-                            Attack(taregt[1], blueColor, 2).Forget();
-                        }
-                    }
-                    await UniTask.Delay(TimeSpan.FromSeconds(AttackSpeed()));
-                    ChangeState(CharacterUnitStateType.Idle);
+                    await MainLoopAttackAction(attackableTarget);
                 }
                 else if (_moveCommand.Value == MoveCommand.Stop && !ReactionInEnemy() && !IsMoving()) // Idle
                 {
@@ -258,17 +240,36 @@ namespace Scenes.Battle.UnitCharacter
                     ChangeState(CharacterUnitStateType.Move);
                     if (!isHoldFormationPosition)
                     {
-                        if (_moveCommand.Value == MoveCommand.Back) await MoveAtBack();
-                        else if (ReactionInEnemy() || _moveCommand.Value == MoveCommand.Charge) MoveAtTarget();
-                        else if (_moveCommand.Value == MoveCommand.Lark) await MoveAtLark();
+                        if (_moveCommand.Value == MoveCommand.Back) await _commandModel.MoveAtBack();
+                        else if (ReactionInEnemy() || _moveCommand.Value == MoveCommand.Charge) _commandModel.MoveAtTarget();
+                        else if (_moveCommand.Value == MoveCommand.Lark) await _commandModel.MoveAtLark();
                         else if (!IsMoving()) _moveCommand.Value = MoveCommand.Stop;
                         else MoveAtHoldPosition();
+                        
                     }
                 }
 
                 await UniTask.Delay(TimeSpan.FromSeconds(0.1f));
             }
         }
+
+        public async UniTask MainLoopAttackAction(CharacterUnitModel[] attackableTarget)
+        {
+            var taregt = GetTarget();
+            ChangeState(CharacterUnitStateType.Attak);
+            _agent.isStopped = true;
+            Attack(taregt[0], orangeColor).Forget();
+            if (_type == UnitWeaponType.Range)
+            {
+                if (HasRelicItem(2) && attackableTarget.Length > 1)
+                {
+                    Attack(taregt[1], blueColor, 2).Forget();
+                }
+            }
+            await UniTask.Delay(TimeSpan.FromSeconds(AttackSpeed()));
+            //ChangeState(CharacterUnitStateType.Idle);
+        }
+
 
         public CharacterUnitModel[] GetTarget()
         {
@@ -278,63 +279,6 @@ namespace Scenes.Battle.UnitCharacter
         private void ChangeState(CharacterUnitStateType state)
         {
             if (_stateType.Value != state && _stateType.Value != CharacterUnitStateType.Dead) _stateType.Value = state;
-        }
-
-        private void MoveAtTarget()
-        {
-            _agent.SetDestination(_targetUnit.Transform.position);
-        }
-
-        private async UniTask MoveAtBack()
-        {
-            Vector3 backDirection = (Transform.position - _targetUnit.Transform.position).normalized;
-            float backLength = 10f;
-            _agent.SetDestination(Transform.position + backDirection * backLength);
-
-            try
-            {
-                await UniTask.WaitUntil(() => !IsMoving() || _moveCommand.Value != MoveCommand.Back, cancellationToken: _commandTokenSorce.Token);
-            }
-            catch (OperationCanceledException) { }
-            finally
-            {
-                if (_moveCommand.Value == MoveCommand.Back) _moveCommand.Value = MoveCommand.Stop;
-            }
-        }
-
-        private async UniTask MoveAtLark()
-        {
-            var taregt = GetTarget();
-            Vector3 center = taregt.Select(t => t.Transform.position).Aggregate(Vector3.zero, (sum, point) => sum + point) / taregt.Length;
-            Vector3 larkDirection = (center - Transform.position).normalized;
-            larkDirection = new Vector3(-larkDirection.x, 0, Mathf.Abs(larkDirection.x)).normalized;
-
-            float larkLength = 10f;
-            _agent.SetDestination(Transform.position + larkDirection * larkLength);
-            float currentDistance = TargetDistance(taregt[taregt.Length - 1]);
-            try
-            {
-                await UniTask.Delay(TimeSpan.FromSeconds(3), cancellationToken: _commandTokenSorce.Token);
-
-                while (true)
-                {
-                    var backestPoint = taregt.Select(t => t.Transform.position).OrderByDescending(point => point.z).First();
-                    _agent.SetDestination(backestPoint);
-                    await UniTask.Delay(TimeSpan.FromSeconds(0.1f));
-                    if (_commandTokenSorce.Token.IsCancellationRequested || !IsMoving(_attackRange) || _moveCommand.Value != MoveCommand.Lark) break;
-
-                }
-            }
-            catch (OperationCanceledException) { }
-            finally
-            {
-                if (_moveCommand.Value == MoveCommand.Lark) _moveCommand.Value = MoveCommand.Charge;
-            }
-        }
-
-        private float TargetDistance(CharacterUnitModel model)
-        {
-            return Vector3.Distance(Transform.position, model.Transform.position);
         }
 
         private void MoveAtHoldPosition()
