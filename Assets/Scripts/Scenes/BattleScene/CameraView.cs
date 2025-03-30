@@ -11,9 +11,9 @@ public class CameraView : MonoBehaviour
     private const float MAXCAMERAVIEW = 25;
     private const float MINCAMERAVIEW = 10;
 
-    private const float MAXY = 25;
+    private const float MAXY = 20;
     private const float MINY = -40;
-    private const float MAXX = 25;
+    private const float MAXX = 20;
     private const float MINX = -25;
 
     void Start()
