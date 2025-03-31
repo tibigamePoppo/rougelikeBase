@@ -61,8 +61,7 @@ public class DevelopPanel : MonoBehaviour
         {
             var button = Instantiate(_button, _panelButtonTransform);
             button.GetComponentInChildren<TextMeshProUGUI>().text = $"[U] {unit.status.name}";
-            var unitCard = Instantiate(unit, _panelTransform);
-            button.OnClickAsObservable().Where(_ => !IsActiveOtherScene()).Subscribe(_ => PlayerSingleton.Instance.AddCard(unitCard)).AddTo(this);
+            button.OnClickAsObservable().Where(_ => !IsActiveOtherScene()).Subscribe(_ => PlayerSingleton.Instance.AddCard(unit)).AddTo(this);
         }
     }
 
