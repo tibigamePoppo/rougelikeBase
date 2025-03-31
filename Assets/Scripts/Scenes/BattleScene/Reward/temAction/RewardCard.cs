@@ -1,5 +1,6 @@
 using Scenes.MainScene.Player;
 using UnityEngine;
+using System.Linq;
 
 public class RewardCard : RewardItemActionBase
 {
@@ -17,9 +18,23 @@ public class RewardCard : RewardItemActionBase
         }
     }
 
-    public override void Init()
+    public override void Init(EnemyLevel enemyLevel)
     {
-        var _cards = Resources.Load<CardPool>("Value/PlayerDeck").cards.ToArray();
+        var _cards = Resources.Load<CardPool>("Value/PlayerAllUnitPool").cards.ToArray();
+        switch (enemyLevel)
+        {
+            case EnemyLevel.Normal:
+                _cards = _cards.Where(c => c.shopCost <= 110).ToArray();
+                break;
+            case EnemyLevel.Elite:
+                _cards = _cards.Where(c => c.shopCost <= 170).ToArray();
+                break;
+            case EnemyLevel.Boss:
+                _cards = _cards.Where(c => c.shopCost <= 250).ToArray();
+                break;
+            default:
+                break;
+        }
         _rewardUnit = _cards[Random.Range(0, _cards.Length)];
     }
 

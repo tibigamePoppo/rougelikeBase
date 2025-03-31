@@ -24,4 +24,4 @@ MonoBehaviour:
     attackRange: 2
     speed: 2
   prefab: {fileID: 4165283848585114273, guid: 5bf98ffb939304e408f7c3af73004ac8, type: 3}
-  shopCost: 110
+  shopCost: 130

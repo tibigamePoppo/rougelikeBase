@@ -15,9 +15,22 @@ public class RewardMoney : RewardItemActionBase
         }
     }
 
-    public override void Init()
+    public override void Init(EnemyLevel enemyLevel)
     {
-        _money = 100;
+        switch (enemyLevel)
+        {
+            case EnemyLevel.Normal:
+                _money = Random.Range(90, 110);
+                break;
+            case EnemyLevel.Elite:
+                _money = Random.Range(140, 170);
+                break;
+            case EnemyLevel.Boss:
+                _money = Random.Range(210, 250);
+                break;
+            default:
+                break;
+        }
     }
 
     public override string ContentName { get { return _money.ToString(); } }

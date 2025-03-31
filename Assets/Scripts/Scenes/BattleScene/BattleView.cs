@@ -43,7 +43,7 @@ namespace Scenes.Battle
 
         public void Init(EnemyLevel enemyLevel, List<UnitData> playerCards,int stageDepth, EnemyData[] preliminaryEnemyData = null)
         {
-            _rewardView.Init();
+            _rewardView.Init(enemyLevel);
             _unitCommandCardView.gameObject.SetActive(false);
             _rewardView.gameObject.SetActive(false);
 
@@ -147,7 +147,7 @@ namespace Scenes.Battle
         private void BattleEnd(bool playerWin)
         {
             _isPlayerWinBattle.OnNext(playerWin);
-            _rewardView.gameObject.SetActive(true);
+            _rewardView.ShowDialog(playerWin); 
         }
 
         private List<CharacterUnitPresenter> PlayerUnitSpawn(List<UnitData> playerUnits)

@@ -12,21 +12,27 @@ public class RewardView : MonoBehaviour
     [SerializeField] private Sprite _moneySprite;
     [SerializeField] private Sprite _unitSprite;
 
-    public void Init()
+    public void Init(EnemyLevel enemyLevel)
     {
         _backButton.OnClickAsObservable().Subscribe(_ => BackScene()).AddTo(this);
 
         RewardItemActionBase rewardMoney = new RewardMoney();
-        rewardMoney.Init();
+        rewardMoney.Init(enemyLevel);
         Reward testReward = new Reward(rewardMoney.ContentName, _moneySprite, rewardMoney);
         var reward = Instantiate(_rewardItem, _rewardItemPanel);
         reward.Init(testReward);
 
         RewardItemActionBase rewardCard = new RewardCard();
-        rewardCard.Init();
+        rewardCard.Init(enemyLevel);
         Reward testReward2 = new Reward(rewardCard.ContentName, _unitSprite, rewardCard);
         var reward2 = Instantiate(_rewardItem, _rewardItemPanel);
         reward2.Init(testReward2);
+    }
+
+    public void ShowDialog(bool win)
+    {
+        if (!win) _rewardItemPanel.gameObject.SetActive(false);
+        gameObject.SetActive(true);
     }
 
     private void BackScene()
