@@ -267,7 +267,7 @@ namespace Scenes.Battle.UnitCharacter
                 }
             }
             await UniTask.Delay(TimeSpan.FromSeconds(AttackSpeed()));
-            //ChangeState(CharacterUnitStateType.Idle);
+            ChangeState(CharacterUnitStateType.Idle);
         }
 
 

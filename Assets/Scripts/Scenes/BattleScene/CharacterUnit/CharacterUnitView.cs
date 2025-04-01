@@ -55,7 +55,6 @@ namespace Scenes.Battle.UnitCharacter
 
             this.UpdateAsObservable()
                 .Where(_ => _isDisplayMoveMarker)
-                //.Distinct(_ => _agent.destination)
                 .Subscribe(_ =>
                 {
                     if(_agent.isActiveAndEnabled)
