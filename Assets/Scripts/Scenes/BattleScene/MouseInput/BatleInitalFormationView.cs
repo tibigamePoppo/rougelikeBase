@@ -15,6 +15,9 @@ namespace Scenes.Battle
         [SerializeField] private Button _formationI;
         [SerializeField] private Button _formationV;
         [SerializeField] private Button _formationA;
+        [SerializeField] private UnitGroupView _unitGroupPrefab;
+        [SerializeField] private Transform _unitGroupCanvas;
+        private List<UnitGroupView> _unitGroupViews = new List<UnitGroupView>();
 
         private Transform[] _meleeUnits;
         private Transform[] _rangeUnits;
@@ -24,16 +27,74 @@ namespace Scenes.Battle
         public void Init(CharacterUnitModel[] units)
         {
             var meleeModels = units.Where(u => u.WeaponType == MainScene.Player.UnitWeaponType.Melee).OrderBy(u => u.UnitName).ToArray();
-            _meleeUnits = OrderUnit(meleeModels).Select(u => u.Transform).ToArray();
+            var _orderedMeleeUnits = OrderUnit(meleeModels).Select(u => u.Transform).ToArray();
             var riderUnits = units.Where(u => u.WeaponType == MainScene.Player.UnitWeaponType.Rider).OrderBy(u => u.UnitName).Select(u => u.Transform).ToArray();
-            _meleeUnits = _meleeUnits.Concat(riderUnits).ToArray();
+            _meleeUnits = _orderedMeleeUnits.Concat(riderUnits).ToArray();
             _rangeUnits = units.Where(u => u.WeaponType == MainScene.Player.UnitWeaponType.Range).OrderBy(u => u.UnitName).Select(u => u.Transform).ToArray();
-            _formationO.OnClickAsObservable().Subscribe(_ => Formation(FormationType.FormationO)).AddTo(this);
-            _formationI.OnClickAsObservable().Subscribe(_ => Formation(FormationType.FormationI)).AddTo(this);
-            _formationV.OnClickAsObservable().Subscribe(_ => Formation(FormationType.FormationV)).AddTo(this);
-            _formationA.OnClickAsObservable().Subscribe(_ => Formation(FormationType.FormationA)).AddTo(this);
+            _formationO.OnClickAsObservable().Subscribe(_ =>
+            {
+                Formation(FormationType.FormationO);
+                UpdateUnitGroupViewPosition();
+                Formation(FormationType.FormationO);
+            }).AddTo(this);
+            _formationI.OnClickAsObservable().Subscribe(_ =>
+            {
+                Formation(FormationType.FormationI);
+                UpdateUnitGroupViewPosition();
+                Formation(FormationType.FormationI);
+            }).AddTo(this);
+            _formationV.OnClickAsObservable().Subscribe(_ =>
+            {
+                Formation(FormationType.FormationV);
+                UpdateUnitGroupViewPosition();
+                Formation(FormationType.FormationV);
+            }).AddTo(this);
+            _formationA.OnClickAsObservable().Subscribe(_ =>
+            {
+                Formation(FormationType.FormationA);
+                UpdateUnitGroupViewPosition();
+                Formation(FormationType.FormationA);
+            }).AddTo(this);
 
             unitsScale = 1 + Math.Max(_meleeUnits.Length, _rangeUnits.Length) / 2;
+
+            if (riderUnits != null && riderUnits.Length > 0)
+            {
+                GroupUnitInstance(riderUnits);
+            }
+            GroupUnitInstance(_orderedMeleeUnits);
+            GroupUnitInstance(_rangeUnits);
+        }
+
+        private void GroupUnitInstance(Transform[] units)
+        {
+            int riderGroupCount = Math.Max((units.Length - 1) / 10 + 1, 1);
+            for (int i = 0; i < riderGroupCount; i++)
+            {
+                var groupSprite = Instantiate(_unitGroupPrefab, _unitGroupCanvas);
+                int unitCount = i < (riderGroupCount - 1) ? 10 : (units.Length - i * 10) % 10;
+                unitCount = unitCount == 0 ? 10 : unitCount;
+                var child = units.Skip(i * 10).Take(unitCount).ToArray();
+                groupSprite.Init(child);
+                _unitGroupViews.Add(groupSprite);
+            }
+        }
+
+        private void UpdateUnitGroupViewPosition()
+        {
+            foreach (var groupSprite in _unitGroupViews)
+            {
+                groupSprite.UpdatePosition();
+            }
+        }
+
+        public void OnGameStart()
+        {
+            foreach (var groupSprite in _unitGroupViews)
+            {
+                groupSprite.OnGameStart();
+            }
+            gameObject.SetActive(false);
         }
 
         private CharacterUnitModel[] OrderUnit(CharacterUnitModel[] units)

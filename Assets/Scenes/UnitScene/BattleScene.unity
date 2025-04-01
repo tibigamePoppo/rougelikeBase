@@ -1244,7 +1244,7 @@ AudioListener:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 177403631}
-  m_Enabled: 0
+  m_Enabled: 1
 --- !u!20 &177403633
 Camera:
   m_ObjectHideFlags: 0
@@ -2157,7 +2157,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4810897020050041922, guid: 7d1bba3af6a3a3e40b417d190f2007a0, type: 3}
       propertyPath: m_LocalScale.y
-      value: 2
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 4810897020050041922, guid: 7d1bba3af6a3a3e40b417d190f2007a0, type: 3}
       propertyPath: m_LocalScale.z
@@ -8123,7 +8123,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 4.89, y: 0.15}
+  m_AnchoredPosition: {x: 0, y: 0.1}
   m_SizeDelta: {x: 258, y: 258}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &1008932157
@@ -9620,6 +9620,74 @@ Transform:
   m_Children: []
   m_Father: {fileID: 856376206}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1151073620
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1151073623}
+  - component: {fileID: 1151073622}
+  - component: {fileID: 1151073621}
+  m_Layer: 0
+  m_Name: EventSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1151073621
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1151073620}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SendPointerHoverToParent: 1
+  m_HorizontalAxis: Horizontal
+  m_VerticalAxis: Vertical
+  m_SubmitButton: Submit
+  m_CancelButton: Cancel
+  m_InputActionsPerSecond: 10
+  m_RepeatDelay: 0.5
+  m_ForceModuleActive: 0
+--- !u!114 &1151073622
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1151073620}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_FirstSelected: {fileID: 0}
+  m_sendNavigationEvents: 1
+  m_DragThreshold: 10
+--- !u!4 &1151073623
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1151073620}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1166816010
 GameObject:
   m_ObjectHideFlags: 0
@@ -9677,6 +9745,8 @@ MonoBehaviour:
   _formationI: {fileID: 1180647550}
   _formationV: {fileID: 1260578930}
   _formationA: {fileID: 1414719099}
+  _unitGroupPrefab: {fileID: 3142446754001475452, guid: 1ab9a25eea25e4d72a3e5f7a30064a0f, type: 3}
+  _unitGroupCanvas: {fileID: 1006023321}
 --- !u!120 &1173313905 stripped
 LineRenderer:
   m_CorrespondingSourceObject: {fileID: 4006484612717176078, guid: 51266bbbab8e74667a4cc3f74245e13c, type: 3}
@@ -13189,6 +13259,7 @@ MonoBehaviour:
   _onBattleFormationView: {fileID: 865210730}
   _unitCommandCardView: {fileID: 1346303347}
   _battlReadyButton: {fileID: 1895650621}
+  eventSystem: {fileID: 1151073622}
 --- !u!1001 &1538163397
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13919,7 +13990,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!108 &1637667951
 Light:
   m_ObjectHideFlags: 0
@@ -17242,3 +17313,4 @@ SceneRoots:
   - {fileID: 1006023321}
   - {fileID: 1637667952}
   - {fileID: 1649321330}
+  - {fileID: 1151073623}

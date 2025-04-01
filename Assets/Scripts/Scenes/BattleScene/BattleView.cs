@@ -10,6 +10,7 @@ using UniRx.Triggers;
 using UniRx;
 using Cysharp.Threading.Tasks;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 namespace Scenes.Battle
 {
@@ -33,6 +34,9 @@ namespace Scenes.Battle
         [SerializeField] private OnBattleFormationView _onBattleFormationView;
         [SerializeField] private UnitCommandCardView _unitCommandCardView;
         [SerializeField] private Button _battlReadyButton;
+        [SerializeField] private EventSystem eventSystem;
+        private EventSystem _pastEventSystem;
+        private Camera _pastMainCamera;
         private Subject<bool> _isPlayerWinBattle = new Subject<bool>();
         private FormationType _formationType = FormationType.None;
 
@@ -43,6 +47,10 @@ namespace Scenes.Battle
 
         public void Init(EnemyLevel enemyLevel, List<UnitData> playerCards,int stageDepth, EnemyData[] preliminaryEnemyData = null)
         {
+            _pastEventSystem = EventSystem.current;
+            EventSystem.current = eventSystem;
+            _pastMainCamera = Camera.main;
+            _pastMainCamera.gameObject.SetActive(false);
             _rewardView.Init(enemyLevel);
             _unitCommandCardView.gameObject.SetActive(false);
             _rewardView.gameObject.SetActive(false);
@@ -73,7 +81,6 @@ namespace Scenes.Battle
             {
                 enemyData = preliminaryEnemyData[UnityEngine.Random.Range(0, preliminaryEnemyData.Length)]._unitData;
             }
-
             var playerPresenter = PlayerUnitSpawn(playerCards);
             var enemyPresenter = EnemyUnitSpawn(enemyData);
             var playerModel = playerPresenter.Select(p => p.CharacterUnitModel).ToArray();
@@ -140,14 +147,16 @@ namespace Scenes.Battle
                 _unitCommandCardView.gameObject.SetActive(true);
                 _battleFormationPresenter.isStarted = true;
                 _onBattleFormationView.Active();
-                _battleInitialFormationView.gameObject.SetActive(false);
+                _battleInitialFormationView.OnGameStart();
             });
         }
 
         private void BattleEnd(bool playerWin)
         {
             _isPlayerWinBattle.OnNext(playerWin);
-            _rewardView.ShowDialog(playerWin); 
+            _rewardView.ShowDialog(playerWin);
+            _pastMainCamera.gameObject.SetActive(true);
+            EventSystem.current = _pastEventSystem;
         }
 
         private List<CharacterUnitPresenter> PlayerUnitSpawn(List<UnitData> playerUnits)

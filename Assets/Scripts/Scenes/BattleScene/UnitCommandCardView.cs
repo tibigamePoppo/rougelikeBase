@@ -31,7 +31,6 @@ namespace Scenes.Battle
             _commandView.SetActive(false);
              var cards = playerCards.Distinct().ToArray();
             InstanceUnitView(cards);
-            Debug.Log($"cards {cards.Length}");
         }
 
         public void OnBeginDrag(PointerEventData eventData)
