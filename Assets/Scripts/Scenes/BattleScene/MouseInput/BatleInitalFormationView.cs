@@ -58,16 +58,18 @@ namespace Scenes.Battle
 
             unitsScale = 1 + Math.Max(_meleeUnits.Length, _rangeUnits.Length) / 2;
 
-            if (riderUnits != null && riderUnits.Length > 0)
-            {
-                GroupUnitInstance(riderUnits);
-            }
+            GroupUnitInstance(riderUnits);
             GroupUnitInstance(_orderedMeleeUnits);
             GroupUnitInstance(_rangeUnits);
         }
 
         private void GroupUnitInstance(Transform[] units)
         {
+            if (units == null || units.Length == 0)
+            {
+                return;
+            }
+
             int riderGroupCount = Math.Max((units.Length - 1) / 10 + 1, 1);
             for (int i = 0; i < riderGroupCount; i++)
             {
@@ -99,6 +101,7 @@ namespace Scenes.Battle
 
         private CharacterUnitModel[] OrderUnit(CharacterUnitModel[] units)
         {
+            if (units.Length == 0) return units;
             var newList1 = new List<CharacterUnitModel>();
             var newList2 = new List<CharacterUnitModel>();
             int count = 0;
