@@ -9684,7 +9684,7 @@ GameObject:
   - component: {fileID: 6994925682584366310}
   - component: {fileID: -8203547202284539675}
   - component: {fileID: 8440868238567326850}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: EnemyUnit_Swordman
   m_TagString: Untagged
   m_Icon: {fileID: 0}

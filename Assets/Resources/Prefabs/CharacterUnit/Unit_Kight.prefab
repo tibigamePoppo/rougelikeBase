@@ -17250,7 +17250,7 @@ GameObject:
   - component: {fileID: 4165283848585114273}
   - component: {fileID: 5172305637913901325}
   - component: {fileID: -1645021217909014134}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Unit_Kight
   m_TagString: Untagged
   m_Icon: {fileID: 0}

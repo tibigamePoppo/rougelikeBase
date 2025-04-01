@@ -6423,7 +6423,7 @@ GameObject:
   - component: {fileID: 1853526014605065979}
   - component: {fileID: 4039030071854802766}
   - component: {fileID: 2522297024425728205}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Unit_Caster
   m_TagString: Untagged
   m_Icon: {fileID: 0}

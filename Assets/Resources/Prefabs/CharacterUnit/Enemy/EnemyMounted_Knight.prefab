@@ -3183,7 +3183,7 @@ GameObject:
   - component: {fileID: 1292335481141607037}
   - component: {fileID: -5887601098803591275}
   - component: {fileID: 6828477051118364265}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: EnemyMounted_Knight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
