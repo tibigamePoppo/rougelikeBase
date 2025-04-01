@@ -56,9 +56,9 @@ public class CameraView : MonoBehaviour
 
     private void UpdateTransfrom(Vector3 vector)
     {
-        if ((vector.x > 0 && transform.position.x >= MAXX) || (vector.x < 0 && transform.position.x <= MINX)) vector.x = 0;
-        if ((vector.z > 0 && transform.position.z >= MAXY) || (vector.z < 0 && transform.position.z <= MINY)) vector.z = 0;
-        transform.position += vector * _moveSpeed * Time.deltaTime;
+        if ((vector.x > 0 && transform.localPosition.x >= MAXX) || (vector.x < 0 && transform.localPosition.x <= MINX)) vector.x = 0;
+        if ((vector.z > 0 && transform.localPosition.z >= MAXY) || (vector.z < 0 && transform.localPosition.z <= MINY)) vector.z = 0;
+        transform.localPosition += vector * _moveSpeed * Time.deltaTime;
     }
 
 }

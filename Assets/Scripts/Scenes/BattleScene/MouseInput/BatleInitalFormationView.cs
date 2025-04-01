@@ -16,7 +16,7 @@ namespace Scenes.Battle
         [SerializeField] private Button _formationV;
         [SerializeField] private Button _formationA;
         [SerializeField] private UnitGroupView _unitGroupPrefab;
-        [SerializeField] private Transform _unitGroupCanvas;
+        [SerializeField] private Transform _unitGroupParent;
         private List<UnitGroupView> _unitGroupViews = new List<UnitGroupView>();
 
         private Transform[] _meleeUnits;
@@ -71,7 +71,7 @@ namespace Scenes.Battle
             int riderGroupCount = Math.Max((units.Length - 1) / 10 + 1, 1);
             for (int i = 0; i < riderGroupCount; i++)
             {
-                var groupSprite = Instantiate(_unitGroupPrefab, _unitGroupCanvas);
+                var groupSprite = Instantiate(_unitGroupPrefab, _unitGroupParent);
                 int unitCount = i < (riderGroupCount - 1) ? 10 : (units.Length - i * 10) % 10;
                 unitCount = unitCount == 0 ? 10 : unitCount;
                 var child = units.Skip(i * 10).Take(unitCount).ToArray();

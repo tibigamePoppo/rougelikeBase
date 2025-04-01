@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
 using System;
@@ -8,7 +6,6 @@ using UnityEngine.UI;
 using UnityEngine.AI;
 using UnityEngine.SceneManagement;
 using System.Linq;
-using TMPro;
 using Random = UnityEngine.Random;
 
 namespace Scenes.Battle.UnitCharacter
