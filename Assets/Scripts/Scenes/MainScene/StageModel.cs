@@ -13,16 +13,18 @@ public enum UnitType
     None = 6,
 }
 
-public struct EventUnit
+public class EventUnit
 {
     public EventUnit[] connect;
     public UnitType unitType;
+    public int layerNumber;
     public int depth;
-    public EventUnit(EventUnit[] connect, UnitType unitType,int depth)
+    public EventUnit(EventUnit[] connect, UnitType unitType,int depth, int layerNumber)
     {
         this.connect = connect;
         this.unitType = unitType;
         this.depth = depth;
+        this.layerNumber = layerNumber;
     }
 }
 
@@ -37,7 +39,7 @@ namespace Scenes.MainScene
         public List<EventUnit>[] UnitInfo { get { return _unitInfos; } }
         public int CurrentDepth { get { return _currentDepth; } }
 
-        private int _unitCount = 3;
+        private int _unitCount = 7;
         private int[] _unitCnnectValue = new int[] { 1, 2 };
         private float[] _unitCnnectWeight = new float[] { 3f, 1f};
         private UnitType[] _unitEvent;
@@ -57,49 +59,63 @@ namespace Scenes.MainScene
         {
             _unitEvent = GetUnitEvent(_currentStage);
             _unitInfos = new List<EventUnit>[_stageDepth[_currentStage]];
-            for (int i = _stageDepth[_currentStage] - 1; i >= 0; i--)
+            for (int i = 0; i < _unitInfos.Length; i++)
             {
                 _unitInfos[i] = new List<EventUnit>();
                 int layerInUnitCount = UnitCountByDepth(i);
                 for (int j = 0; j < layerInUnitCount; j++)
                 {
                     //var newUnit = new EventUnit(null, GetRandomUnitType(i), i); // past method
-                    var newUnit = new EventUnit(null, _unitEvent[i], i);
-                    if (i != _stageDepth[_currentStage] - 1)
-                    {
-                        int connectSize = WeightRandom.RandomInt(_unitCnnectValue, _unitCnnectWeight);
-                        int connectSkip = j;
-                        if (j + connectSize > _unitInfos[i + 1].Count)
-                        {
-                            connectSkip = _unitInfos[i + 1].Count - connectSize;
-                        }
-
-                        if(j == layerInUnitCount - 1 && j + connectSize < _unitInfos[i + 1].Count)
-                        {
-                            connectSize = _unitInfos[i + 1].Count - j;
-                        }
-
-                        newUnit.connect = _unitInfos[i + 1].Skip(connectSkip).Take(connectSize).ToArray();
-                    }
+                    var newUnit = new EventUnit(new EventUnit[0], _unitEvent[i], i,j);
                     _unitInfos[i].Add(newUnit);
                 }
-                if(i != _stageDepth[_currentStage] - 1)
+            }
+            for (int i = 0; i < 6; i++)
+            {
+                int randomStartIndex = Random.Range(0, 3);
+                var connectEventUnit = _unitInfos[0][randomStartIndex];
+                while (true)
                 {
-                    if (_unitInfos[i + 1].Count <= 0) continue;
-                    for (int j = 0; j < _unitInfos[i + 1].Count; j++)
-                    {
-                        if (!_unitInfos[i].Any(u => u.connect.Contains(_unitInfos[i + 1][j])))
-                        {
-                            _unitInfos[i + 1].Remove(_unitInfos[i + 1][j]);
-                        }
-                    }
+                    connectEventUnit = SetConnetUnit(connectEventUnit);
+                    if (connectEventUnit == null) break;
                 }
+            }
+            foreach (var units in UnitInfo)
+            {
+                for (int i = units.Count - 1; i >= 0; i--)
+                {
+                    if (units[i].unitType == UnitType.Boss) continue;
+                    else if (units[i].connect.Length == 0) units.RemoveAt(i);
+                    else units[i].connect = units[i].connect.Distinct().ToArray();
+                }
+            }
+        }
+
+        private EventUnit SetConnetUnit(EventUnit baseUnit)
+        {
+            if (baseUnit.unitType == UnitType.Boss) return null;// boss
+            else if (baseUnit.depth == _stageDepth[_currentStage] - 2) // befor boss
+            {
+                var boss = UnitInfo[_stageDepth[_currentStage] - 1].First();
+                baseUnit.connect = baseUnit.connect.Concat(new EventUnit[] { boss }).ToArray();
+                return boss; 
+            }
+            else
+            {
+                int number = baseUnit.unitType != UnitType.Start ? baseUnit.layerNumber : baseUnit.layerNumber * 2 + 1;
+                int depth = baseUnit.depth;
+                var connetCandidate = _unitInfos[depth + 1].Skip(number - 1).Take(3).ToArray();
+                int randomCount = Random.Range(0, connetCandidate.Length);
+                baseUnit.connect = baseUnit.connect.Concat(new EventUnit[] { connetCandidate[randomCount] }).ToArray();
+                return connetCandidate[randomCount];
             }
         }
 
         private int UnitCountByDepth(int depth)
         {
-            return depth == _stageDepth[_currentStage] - 1 ? 1 : _unitCount;
+            if (depth == 0) return 3;
+            else if (depth == _stageDepth[_currentStage] - 1) return 1;
+            else return _unitCount;
         }
 
         private UnitType[] GetUnitEvent(int stage)
@@ -122,30 +138,13 @@ namespace Scenes.MainScene
             {
                 case 0:
                     unitEvent[0] = UnitType.Start;
-                    unitEvent[1] = UnitType.Battle;
-                    unitEvent[2] = (UnitType)WeightRandom.RandomInt(randomType, randomWeight1);
-                    unitEvent[3] = (UnitType)WeightRandom.RandomInt(randomType, randomWeight1);
-                    unitEvent[4] = (UnitType)WeightRandom.RandomInt(randomType, randomWeight1);
-                    unitEvent[5] = UnitType.Elite;
-                    unitEvent[6] = normalBattleCount > unitEvent.Count(c => c == UnitType.Battle) ? (eventCount > unitEvent.Count(c => c == UnitType.Event) ? (UnitType)WeightRandom.RandomInt(randomType, randomWeight2) : UnitType.Battle) : UnitType.Event;
-                    unitEvent[7] = normalBattleCount > unitEvent.Count(c => c == UnitType.Battle) ? (eventCount > unitEvent.Count(c => c == UnitType.Event) ? (UnitType)WeightRandom.RandomInt(randomType, randomWeight2) : UnitType.Battle) : UnitType.Event;
-                    unitEvent[8] = normalBattleCount > unitEvent.Count(c => c == UnitType.Battle) ? (eventCount > unitEvent.Count(c => c == UnitType.Event) ? (UnitType)WeightRandom.RandomInt(randomType, randomWeight2) : UnitType.Battle) : UnitType.Event;
+                    unitEvent[1] = UnitType.Battle
                     unitEvent[9] = UnitType.Shop;
                     unitEvent[10] = UnitType.Boss;
                     break;
                 case 1:
                     unitEvent[0] = UnitType.Start;
                     unitEvent[1] = UnitType.Battle;
-                    unitEvent[2] = (UnitType)WeightRandom.RandomInt(randomType, randomWeight2);
-                    unitEvent[3] = (UnitType)WeightRandom.RandomInt(randomType2, randomWeight3);
-                    unitEvent[4] = UnitType.Elite;
-                    unitEvent[5] = (UnitType)WeightRandom.RandomInt(randomType, randomWeight2);
-                    unitEvent[6] = normalBattleCount > unitEvent.Count(c => c == UnitType.Battle) ? eventCount > unitEvent.Count(c => c == UnitType.Event) ? (UnitType)WeightRandom.RandomInt(randomType, randomWeight2) : UnitType.Battle : UnitType.Event;
-                    unitEvent[7] = shopCount > _unitEvent.Count(c => c == UnitType.Shop) ? (normalBattleCount > unitEvent.Count(c => c == UnitType.Battle) ? eventCount > unitEvent.Count(c => c == UnitType.Event) ? (UnitType)WeightRandom.RandomInt(randomType, randomWeight2) : UnitType.Battle : UnitType.Event) : UnitType.Shop ;
-                    unitEvent[8] = UnitType.Elite;
-                    unitEvent[9] = normalBattleCount > unitEvent.Count(c => c == UnitType.Battle) ? eventCount > unitEvent.Count(c => c == UnitType.Event) ? (UnitType)WeightRandom.RandomInt(randomType, randomWeight2) : UnitType.Battle : UnitType.Event;
-                    unitEvent[10] = normalBattleCount > unitEvent.Count(c => c == UnitType.Battle) ? eventCount > unitEvent.Count(c => c == UnitType.Event) ? (UnitType)WeightRandom.RandomInt(randomType, randomWeight2) : UnitType.Battle : UnitType.Event;
-                    unitEvent[11] = normalBattleCount > unitEvent.Count(c => c == UnitType.Battle) ? eventCount > unitEvent.Count(c => c == UnitType.Event) ? (UnitType)WeightRandom.RandomInt(randomType, randomWeight2) : UnitType.Battle : UnitType.Event;
                     unitEvent[12] = UnitType.Shop;
                     unitEvent[13] = UnitType.Boss;
                     break;
