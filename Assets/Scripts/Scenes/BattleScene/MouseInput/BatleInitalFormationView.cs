@@ -158,7 +158,7 @@ namespace Scenes.Battle
 
         public void EnemyInitialFormation(int type, CharacterUnitModel[] units)
         {
-            var _enemyMeleeUnits = units.Where(u => u.WeaponType == MainScene.Player.UnitWeaponType.Melee).OrderBy(u => u.UnitName).Select(u => u.Transform).ToArray();
+            var _enemyMeleeUnits = units.Where(u => u.WeaponType == MainScene.Player.UnitWeaponType.Melee || u.WeaponType == MainScene.Player.UnitWeaponType.Rider).OrderBy(u => u.UnitName).Select(u => u.Transform).ToArray();
             var _enemyRangeUnits = units.Where(u => u.WeaponType == MainScene.Player.UnitWeaponType.Range).OrderBy(u => u.UnitName).Select(u => u.Transform).ToArray();
 
             var enemyUnitsScale = 1 + Math.Max(_enemyMeleeUnits.Length, _enemyRangeUnits.Length) / 2;
