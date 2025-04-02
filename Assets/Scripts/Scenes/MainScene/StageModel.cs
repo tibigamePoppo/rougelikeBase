@@ -19,12 +19,14 @@ public class EventUnit
     public UnitType unitType;
     public int layerNumber;
     public int depth;
-    public EventUnit(EventUnit[] connect, UnitType unitType,int depth, int layerNumber)
+    public int stageNumber;
+    public EventUnit(EventUnit[] connect, UnitType unitType,int depth, int layerNumber,int stageNumber)
     {
         this.connect = connect;
         this.unitType = unitType;
         this.depth = depth;
         this.layerNumber = layerNumber;
+        this.stageNumber = stageNumber;
     }
 }
 
@@ -35,6 +37,7 @@ namespace Scenes.MainScene
         private int _currentDepth = 0;
         private int[] _stageDepth = { 11, 13, 15 };
         private int _currentStage = 0; //0 to 2
+        private const int MAXSTAGECOUNT = 3;
         private List<EventUnit>[] _unitInfos;
         public List<EventUnit>[] UnitInfo { get { return _unitInfos; } }
         public int CurrentDepth { get { return _currentDepth; } }
@@ -47,6 +50,12 @@ namespace Scenes.MainScene
             StageGenerate();
         }
 
+        public void NextStage()
+        {
+            _currentStage = _currentStage < (MAXSTAGECOUNT - 1) ? _currentStage + 1: _currentStage;
+            StageGenerate();
+        }
+
         private void StageGenerate()
         {
             _unitInfos = new List<EventUnit>[_stageDepth[_currentStage]];
@@ -56,7 +65,7 @@ namespace Scenes.MainScene
                 int layerInUnitCount = UnitCountByDepth(i);
                 for (int j = 0; j < layerInUnitCount; j++)
                 {
-                    var newUnit = new EventUnit(new EventUnit[0], GetRandomUnitType(i), i,j);
+                    var newUnit = new EventUnit(new EventUnit[0], GetRandomUnitType(i), i, j, _currentStage);
                     _unitInfos[i].Add(newUnit);
                 }
             }

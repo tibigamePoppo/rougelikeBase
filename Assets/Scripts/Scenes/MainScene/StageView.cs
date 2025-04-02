@@ -18,11 +18,16 @@ namespace Scenes.MainScene
         [SerializeField] private UnitLineView _unitLineView;
 
         private List<UnitView> _instanceEventUnitList = new List<UnitView>();
+        private List<GameObject> _stageGameObjects = new List<GameObject>();
         private Subject<EventUnit> _eventForword = new Subject<EventUnit>();
-        public IObservable<EventUnit> OnEventForword => _eventForword ;
+        private Subject<Unit> _nextStage = new Subject<Unit>();
+        public IObservable<EventUnit> OnEventForword => _eventForword;
+        public IObservable<Unit> OnNextStage => _nextStage;
+        private int _stageDepth;
 
         public void Init(List<EventUnit>[] unitInfo)
         {
+            _stageDepth = 1;
             _stageStartView.Init();
             _stageEndView.Init();
             InstanceUnits(unitInfo);
@@ -35,6 +40,7 @@ namespace Scenes.MainScene
             for (int i = unitInfo.Length - 1; i >= 0; i--)
             {
                 var layer = Instantiate(_layerUnit, _stagContent);
+                _stageGameObjects.Add(layer);
                 for (int j = 0; j < unitInfo[i].Count; j++)
                 {
                     var unit = Instantiate(_unit, layer.transform);
@@ -56,20 +62,29 @@ namespace Scenes.MainScene
                     {
                         unit.IsPlayerWinBattle.Subscribe(isWin =>
                         {
-                            if (isWin)
-                            {
-                                _stageEndView.ActiveWindow(EndType.Win);
-                            }
-                            else
-                            {
-                                _stageEndView.ActiveWindow(EndType.Defeat);
-
-                            }
+                            BossBattleEnd(isWin);
                         }).AddTo(this);
                     }
 
                     _instanceEventUnitList.Add(unit);
                 }
+            }
+        }
+
+        public void BossBattleEnd(bool isWin)
+        {
+            if (isWin && _stageDepth == 3)
+            {
+                _stageEndView.ActiveWindow(EndType.Win);
+            }
+            else if (isWin)
+            {
+                _nextStage.OnNext(default);
+                _stageDepth++;
+            }
+            else
+            {
+                _stageEndView.ActiveWindow(EndType.Defeat);
             }
         }
 
@@ -87,6 +102,23 @@ namespace Scenes.MainScene
             }
         }
 
+        public void StageRebuild(List<EventUnit>[] unitInfo)
+        {
+            DestroyStage();
+            InstanceUnits(unitInfo);
+            LinqUnitLine();
+        }
+
+        private void DestroyStage()
+        {
+            _iconView.transform.parent = transform;
+            _iconView.transform.position = new Vector3(10000,0,0);
+            _instanceEventUnitList.Clear();
+            for (int i = 0; i < _stageGameObjects.Count; i++)
+            {
+                Destroy(_stageGameObjects[i]);
+            }
+        }
 
         public void UnitUpdate(EventUnit[] EventUnits)
         {

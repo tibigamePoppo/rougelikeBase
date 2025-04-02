@@ -89,6 +89,8 @@ namespace Scenes.MainScene
             _clickEvent.OnNext(eventUnit);
         }
 
+
+        private int[] _stageDepth = { 0, 11, 13 };// base info is stageModel.cs
         void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
             FadeSceneSingleton.Instance.FadeOutEffet();
@@ -97,7 +99,8 @@ namespace Scenes.MainScene
                 BattlePresenter battlePresenter = FindFirstObjectByType<BattlePresenter>();
                 if (battlePresenter != null)
                 {
-                    battlePresenter.Init(_enemyLevel,PlayerSingleton.Instance.CurrentDeck, _unit.depth);
+                    int stageDepth = _unit.depth + _stageDepth[_unit.stageNumber];
+                    battlePresenter.Init(_enemyLevel,PlayerSingleton.Instance.CurrentDeck, stageDepth);
                 }
                 else
                 {

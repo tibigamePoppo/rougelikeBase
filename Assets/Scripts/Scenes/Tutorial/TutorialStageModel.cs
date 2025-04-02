@@ -26,7 +26,7 @@ namespace Scenes.Tutorial
                 int layerInUnitCount = UnitCountByDepth(i);
                 for (int j = 0; j < layerInUnitCount; j++)
                 {
-                    var newUnit = new EventUnit(null, GetRandomUnitType(i), i,j);
+                    var newUnit = new EventUnit(null, GetRandomUnitType(i), i, j, 0);
                     if (i != _stageDepth - 1)
                     {
                         int connectSkip = j;

@@ -25,6 +25,11 @@ namespace Scenes.MainScene
             { 
                 _stageView.UnitUpdate(_stageModel.NextDepth(d));
             }).AddTo(this);
+            _stageView.OnNextStage.Subscribe(_ =>
+            {
+                _stageModel.NextStage();
+                _stageView.StageRebuild(_stageModel.UnitInfo);
+            }).AddTo(this);
         }
     }
 }

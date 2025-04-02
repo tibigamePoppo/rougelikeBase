@@ -8,6 +8,7 @@ using Scenes.Battle;
 using Scenes.EventScene;
 using System.Linq;
 using Scenes.MainScene.Upgrade;
+using Scenes.MainScene;
 
 public class DevelopPanel : MonoBehaviour
 {
@@ -25,9 +26,12 @@ public class DevelopPanel : MonoBehaviour
     [SerializeField] private Button _battleBossButton;
     [SerializeField] private Button _shopButton;
     [SerializeField] private Button _eventButton;
+    [SerializeField] private Button _winBossButton;
+    [SerializeField] private Button _loseBossButton;
     [SerializeField] private Transform _panelTransform;
     [SerializeField] private Transform _panelButtonTransform;
     [SerializeField] private UnitUpgradeView _upgradeWindow;
+    [SerializeField] private StageView _stageView;
     void Start()
     {
         Init();
@@ -47,6 +51,8 @@ public class DevelopPanel : MonoBehaviour
         _battleBossButton.OnClickAsObservable().Where(_ => !IsActiveOtherScene()).Subscribe(_ => SceneLoad(UnitType.Boss)).AddTo(this);
         _shopButton.OnClickAsObservable().Where(_ => !IsActiveOtherScene()).Subscribe(_ => SceneLoad(UnitType.Shop)).AddTo(this);
         _eventButton.OnClickAsObservable().Where(_ => !IsActiveOtherScene()).Subscribe(_ => SceneLoad(UnitType.Event)).AddTo(this);
+        _winBossButton.OnClickAsObservable().Where(_ => !IsActiveOtherScene()).Subscribe(_ => _stageView.BossBattleEnd(true)).AddTo(this);
+        _loseBossButton.OnClickAsObservable().Where(_ => !IsActiveOtherScene()).Subscribe(_ => _stageView.BossBattleEnd(false)).AddTo(this);
         gameObject.SetActive(false);
         _relicItem = Resources.Load<RelicItemPool>("Value/RelicItemPool").relicItem;
         foreach (var item in _relicItem)
@@ -64,6 +70,7 @@ public class DevelopPanel : MonoBehaviour
             button.OnClickAsObservable().Where(_ => !IsActiveOtherScene()).Subscribe(_ => PlayerSingleton.Instance.AddCard(unit)).AddTo(this);
         }
     }
+
 
     private EnemyLevel _enemyLevel;
     private void SceneLoad(UnitType scene)
