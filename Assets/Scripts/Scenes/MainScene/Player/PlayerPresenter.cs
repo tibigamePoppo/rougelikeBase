@@ -36,6 +36,7 @@ namespace Scenes.MainScene.Player
             _model.OnDeckChange.Subscribe(_ => _singleton.SetCurrentDeck(_model.CurrentCardDataList)).AddTo(this);
             _model.OnUpdateRelicItem.Subscribe(r => _singleton.SetCurrentRelic(r)).AddTo(this);
             _model.OnUpdatePassEventName.Subscribe(e => _singleton.SetCurrentPassEvent(e)).AddTo(this);
+            _model.OnUpdateBattleReport.Subscribe(b => _singleton.SetUpdateBattleReport(b)).AddTo(this);
             _singleton.OnChangePopularityEvent.Subscribe(v => _model.ChangePopularity(v)).AddTo(this);
             _singleton.OnChangeMoneyEvent.Subscribe(v => _model.ChangeMoney(v)).AddTo(this);
             _singleton.OnAddCardEvent.Subscribe(c => _model.AddCard(c)).AddTo(this);
@@ -43,6 +44,7 @@ namespace Scenes.MainScene.Player
             _singleton.OnAddRelicItemEvent.Subscribe(r => _model.AddRelicItem(r)).AddTo(this);
             _singleton.OnRemoveRelicItemEvent.Subscribe(r => _model.RemoveRelicItem (r)).AddTo(this);
             _singleton.OnAddPassEventName.Subscribe(e => _model.AddPassEvent(e)).AddTo(this);
+            _singleton.OnUpdateBattleReport.Subscribe(b => _model.UpdateBattleReport(b)).AddTo(this);
         }
     }
 }

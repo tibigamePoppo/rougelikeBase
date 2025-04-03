@@ -12,6 +12,7 @@ namespace Scenes.MainScene
         [SerializeField] private Image _backImage;
         [SerializeField] private Button _retryButton;
         [SerializeField] private Button _titleButton;
+        [SerializeField] private StageEndScoreView _stageEndScoreView;
 
         public void Init()
         {
@@ -23,6 +24,7 @@ namespace Scenes.MainScene
         public void ActiveWindow(EndType type)
         {
             gameObject.SetActive(true);
+            _stageEndScoreView.Init();
             switch (type)
             {
                 case EndType.Win:

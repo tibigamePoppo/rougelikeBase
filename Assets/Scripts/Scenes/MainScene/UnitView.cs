@@ -70,22 +70,28 @@ namespace Scenes.MainScene
                 case UnitType.Battle:
                     SceneManager.LoadScene("BattleScene", LoadSceneMode.Additive);
                     _enemyLevel = EnemyLevel.Normal;
+                    PlayerSingleton.Instance.UpdateBattleReport(normalBattle: 1);
                     break;
                 case UnitType.Boss:
                     SceneManager.LoadScene("BattleScene", LoadSceneMode.Additive);
                     _enemyLevel = EnemyLevel.Boss;
+                    PlayerSingleton.Instance.UpdateBattleReport(bossBattle: 1);
                     break;
                 case UnitType.Elite:
                     SceneManager.LoadScene("BattleScene", LoadSceneMode.Additive);
                     _enemyLevel = EnemyLevel.Elite;
+                    PlayerSingleton.Instance.UpdateBattleReport(eliteBattle: 1);
                     break;
                 case UnitType.Shop:
                     SceneManager.LoadScene("ShopScene", LoadSceneMode.Additive);
+                    PlayerSingleton.Instance.UpdateBattleReport(shopUnit: 1);
                     break;
                 case UnitType.Event:
                     SceneManager.LoadScene("EventScene", LoadSceneMode.Additive);
+                    PlayerSingleton.Instance.UpdateBattleReport(eventUnit: 1);
                     break;
             }
+            PlayerSingleton.Instance.UpdateBattleReport(depth: 1);
             _clickEvent.OnNext(eventUnit);
         }
 

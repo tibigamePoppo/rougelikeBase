@@ -17,12 +17,15 @@ namespace Scenes.MainScene.Player
         private List<String> _passEventName = new List<string>();
         private Subject<RelicItemBase[]> _updateRelicItem = new Subject<RelicItemBase[]>();
         private Subject<String[]> _updatePassEventName = new Subject<string[]>();
+        private BattleReportStruct _battleReportStruct;
+        private Subject<BattleReportStruct> _battleReport = new Subject<BattleReportStruct>();
 
         public IObservable<int> OnPopularityChange => _popularity;
         public IObservable<int> OnMoneyChange => _money;
         public IObservable<Unit> OnDeckChange => _updateDeck;
         public IObservable<RelicItemBase[]> OnUpdateRelicItem => _updateRelicItem;
         public IObservable<string[]> OnUpdatePassEventName => _updatePassEventName;
+        public IObservable<BattleReportStruct> OnUpdateBattleReport => _battleReport;
         public int CurrentPopularity { get { return _popularity.Value; } }
         public int CurrentMoney { get { return _money.Value; } }
         public List<UnitData> CurrentCardDataList { get { return _cardDataList; } }
@@ -31,11 +34,12 @@ namespace Scenes.MainScene.Player
         public void Init()
         {
             _cardDataList = Resources.Load<CardPool>("Value/PlayerDeck").CardList();
+            _battleReportStruct = new BattleReportStruct(0, 0, 0, 0, 0, 0);
         }
 
         public void ChangePopularity(int value)
         {
-            _popularity.Value = Mathf.Max(_popularity.Value + value,0);
+            _popularity.Value = Mathf.Max(_popularity.Value + value, 0);
         }
 
         public void ChangeMoney(int value)
@@ -81,6 +85,17 @@ namespace Scenes.MainScene.Player
         {
             _passEventName.Add(eventName);
             _updatePassEventName.OnNext(_passEventName.ToArray());
+        }
+
+        public void UpdateBattleReport(BattleReportStruct reportStruct)
+        {
+            _battleReportStruct.normalBattle += reportStruct.normalBattle;
+            _battleReportStruct.eliteBattle += reportStruct.eliteBattle;
+            _battleReportStruct.bossBattle += reportStruct.bossBattle;
+            _battleReportStruct.eventUnit += reportStruct.eventUnit;
+            _battleReportStruct.shopUnit += reportStruct.shopUnit;
+            _battleReportStruct.depth += reportStruct.depth;
+            _battleReport.OnNext(_battleReportStruct);
         }
     }
 }
