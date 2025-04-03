@@ -1,0 +1,164 @@
+name: Discordへの通知送信
+
+on:
+  push:
+    branches:
+      - '**'
+  issues:
+    types: [opened, closed]
+  pull_request:
+    types: [opened, closed]
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install jq
+        run: sudo apt-get update && sudo apt-get install -y jq
+
+      - name: Send Discord Embed
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: |
+          EVENT_NAME="${{ github.event_name }}"
+          REPO_NAME="${{ github.repository }}"
+          REPO_URL="https://github.com/$REPO_NAME"
+          BRANCH="${GITHUB_REF#refs/heads/}"
+          AUTHOR="${{ github.actor }}"
+          USER_ICON="https://github.com/$AUTHOR.png"
+
+          if [ "$EVENT_NAME" = "push" ]; then
+            IS_FORCED="${{ github.event.forced }}"
+            COMMITS_JSON='${{ toJson(github.event.commits) }}'
+            COMMIT_COUNT=$(echo "$COMMITS_JSON" | jq length)
+            COMMIT_LINES=$(echo "$COMMITS_JSON" | jq -r --arg repo "$REPO_NAME" '
+              .[] | "[`\(.id[0:7])`](https://github.com/\($repo)/commit/\(.id)) \(.message) - \(.author.name)"
+            ')
+            COMMITS_URL="$REPO_URL/commits/$BRANCH"
+            COMMIT_MESSAGE=$(echo "$COMMITS_JSON" | jq -r '.[-1].message')
+
+            # タグ類
+            FORCE_TAG=""
+            MERGE_TAG=""
+            COLOR=7572183 # 🔵 Push: blue
+
+            if [ "$IS_FORCED" = "true" ]; then
+              FORCE_TAG="[force-push] "
+            fi
+            if echo "$COMMIT_MESSAGE" | grep -q "Merge pull request"; then
+              MERGE_TAG="[PR Merge] "
+            fi
+
+            MESSAGE=$(jq -n \
+              --arg title "[$REPO_NAME:$BRANCH] ${FORCE_TAG}${MERGE_TAG}${COMMIT_COUNT} new commit(s)" \
+              --arg url "$COMMITS_URL" \
+              --arg desc "$COMMIT_LINES" \
+              --arg user "$AUTHOR" \
+              --arg icon "$USER_ICON" \
+              --argjson color "$COLOR" \
+              '{
+                embeds: [{
+                  title: $title,
+                  url: $url,
+                  description: $desc,
+                  color: $color,
+                  author: {
+                    name: $user,
+                    icon_url: $icon,
+                    url: "https://github.com/\($user)"
+                  }
+                }]
+              }')
+
+          elif [ "$EVENT_NAME" = "pull_request" ]; then
+            PR_ACTION="${{ github.event.action }}"
+            PR_TITLE="${{ github.event.pull_request.title }}"
+            PR_URL="${{ github.event.pull_request.html_url }}"
+            PR_USER="${{ github.event.pull_request.user.login }}"
+            PR_BODY="${{ github.event.pull_request.body }}"
+            PR_NUMBER="${{ github.event.pull_request.number }}"
+            PR_MERGED="${{ github.event.pull_request.merged }}"
+            ICON_URL="https://github.com/$PR_USER.png"
+
+            if [ "$PR_ACTION" = "closed" ]; then
+              if [ "$PR_MERGED" = "true" ]; then
+                TITLE="[$REPO_NAME] Pull request merged: #$PR_NUMBER $PR_TITLE"
+                COLOR=0 # ⚪ 無色
+              else
+                TITLE="[$REPO_NAME] Pull request closed: #$PR_NUMBER $PR_TITLE"
+                COLOR=0 # ⚪ 無色
+              fi
+              DESC=""
+            else
+              TITLE="[$REPO_NAME] Pull request opened: #$PR_NUMBER $PR_TITLE"
+              COLOR=2790938  # 深緑
+              DESC="$PR_BODY"
+            fi
+
+            MESSAGE=$(jq -n \
+              --arg title "$TITLE" \
+              --arg url "$PR_URL" \
+              --arg desc "$DESC" \
+              --arg user "$PR_USER" \
+              --arg icon "$ICON_URL" \
+              --argjson color "$COLOR" \
+              '{
+                embeds: [{
+                  title: $title,
+                  url: $url,
+                  description: $desc,
+                  color: $color,
+                  author: {
+                    name: $user,
+                    icon_url: $icon,
+                    url: "https://github.com/\($user)"
+                  }
+                }]
+              }')
+
+          elif [ "$EVENT_NAME" = "issues" ]; then
+            ISSUE_ACTION="${{ github.event.action }}"
+            ISSUE_TITLE="${{ github.event.issue.title }}"
+            ISSUE_URL="${{ github.event.issue.html_url }}"
+            ISSUE_USER="${{ github.event.issue.user.login }}"
+            ISSUE_BODY="${{ github.event.issue.body }}"
+            ISSUE_NUMBER="${{ github.event.issue.number }}"
+            ICON_URL="https://github.com/$ISSUE_USER.png"
+
+            if [ "$ISSUE_ACTION" = "closed" ]; then
+              TITLE="[$REPO_NAME] Issue closed: #$ISSUE_NUMBER $ISSUE_TITLE"
+              COLOR=0 # ⚪ 無色
+              DESC=""
+            else
+              TITLE="[$REPO_NAME] Issue opened: #$ISSUE_NUMBER $ISSUE_TITLE"
+              COLOR=15034160 # 🟠 オレンジ
+              DESC="$ISSUE_BODY"
+            fi
+
+            MESSAGE=$(jq -n \
+              --arg title "$TITLE" \
+              --arg url "$ISSUE_URL" \
+              --arg desc "$DESC" \
+              --arg user "$ISSUE_USER" \
+              --arg icon "$ICON_URL" \
+              --argjson color "$COLOR" \
+              '{
+                embeds: [{
+                  title: $title,
+                  url: $url,
+                  description: $desc,
+                  color: $color,
+                  author: {
+                    name: $user,
+                    icon_url: $icon,
+                    url: "https://github.com/\($user)"
+                  }
+                }]
+              }')
+
+          else
+            MESSAGE="{\"content\": \"❓ Unknown event type: $EVENT_NAME\"}"
+          fi
+
+          curl -X POST -H "Content-Type: application/json" \
+            -d "$MESSAGE" "$DISCORD_WEBHOOK"
