@@ -16,7 +16,7 @@ public class ShopRelicItemView : ShopItemView
     }
     public override void Bought()
     {
-        PlayerSingleton.Instance.AddRelicItem(_relic);
+        _relic.Init();
         base.Bought();
     }
 }
