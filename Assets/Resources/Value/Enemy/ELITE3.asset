@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: df3bd9856d86e4d6ba36a447e8eada60, type: 3}
-  m_Name: ELITE2
+  m_Name: ELITE3
   m_EditorClassIdentifier: 
   _enemyName: "\u86EE\u65CF\u5927"
   _enemySprite: {fileID: 21300000, guid: a5d15e61952874c4f93aa7dc41f1b985, type: 3}

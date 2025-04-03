@@ -96,7 +96,7 @@ namespace Scenes.MainScene
         }
 
 
-        private int[] _stageDepth = { 0, 11, 13 };// base info is stageModel.cs
+        private int[] _stageDepth = { 0, 11, 24 };// base info is stageModel.cs
         void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
             FadeSceneSingleton.Instance.FadeOutEffet();
