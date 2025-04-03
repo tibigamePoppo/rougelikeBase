@@ -125,9 +125,21 @@ namespace Scenes.MainScene
                 bool isChange = false;
                 outCount++;
 
-                for (int i = 1; i < UnitInfo.Length - 2; i++) // without start and boss
+                for (int i = 1; i < UnitInfo.Length - 1; i++) // without start and boss
                 {
                     var units = UnitInfo[i];
+                    if(units.Count > 4)
+                    {
+                        var singleConnectUnit = units.Where(u => u.connect.Length == 1).First();
+                        var singleConnectUnit2 = units.Where(u => u.connect.Length == 1).Skip(1).First();
+                        var exConnectUnit = UnitInfo[i - 1].Where(u => u.connect.Contains(singleConnectUnit)).ToArray();
+                        foreach (var exUnit in exConnectUnit)
+                        {
+                            exUnit.connect = exUnit.connect.Where(c => c != singleConnectUnit).Concat(new EventUnit[] { singleConnectUnit2 }).ToArray();
+                        }
+                        singleConnectUnit2.connect = singleConnectUnit2.connect.Concat(singleConnectUnit.connect).Distinct().ToArray();
+                        units.Remove(singleConnectUnit);
+                    }
                     for (int j = units.Count - 1; j >= 0; j--)
                     {
                         var exConnectUnit = UnitInfo[i - 1].Where(u => u.connect.Contains(units[j])).ToArray();
