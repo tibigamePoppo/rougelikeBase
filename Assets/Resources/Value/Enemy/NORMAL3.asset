@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df3bd9856d86e4d6ba36a447e8eada60, type: 3}
   m_Name: NORMAL3
   m_EditorClassIdentifier: 
-  _enemyName: "\u86EE\u65CF\u5C0F2"
+  _enemyName: "\u86EE\u65CF2"
   _enemySprite: {fileID: 21300000, guid: 143d7d5e6dc6b42a594962b8c725c2e0, type: 3}
-  minStageDepth: 11
+  minStageDepth: 12
   maxStageDepth: 24
   _unitData:
   - {fileID: 11400000, guid: d7d359ea493434bbc9a12c6a3385ff39, type: 2}
@@ -24,12 +24,12 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d7d359ea493434bbc9a12c6a3385ff39, type: 2}
   - {fileID: 11400000, guid: d7d359ea493434bbc9a12c6a3385ff39, type: 2}
   - {fileID: 11400000, guid: d7d359ea493434bbc9a12c6a3385ff39, type: 2}
-  - {fileID: 11400000, guid: 5365b555aaeab490a9b289e115417afe, type: 2}
-  - {fileID: 11400000, guid: 5365b555aaeab490a9b289e115417afe, type: 2}
-  - {fileID: 11400000, guid: 5365b555aaeab490a9b289e115417afe, type: 2}
-  - {fileID: 11400000, guid: 5365b555aaeab490a9b289e115417afe, type: 2}
-  - {fileID: 11400000, guid: 5365b555aaeab490a9b289e115417afe, type: 2}
-  - {fileID: 11400000, guid: 5365b555aaeab490a9b289e115417afe, type: 2}
-  - {fileID: 11400000, guid: 5365b555aaeab490a9b289e115417afe, type: 2}
+  - {fileID: 11400000, guid: e8b277e8f732b4db7a5df26f53578ce4, type: 2}
+  - {fileID: 11400000, guid: e8b277e8f732b4db7a5df26f53578ce4, type: 2}
+  - {fileID: 11400000, guid: e8b277e8f732b4db7a5df26f53578ce4, type: 2}
+  - {fileID: 11400000, guid: e8b277e8f732b4db7a5df26f53578ce4, type: 2}
+  - {fileID: 11400000, guid: e8b277e8f732b4db7a5df26f53578ce4, type: 2}
+  - {fileID: 11400000, guid: e8b277e8f732b4db7a5df26f53578ce4, type: 2}
+  - {fileID: 11400000, guid: e8b277e8f732b4db7a5df26f53578ce4, type: 2}
   - {fileID: 11400000, guid: b70eb564a6596420193fcaa53bad555f, type: 2}
   - {fileID: 11400000, guid: b70eb564a6596420193fcaa53bad555f, type: 2}

@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df3bd9856d86e4d6ba36a447e8eada60, type: 3}
   m_Name: ELITE2
   m_EditorClassIdentifier: 
-  _enemyName: "\u86EE\u65CF\u5927"
+  _enemyName: "\u86EE\u65CF\u59272"
   _enemySprite: {fileID: 21300000, guid: a5d15e61952874c4f93aa7dc41f1b985, type: 3}
-  minStageDepth: 11
+  minStageDepth: 12
   maxStageDepth: 24
   _unitData:
   - {fileID: 11400000, guid: c09b3883f74cb4e0f8df58f4fc26a066, type: 2}

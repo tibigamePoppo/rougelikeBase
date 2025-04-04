@@ -123,18 +123,38 @@ namespace Scenes.MainScene
         public void UnitUpdate(EventUnit[] EventUnits)
         {
             if (EventUnits == null) return;
-            var pastEventUnit = _instanceEventUnitList.Where(e => e.eventUnit.depth <= EventUnits.First().depth).ToArray();
-            foreach (var units in pastEventUnit)
+            var nextLayerEventUnit = _instanceEventUnitList.Where(e => e.eventUnit.depth <= EventUnits.First().depth).ToArray();
+            nextLayerEventUnit = nextLayerEventUnit.Where(e => EventUnits.Contains(e.eventUnit)).ToArray();
+            /*
+            foreach (var units in nextLayerEventUnit)
             {
                 units.Intaractable(false);
                 units.FadeUnit(true);
             }
-            var nextEventUnit = _instanceEventUnitList.Where(e => EventUnits.Contains(e.eventUnit)).ToArray();
-            foreach (var units in nextEventUnit)
+            */
+            foreach (var view in _instanceEventUnitList)
             {
-                units.Intaractable(true);
-                units.FadeUnit(false);
+                view.Intaractable(false);
+                view.FadeUnit(true);
+            }
+            foreach (var view in nextLayerEventUnit)
+            {
+                ActiveEventUnit(view);
             }
         }
+
+        private void ActiveEventUnit(UnitView eventUnit)
+        {
+            eventUnit.Intaractable(true);
+            eventUnit.FadeUnit(false);
+            if (eventUnit.eventUnit.connect.Length == 0) return;
+            var connectCount = eventUnit.eventUnit.connect;
+            var connectView = _instanceEventUnitList.Where(e => connectCount.Contains(e.eventUnit)).ToArray();
+            foreach (var view in connectView)
+            {
+                ActiveEventUnit(view);
+            }
+        }
+
     }
 }

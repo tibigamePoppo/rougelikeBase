@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df3bd9856d86e4d6ba36a447e8eada60, type: 3}
   m_Name: NORMAL2
   m_EditorClassIdentifier: 
-  _enemyName: "\u86EE\u65CF\u5C0F"
+  _enemyName: "\u86EE\u65CF\u4E2D"
   _enemySprite: {fileID: 21300000, guid: 143d7d5e6dc6b42a594962b8c725c2e0, type: 3}
   minStageDepth: 5
   maxStageDepth: 11
