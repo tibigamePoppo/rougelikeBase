@@ -22,6 +22,7 @@ MonoBehaviour:
     shield: 0
     attack: 20
     attackRange: 12
+    attackSpeed: 2
     speed: 2
   prefab: {fileID: 1853526014605065979, guid: 664cb8daac4884706b5fad439db6e677, type: 3}
   shopCost: 110

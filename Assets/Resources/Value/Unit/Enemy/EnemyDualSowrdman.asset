@@ -10,19 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: eede8a92714b14915ace7836afc9d95b, type: 3}
-  m_Name: EnemySowrdman
+  m_Name: EnemyDualSowrdman
   m_EditorClassIdentifier: 
   status:
-    name: "\u86EE\u65CF1"
+    name: "\u77ED\u5263\u86EE\u65CF"
     sprite: {fileID: 0}
     text: 
     type: 1
     group: 1
-    hp: 100
+    hp: 200
     shield: 0
-    attack: 20
+    attack: 10
     attackRange: 2
-    attackSpeed: 2
+    attackSpeed: 0.4
     speed: 2
-  prefab: {fileID: 6994925682584366310, guid: 9efab5ba22815485ab3df355bfa3eda9, type: 3}
+  prefab: {fileID: 6994925682584366310, guid: ff8b8f69b66ef4c87aba2cc3b85bd4ea, type: 3}
   shopCost: 0

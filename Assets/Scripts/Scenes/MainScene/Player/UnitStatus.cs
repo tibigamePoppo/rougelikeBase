@@ -14,9 +14,10 @@ namespace Scenes.MainScene.Player
         public float shield;
         public float attack;
         public float attackRange;
+        public float attackSpeed;
         public float speed;
 
-        public UnitStatus(string name, Sprite sprite, string text, UnitWeaponType type, UnitGroup group, float hp, float shield, float attack, float attackRange, float speed)
+        public UnitStatus(string name, Sprite sprite, string text, UnitWeaponType type, UnitGroup group, float hp, float shield, float attack, float attackRange,float attackSpeed, float speed)
         {
             this.name = name;
             this.sprite = sprite;
@@ -27,6 +28,7 @@ namespace Scenes.MainScene.Player
             this.shield = shield;
             this.attack = attack;
             this.attackRange = attackRange;
+            this.attackSpeed = attackSpeed;
             this.speed = speed;
         }
     }

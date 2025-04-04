@@ -15,6 +15,7 @@ namespace Scenes.Battle.UnitCharacter
         private float _maxHp;
         private float _attackPower;
         private float _attackRange;
+        private float _attackSpeed;
         private float _maxShield;
         private string _unitName;
         private UnitWeaponType _type;
@@ -38,7 +39,6 @@ namespace Scenes.Battle.UnitCharacter
         private CharacterUnitModel[] _teamGroup;
         private CharacterUnitModel[] _enemyGroup;
         private CharacterUnitModel _targetUnit;
-        private const float ATTACKSPEED = 2f;
         private Color orangeColor = new Color(1, 0.8706f, 0.2392f);
         private Color pinkColor = new Color(0.8745f,0.3216f,0.5255f);
         private Color blueColor = new Color(0.2392f, 0.4078f, 1f);
@@ -78,6 +78,7 @@ namespace Scenes.Battle.UnitCharacter
             _shield.Value = status.shield;
             _attackPower = status.attack;
             _attackRange = status.attackRange;
+            _attackSpeed = status.attackSpeed;
             _type = status.type;
             _unitGroup = status.group;
             _originTransfrom = originTransfrom;
@@ -298,7 +299,7 @@ namespace Scenes.Battle.UnitCharacter
 
         private float AttackSpeed()
         {
-            return (ATTACKSPEED *
+            return (_attackSpeed *
                 (HasRelicItem(3) && _type == UnitWeaponType.Range ? 0.3f : 1f));
         }
 
