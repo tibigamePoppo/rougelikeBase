@@ -137,16 +137,19 @@ namespace Scenes.Battle
                     clac.FormationO(_meleeUnits, _rangeUnits, path);
                     break;
                 case FormationType.FormationI:
+                    unitsScale = Mathf.Min(10, unitsScale);
                     path = new Vector3[] { new Vector3(-1f, 0, 0.1f), new Vector3(1, 0, 0.1f) };
                     path = path.Select(v => v * unitsScale).ToArray();
                     clac.FormationI(_meleeUnits, _rangeUnits, path);
                     break;
                 case FormationType.FormationV:
+                    unitsScale = Mathf.Min(10, unitsScale);
                     path = new Vector3[] { new Vector3(-1f, 0, 0.1f), new Vector3(0, 0, -0.4f), new Vector3(1, 0, 0.1f) };
                     path = path.Select(v => v * unitsScale).ToArray();
                     clac.FormationI(_meleeUnits, _rangeUnits, path);
                     break;
                 case FormationType.FormationA:
+                    unitsScale = Mathf.Min(10, unitsScale);
                     path = new Vector3[] { new Vector3(-1f, 0, 0.1f), new Vector3(0, 0, 0.4f), new Vector3(1, 0, 0.1f) };
                     path = path.Select(v => v * unitsScale).ToArray();
                     clac.FormationI(_meleeUnits, _rangeUnits, path);
@@ -180,16 +183,19 @@ namespace Scenes.Battle
                     clac.FormationO(_enemyMeleeUnits, _enemyRangeUnits, path);
                     break;
                 case 1:
+                    enemyUnitsScale = Mathf.Min(12, enemyUnitsScale);
                     path = new Vector3[] { new Vector3(1, 0, 0.1f), new Vector3(-1f, 0, 0.1f) };
                     path = path.Select(v => v * enemyUnitsScale + offsetVector).ToArray();
                     clac.FormationI(_enemyMeleeUnits, _enemyRangeUnits, path);
                     break;
                 case 2:
+                    enemyUnitsScale = Mathf.Min(12, enemyUnitsScale);
                     path = new Vector3[] { new Vector3(1f, 0, 0.1f), new Vector3(0, 0, 0.5f), new Vector3(-1f, 0, 0) };
                     path = path.Select(v => v * enemyUnitsScale + offsetVector).ToArray();
                     clac.FormationI(_enemyMeleeUnits, _enemyRangeUnits, path);
                     break;
                 case 3:
+                    enemyUnitsScale = Mathf.Min(12, enemyUnitsScale);
                     path = new Vector3[] { new Vector3(1f, 0, 0.1f), new Vector3(0, 0, -0.3f), new Vector3(-1f, 0, 0.1f) };
                     path = path.Select(v => v * enemyUnitsScale + offsetVector).ToArray();
                     clac.FormationI(_enemyMeleeUnits, _enemyRangeUnits, path);

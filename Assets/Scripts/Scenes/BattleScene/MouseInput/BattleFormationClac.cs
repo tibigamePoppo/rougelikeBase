@@ -67,8 +67,10 @@ public class BattleFormationClac
     public void FormationI(Transform[] meleeUnits, Transform[] rangeUnits, Vector3[] path)
     {
         float length = path.Zip(path.Skip(1), Vector3.Distance).Sum();
-        float meleeInterval = length / (meleeUnits.Length - 1);
-        float rangenterval = length / (rangeUnits.Length - 1);
+        int meleeRow = (meleeUnits.Length / 20) + 1;
+        int rangeRow = (rangeUnits.Length / 20) + 1;
+        float meleeInterval = length * meleeRow / (meleeUnits.Length - 1);
+        float rangeInterval = length * rangeRow / (rangeUnits.Length - 1);
         List<Vector3> meleeUnitsPoints = new List<Vector3>();
         List<Vector3> rangeUnitsPoints = new List<Vector3>();
 
@@ -77,8 +79,10 @@ public class BattleFormationClac
         Vector3 rightAngleDir = Vector3.Cross(normal, pathDirection).normalized;
         rightAngleDir = rightAngleDir * 3;
 
+        Vector3 unitOffset = Vector3.back;
+
         meleeUnitsPoints.Add(path[0]);
-        rangeUnitsPoints.Add(path[0] + rightAngleDir);
+        rangeUnitsPoints.Add(path[0] + unitOffset * meleeRow + rightAngleDir);
 
         if (meleeUnits.Length > 0)
         {
@@ -92,7 +96,10 @@ public class BattleFormationClac
                 while (melleeRemainingDistance <= segmentLength)
                 {
                     Vector3 point = Vector3.Lerp(start, end, melleeRemainingDistance / segmentLength);
-                    meleeUnitsPoints.Add(point);
+                    for (int j = 0; j < meleeRow; j++)
+                    {
+                        meleeUnitsPoints.Add(point + unitOffset * j);
+                    }
                     melleeRemainingDistance += meleeInterval;
                 }
                 melleeRemainingDistance -= segmentLength;
@@ -100,7 +107,7 @@ public class BattleFormationClac
         }
         if (rangeUnits.Length > 0)
         {
-            float rangeRemainingDistance = rangenterval;
+            float rangeRemainingDistance = rangeInterval;
             for (int i = 0; i < path.Length - 1; i++)
             {
                 Vector3 start = path[i];
@@ -110,14 +117,17 @@ public class BattleFormationClac
                 while (rangeRemainingDistance <= segmentLength)
                 {
                     Vector3 point = Vector3.Lerp(start, end, rangeRemainingDistance / segmentLength);
-                    rangeUnitsPoints.Add(point + rightAngleDir);
-                    rangeRemainingDistance += rangenterval;
+                    for (int j = 0; j < rangeRow; j++)
+                    {
+                        rangeUnitsPoints.Add(point + unitOffset * (j + meleeRow) + rightAngleDir);
+                    }
+                    rangeRemainingDistance += rangeInterval;
                 }
                 rangeRemainingDistance -= segmentLength;
             }
         }
         meleeUnitsPoints.Add(path.Last());
-        rangeUnitsPoints.Add(path.Last() + rightAngleDir);
+        rangeUnitsPoints.Add(path.Last() + unitOffset * meleeRow +rightAngleDir);
         SetPosition(meleeUnits,rangeUnits,meleeUnitsPoints, rangeUnitsPoints);
     }
 
