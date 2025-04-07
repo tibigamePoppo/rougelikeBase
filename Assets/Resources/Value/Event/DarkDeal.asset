@@ -46,5 +46,6 @@ MonoBehaviour:
     playerMoneyChange: 0
     changeScene: 1
     units: []
-    enemys: []
+    enemys:
+    - {fileID: 11400000, guid: 907f23ba45cbc47739ef9d575d4921d3, type: 2}
     relic: {fileID: 0}
