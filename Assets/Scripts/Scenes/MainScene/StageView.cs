@@ -4,12 +4,13 @@ using UniRx;
 using UnityEngine;
 using System.Linq;
 using UnityEngine.SceneManagement;
+using UniRx.Triggers;
 
 namespace Scenes.MainScene
 {
     public class StageView : MonoBehaviour
     {
-        [SerializeField] private Transform _stagContent;
+        [SerializeField] private RectTransform _stageContent;
         [SerializeField] private UnitView _unit;
         [SerializeField] private CharacterIconView _iconView;
         [SerializeField] private StageStartView _stageStartView;
@@ -21,17 +22,39 @@ namespace Scenes.MainScene
         private List<GameObject> _stageGameObjects = new List<GameObject>();
         private Subject<EventUnit> _eventForword = new Subject<EventUnit>();
         private Subject<Unit> _nextStage = new Subject<Unit>();
+        private Vector3 _contentDefaultPosition;
+        private float edgeThreshold = 0.01f; // 画面端と判定する割合（5%）
+        private const float _contentMoveSpeed = 10f;
         public IObservable<EventUnit> OnEventForword => _eventForword;
         public IObservable<Unit> OnNextStage => _nextStage;
         private int _stageDepth;
 
         public void Init(List<EventUnit>[] unitInfo)
         {
-            _stageDepth = 1;
+            _contentDefaultPosition = _stageContent.position;
+               _stageDepth = 1;
             _stageStartView.Init();
             _stageEndView.Init();
             InstanceUnits(unitInfo);
             LinqUnitLine();
+
+            float screenWidth = Screen.width;
+            float screenHeight = Screen.height;
+            this.UpdateAsObservable().Where(_ => Input.GetKey(KeyCode.A)).Subscribe(_ => UpdateContentTransfrom(Vector3.right));
+            this.UpdateAsObservable().Where(_ => Input.GetKey(KeyCode.D)).Subscribe(_ => UpdateContentTransfrom(Vector3.left));
+            this.UpdateAsObservable().Subscribe(_ =>
+            {
+                Vector3 mousePos = Input.mousePosition;
+                Vector3 moveDirection = Vector3.zero;
+
+                if (mousePos.x < screenWidth * edgeThreshold)  // 左端
+                    moveDirection.x = 1;
+                if (mousePos.x > screenWidth * (1 - edgeThreshold))  // 右端
+                    moveDirection.x = -1;
+
+                UpdateContentTransfrom(moveDirection);
+            }).AddTo(this);
+
             SceneManager.LoadScene("FadeSceneEffect", LoadSceneMode.Additive);
         }
 
@@ -39,7 +62,7 @@ namespace Scenes.MainScene
         {
             for (int i = unitInfo.Length - 1; i >= 0; i--)
             {
-                var layer = Instantiate(_layerUnit, _stagContent);
+                var layer = Instantiate(_layerUnit, _stageContent);
                 _stageGameObjects.Add(layer);
                 for (int j = 0; j < unitInfo[i].Count; j++)
                 {
@@ -104,6 +127,7 @@ namespace Scenes.MainScene
 
         public void StageRebuild(List<EventUnit>[] unitInfo)
         {
+            _stageContent.position = _contentDefaultPosition;
             DestroyStage();
             InstanceUnits(unitInfo);
             LinqUnitLine();
@@ -156,5 +180,9 @@ namespace Scenes.MainScene
             }
         }
 
+        private void UpdateContentTransfrom(Vector3 vector)
+        {
+            _stageContent.position += vector * _contentMoveSpeed * Time.deltaTime;
+        }
     }
 }
