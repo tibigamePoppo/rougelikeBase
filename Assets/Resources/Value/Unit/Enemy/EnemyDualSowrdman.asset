@@ -15,10 +15,10 @@ MonoBehaviour:
   status:
     name: "\u77ED\u5263\u86EE\u65CF"
     sprite: {fileID: 0}
-    text: 
+    text: '""'
     type: 1
     group: 1
-    hp: 200
+    hp: 160
     shield: 0
     attack: 15
     attackRange: 2

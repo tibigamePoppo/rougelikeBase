@@ -5,6 +5,7 @@ namespace Scenes.MainScene.Player
     [System.Serializable]
     public struct UnitStatus
     {
+        public int id;
         public string name;
         public Sprite sprite;
         public string text;
@@ -17,8 +18,9 @@ namespace Scenes.MainScene.Player
         public float attackSpeed;
         public float speed;
 
-        public UnitStatus(string name, Sprite sprite, string text, UnitWeaponType type, UnitGroup group, float hp, float shield, float attack, float attackRange,float attackSpeed, float speed)
+        public UnitStatus(int id,string name, Sprite sprite, string text, UnitWeaponType type, UnitGroup group, float hp, float shield, float attack, float attackRange,float attackSpeed, float speed)
         {
+            this.id = id;
             this.name = name;
             this.sprite = sprite;
             this.text = text;

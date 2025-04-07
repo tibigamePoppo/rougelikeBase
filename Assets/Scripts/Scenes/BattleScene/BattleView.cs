@@ -61,15 +61,15 @@ namespace Scenes.Battle
                 switch (enemyLevel)
                 {
                     case EnemyLevel.Normal:
-                        var depthFilterNormal = dataPool.normalPool.Where(pool => pool.minStageDepth <= stageDepth && pool.maxStageDepth >= stageDepth).Select(pool => pool._unitGroupData).ToArray();
+                        var depthFilterNormal = dataPool.normalPool.Where(pool => pool.minStageDepth <= stageDepth && pool.maxStageDepth >= stageDepth).Select(pool => pool.unitGroupData).ToArray();
                         unitEnemyData = depthFilterNormal[UnityEngine.Random.Range(0, depthFilterNormal.Length)];
                         break;
                     case EnemyLevel.Elite:
-                        var depthFilterElite = dataPool.elitePool.Where(pool => pool.minStageDepth <= stageDepth && pool.maxStageDepth >= stageDepth).Select(pool => pool._unitGroupData).ToArray();
+                        var depthFilterElite = dataPool.elitePool.Where(pool => pool.minStageDepth <= stageDepth && pool.maxStageDepth >= stageDepth).Select(pool => pool.unitGroupData).ToArray();
                         unitEnemyData = depthFilterElite[UnityEngine.Random.Range(0, depthFilterElite.Length)];
                         break;
                     case EnemyLevel.Boss:
-                        var depthFilterBoss = dataPool.bossPool.Where(pool => pool.minStageDepth <= stageDepth && pool.maxStageDepth >= stageDepth).Select(pool => pool._unitGroupData).ToArray();
+                        var depthFilterBoss = dataPool.bossPool.Where(pool => pool.minStageDepth <= stageDepth && pool.maxStageDepth >= stageDepth).Select(pool => pool.unitGroupData).ToArray();
                         unitEnemyData = depthFilterBoss[UnityEngine.Random.Range(0, depthFilterBoss.Length)];
                         break;
                     default:
@@ -78,7 +78,7 @@ namespace Scenes.Battle
             }
             else
             {
-                unitEnemyData = preliminaryEnemyData[UnityEngine.Random.Range(0, preliminaryEnemyData.Length)]._unitGroupData;
+                unitEnemyData = preliminaryEnemyData[UnityEngine.Random.Range(0, preliminaryEnemyData.Length)].unitGroupData;
             }
             var playerPresenter = PlayerUnitSpawn(playerCards);
             var enemyPresenter = EnemyUnitSpawn(unitEnemyData, _enemyUnitSpawnTransfrom[0]);
@@ -178,7 +178,7 @@ namespace Scenes.Battle
             for (int i = 0; i < 6; i++)
             {
                 List<CharacterUnitPresenter> enemyList = new List<CharacterUnitPresenter>();
-                var enemyDataGroup = enemyData[i]._unitData;
+                var enemyDataGroup = enemyData[i].unitData;
                 foreach (var enemy in enemyDataGroup)
                 {
                     Vector3 random = Vector3.zero;
