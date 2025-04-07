@@ -29,6 +29,10 @@ namespace Scenes.Battle.UnitCharacter
         private Vector3 _randomPupupOffset = new Vector3(0.8f, 0.8f, 0);
         private BoxCollider _collider;
         private NavMeshAgent _agent;
+        private Color NORMAL_OUTLINE_COLOR = Color.black;
+        private const int NORMAL_OUTLINE_WIDTH = 1;
+        private Color SELECT_OUTLINE_COLOR = Color.yellow;
+        private const int SELECT_OUTLINE_WIDTH = 6;
 
         private Animator _animator;
         public Animator Animator { get { return _animator; } }
@@ -38,6 +42,7 @@ namespace Scenes.Battle.UnitCharacter
         private Subject<Vector3> formationPoint = new Subject<Vector3>();
         public IObservable<Vector3> OnMoveFormationPoint => formationPoint;
 
+
         public void Init(NavMeshAgent agent )
         {
             _agent = agent;
@@ -45,6 +50,11 @@ namespace Scenes.Battle.UnitCharacter
             _animIDSpeed = Animator.StringToHash("Speed");
             _collider = GetComponent<BoxCollider>();
             _moveMarker.SetActive(false);
+            if (_quiqkOutline != null)
+            {
+                _quiqkOutline.OutlineWidth = NORMAL_OUTLINE_WIDTH;
+                _quiqkOutline.OutlineColor = NORMAL_OUTLINE_COLOR;
+            }
 
             Scene currentScene = gameObject.scene;
             sceneCamera = GetCameraInScene(currentScene);
@@ -159,7 +169,11 @@ namespace Scenes.Battle.UnitCharacter
             _isDead = true;
             _moveMarker.SetActive(false);
             _moveLineRenderer.gameObject.SetActive(false);
-            if (_quiqkOutline != null) _quiqkOutline.enabled = false;
+            if (_quiqkOutline != null)
+            {
+                _quiqkOutline.OutlineWidth = NORMAL_OUTLINE_WIDTH;
+                _quiqkOutline.OutlineColor = NORMAL_OUTLINE_COLOR;
+            }
         }
 
         public void ColliderActive(bool value)
@@ -177,8 +191,9 @@ namespace Scenes.Battle.UnitCharacter
 
         public void IsSelect(bool value )
         {
-            if (_quiqkOutline == null && !_isDead) return;
-            _quiqkOutline.enabled = value;
+            if (_quiqkOutline == null && !_isDead) return; 
+            _quiqkOutline.OutlineWidth = value ? SELECT_OUTLINE_WIDTH : NORMAL_OUTLINE_WIDTH;
+            _quiqkOutline.OutlineColor = value ? SELECT_OUTLINE_COLOR : NORMAL_OUTLINE_COLOR;
             _moveMarker.SetActive(value);
             _moveLineRenderer.gameObject.SetActive(value);
             _isDisplayMoveMarker = value;
