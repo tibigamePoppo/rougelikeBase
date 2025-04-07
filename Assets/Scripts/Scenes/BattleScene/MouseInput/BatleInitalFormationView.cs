@@ -203,6 +203,18 @@ namespace Scenes.Battle
                 default:
                     break;
             }
+            foreach (var unit in _enemyMeleeUnits)
+            {
+                Vector3 directionToTarget = new Vector3(0, 0, 0) - unit.transform.position;
+                Quaternion rotation = Quaternion.LookRotation(directionToTarget);
+                unit.rotation = rotation;
+            }
+            foreach (var unit in _enemyRangeUnits)
+            {
+                Vector3 directionToTarget = new Vector3(0, 0, 0) - unit.transform.position;
+                Quaternion rotation = Quaternion.LookRotation(directionToTarget);
+                unit.rotation = rotation;
+            }
         }
     }
 }
