@@ -9,6 +9,7 @@ using UnityEngine.SceneManagement;
 using Scenes.MainScene.Decks;
 using Scenes.MainScene.Upgrade;
 using Scenes.MainScene.Relic;
+using Cysharp.Threading.Tasks;
 
 namespace Scenes.MainScene.Player
 {
@@ -19,7 +20,7 @@ namespace Scenes.MainScene.Player
         [SerializeField] private TextMeshProUGUI _moneyText;
         [SerializeField] private Button _deckButton;
         [SerializeField] private Button _menuButton;
-        [SerializeField] private DeckView _deckView;
+        //[SerializeField] private DeckView _deckView;
         [SerializeField] private UnitUpgradePresenter _unitUpgradePresenter;
         private Subject<Unit> _deckButtonClick = new Subject<Unit>();
         public IObservable<Unit> OnDeckButtonClick => _deckButtonClick;
@@ -28,15 +29,22 @@ namespace Scenes.MainScene.Player
         {
             _popularityText.text = initialPopularity.ToString();
             _moneyText.text = initialMoney.ToString();
-            _deckView.Init(playerCard);
+            //_deckView.Init(playerCard);
             _unitUpgradePresenter.Init();
             _deckButton.OnClickAsObservable().Subscribe(_ => _deckButtonClick.OnNext(default)).AddTo(this);
             _menuButton.OnClickAsObservable().Subscribe(_ => MenuActive()).AddTo(this);
         }
 
-        public void OpenDeckView(List<UnitData> playerCard, List<RelicItemBase> relicItems)
+        public async UniTaskVoid OpenDeckView(List<UnitData> playerCard, List<RelicItemBase> relicItems)
         {
-            _deckView.ActiveWindow(playerCard,relicItems);
+            if (!SceneManager.GetSceneByName("DeckScene").isLoaded)
+            {
+                AsyncOperation asyncLoad = SceneManager.LoadSceneAsync("DeckScene", LoadSceneMode.Additive);
+                await UniTask.WaitUntil(() => asyncLoad.isDone);
+                var _deckView = FindFirstObjectByType<DeckView>();
+                _deckView.Init(playerCard);
+                _deckView.ActiveWindow(playerCard, relicItems);
+            }
         }
 
         public void UpdatePopularityText(int newPopularity)

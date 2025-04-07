@@ -6,6 +6,7 @@ using System.Linq;
 using Scenes.MainScene.Player;
 using Scenes.MainScene.Cards;
 using Scenes.MainScene.Relic;
+using UnityEngine.SceneManagement;
 
 namespace Scenes.MainScene.Decks
 {
@@ -21,7 +22,7 @@ namespace Scenes.MainScene.Decks
 
         public void Init(List<UnitData> playerUnit)
         {
-            _backButton.OnClickAsObservable().Subscribe(_ => gameObject.SetActive(false)).AddTo(this);
+            _backButton.OnClickAsObservable().Subscribe(_ => SceneManager.UnloadSceneAsync("DeckScene")).AddTo(this);
 
             var uniqueUnits = playerUnit
                 .GroupBy(c => c.name)
