@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Scenes.Battle.Enemy;
 using Scenes.Battle.UnitCharacter;
 using Scenes.MainScene.Player;
 using UnityEngine;
@@ -55,23 +54,23 @@ namespace Scenes.Battle
             _unitCommandCardView.gameObject.SetActive(false);
             _rewardView.gameObject.SetActive(false);
 
-            UnitData[] enemyData = new UnitData[0];
+            UnitEnemyGroup[] unitEnemyData = new UnitEnemyGroup[6];
             if (preliminaryEnemyData == null || preliminaryEnemyData.Length == 0)
             {
                 EnemyDataPool dataPool = Resources.Load<EnemyDataPool>("Value/EnemyPool");
                 switch (enemyLevel)
                 {
                     case EnemyLevel.Normal:
-                        var depthFilterNormal = dataPool.normalPool.Where(pool => pool.minStageDepth <= stageDepth && pool.maxStageDepth >= stageDepth).Select(pool => pool._unitData).ToArray();
-                        enemyData = depthFilterNormal[UnityEngine.Random.Range(0, depthFilterNormal.Length)];
+                        var depthFilterNormal = dataPool.normalPool.Where(pool => pool.minStageDepth <= stageDepth && pool.maxStageDepth >= stageDepth).Select(pool => pool._unitGroupData).ToArray();
+                        unitEnemyData = depthFilterNormal[UnityEngine.Random.Range(0, depthFilterNormal.Length)];
                         break;
                     case EnemyLevel.Elite:
-                        var depthFilterElite = dataPool.elitePool.Where(pool => pool.minStageDepth <= stageDepth && pool.maxStageDepth >= stageDepth).Select(pool => pool._unitData).ToArray();
-                        enemyData = depthFilterElite[UnityEngine.Random.Range(0, depthFilterElite.Length)];
+                        var depthFilterElite = dataPool.elitePool.Where(pool => pool.minStageDepth <= stageDepth && pool.maxStageDepth >= stageDepth).Select(pool => pool._unitGroupData).ToArray();
+                        unitEnemyData = depthFilterElite[UnityEngine.Random.Range(0, depthFilterElite.Length)];
                         break;
                     case EnemyLevel.Boss:
-                        var depthFilterBoss = dataPool.bossPool.Where(pool => pool.minStageDepth <= stageDepth && pool.maxStageDepth >= stageDepth).Select(pool => pool._unitData).ToArray();
-                        enemyData = depthFilterBoss[UnityEngine.Random.Range(0, depthFilterBoss.Length)];
+                        var depthFilterBoss = dataPool.bossPool.Where(pool => pool.minStageDepth <= stageDepth && pool.maxStageDepth >= stageDepth).Select(pool => pool._unitGroupData).ToArray();
+                        unitEnemyData = depthFilterBoss[UnityEngine.Random.Range(0, depthFilterBoss.Length)];
                         break;
                     default:
                         break;
@@ -79,27 +78,29 @@ namespace Scenes.Battle
             }
             else
             {
-                enemyData = preliminaryEnemyData[UnityEngine.Random.Range(0, preliminaryEnemyData.Length)]._unitData;
+                unitEnemyData = preliminaryEnemyData[UnityEngine.Random.Range(0, preliminaryEnemyData.Length)]._unitGroupData;
             }
             var playerPresenter = PlayerUnitSpawn(playerCards);
-            var enemyPresenter = EnemyUnitSpawn(enemyData);
+            var enemyPresenter = EnemyUnitSpawn(unitEnemyData, _enemyUnitSpawnTransfrom[0]);
             var playerModel = playerPresenter.Select(p => p.CharacterUnitModel).ToArray();
-            var enemyModel = enemyPresenter.Select(p => p.CharacterUnitModel).ToArray();
+            var enemyModel = enemyPresenter.Select(e => e.Select(p => p.CharacterUnitModel).ToArray()).ToArray();
             _unitCommandCardView.Init(playerCards, playerModel);
 
             _battleInitialFormationView.Init(playerModel);
             _onBattleFormationView.Init();
-            //_battleFormationPresenter.Init(playerModel);
+
+            var mergeEnemyModel = enemyModel.SelectMany(e => e).ToArray();
+            var mergeEnemyPresenter = enemyPresenter.SelectMany(e => e).ToArray();
 
             foreach (var pp in playerPresenter)
             {
-                pp.SetGroup(playerModel, enemyModel);
+                pp.SetGroup(playerModel, mergeEnemyModel);
             }
-            foreach (var ep in enemyPresenter)
+            foreach (var ep in mergeEnemyPresenter)
             {
-                ep.SetGroup(enemyModel, playerModel);
+                ep.SetGroup(mergeEnemyModel, playerModel);
             }
-            foreach (var model in enemyModel)
+            foreach (var model in mergeEnemyModel)
             {
                 model.Charge();
             }
@@ -113,7 +114,7 @@ namespace Scenes.Battle
 
 
             this.UpdateAsObservable()
-                .Select(_ => enemyModel.All(p => p.CurrentState == UnitCharacter.State.CharacterUnitStateType.Dead)) // すべての survive が false か判定
+                .Select(_ => mergeEnemyModel.All(p => p.CurrentState == UnitCharacter.State.CharacterUnitStateType.Dead)) // すべての survive が false か判定
                 .DistinctUntilChanged()
                 .Where(allDead => allDead)
                 .Subscribe(_ => BattleEnd(true))
@@ -130,9 +131,9 @@ namespace Scenes.Battle
             }).AddTo(this);
 
             int enemySpawnPaturn = WeightRandom.RandomInt(_enemySpawnPaturnValue, _enemySpawnPaturnWeight);
-            _battleInitialFormationView.EnemyInitialFormation(enemySpawnPaturn, enemyModel);
-            InitalFormation(playerPresenter.Concat(enemyPresenter).ToList()).Forget();
-            _battleSituationView.Init(playerModel, enemyModel);
+            _battleInitialFormationView.EnemyInitialFormation(enemySpawnPaturn, enemyModel, _enemyUnitSpawnTransfrom);
+            InitalFormation(playerPresenter.Concat(mergeEnemyPresenter).ToList()).Forget();
+            _battleSituationView.Init(playerModel, mergeEnemyModel);
         }
 
         public async UniTaskVoid InitalFormation(List<CharacterUnitPresenter> characters)
@@ -171,16 +172,22 @@ namespace Scenes.Battle
             return playerList;
         }
 
-        private List<CharacterUnitPresenter> EnemyUnitSpawn(UnitData[] enemyData)
+        private List<CharacterUnitPresenter>[] EnemyUnitSpawn(UnitEnemyGroup[] enemyData,Transform parentTransform)
         {
-            List<CharacterUnitPresenter> enemyList = new List<CharacterUnitPresenter>();
-            foreach (var enemy in enemyData)
+            List<CharacterUnitPresenter>[] enemyDataList = new List<CharacterUnitPresenter>[6];
+            for (int i = 0; i < 6; i++)
             {
-                Vector3 random = Vector3.zero;
-                var instanceUnit = Instantiate(enemy.prefab, random, Quaternion.identity, _playerUnitSpawnTransfrom);
-                enemyList.Add(instanceUnit.Init(enemy.status));
+                List<CharacterUnitPresenter> enemyList = new List<CharacterUnitPresenter>();
+                var enemyDataGroup = enemyData[i]._unitData;
+                foreach (var enemy in enemyDataGroup)
+                {
+                    Vector3 random = Vector3.zero;
+                    var instanceUnit = Instantiate(enemy.prefab, random, Quaternion.identity, parentTransform);
+                    enemyList.Add(instanceUnit.Init(enemy.status));
+                }
+                enemyDataList[i] = enemyList;
             }
-            return enemyList;
+            return enemyDataList;
         }
 
     }

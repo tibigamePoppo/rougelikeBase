@@ -159,61 +159,66 @@ namespace Scenes.Battle
             }
         }
 
-        public void EnemyInitialFormation(int type, CharacterUnitModel[] units)
+        public void EnemyInitialFormation(int type, CharacterUnitModel[][] unitsList,Transform[] enemyTransform)
         {
-            var _enemyMeleeUnits = units.Where(u => u.WeaponType == MainScene.Player.UnitWeaponType.Melee || u.WeaponType == MainScene.Player.UnitWeaponType.Rider).OrderBy(u => u.UnitName).Select(u => u.Transform).ToArray();
-            var _enemyRangeUnits = units.Where(u => u.WeaponType == MainScene.Player.UnitWeaponType.Range).OrderBy(u => u.UnitName).Select(u => u.Transform).ToArray();
+            for (int j = 0; j < 6; j++)
+            {
+                var units = unitsList[j];
+                if (units.Length == 0) continue;
+                var _enemyMeleeUnits = units.Where(u => u.WeaponType == MainScene.Player.UnitWeaponType.Melee || u.WeaponType == MainScene.Player.UnitWeaponType.Rider).OrderBy(u => u.UnitName).Select(u => u.Transform).ToArray();
+                var _enemyRangeUnits = units.Where(u => u.WeaponType == MainScene.Player.UnitWeaponType.Range).OrderBy(u => u.UnitName).Select(u => u.Transform).ToArray();
 
-            var enemyUnitsScale = 1 + Math.Max(_enemyMeleeUnits.Length, _enemyRangeUnits.Length) / 2;
-            Vector3[] path;
-            var clac = new BattleFormationClac();
-            Vector3 offsetVector = new Vector3(0, 0, 30);
-            switch (type)
-            {
-                case 0:
-                    int points = (int)unitsScale / 2 > 18 ? (int)unitsScale / 2 : 18;
-                    path = new Vector3[points];
-                    for (int i = 0; i < points; i++)
-                    {
-                        float angle = 360 - i * (360f / (points - 1));
-                        path[i] = new Vector3(Mathf.Cos(angle * Mathf.Deg2Rad), 0, Mathf.Sin(angle * Mathf.Deg2Rad));
-                    }
-                    float radius = enemyUnitsScale + 10;
-                    path = path.Select(v => v * radius).ToArray();
-                    clac.FormationO(_enemyMeleeUnits, _enemyRangeUnits, path);
-                    break;
-                case 1:
-                    enemyUnitsScale = Mathf.Min(12, enemyUnitsScale);
-                    path = new Vector3[] { new Vector3(1, 0, 0.1f), new Vector3(-1f, 0, 0.1f) };
-                    path = path.Select(v => v * enemyUnitsScale + offsetVector).ToArray();
-                    clac.FormationI(_enemyMeleeUnits, _enemyRangeUnits, path);
-                    break;
-                case 2:
-                    enemyUnitsScale = Mathf.Min(12, enemyUnitsScale);
-                    path = new Vector3[] { new Vector3(1f, 0, 0.1f), new Vector3(0, 0, 0.5f), new Vector3(-1f, 0, 0) };
-                    path = path.Select(v => v * enemyUnitsScale + offsetVector).ToArray();
-                    clac.FormationI(_enemyMeleeUnits, _enemyRangeUnits, path);
-                    break;
-                case 3:
-                    enemyUnitsScale = Mathf.Min(12, enemyUnitsScale);
-                    path = new Vector3[] { new Vector3(1f, 0, 0.1f), new Vector3(0, 0, -0.3f), new Vector3(-1f, 0, 0.1f) };
-                    path = path.Select(v => v * enemyUnitsScale + offsetVector).ToArray();
-                    clac.FormationI(_enemyMeleeUnits, _enemyRangeUnits, path);
-                    break;
-                default:
-                    break;
-            }
-            foreach (var unit in _enemyMeleeUnits)
-            {
-                Vector3 directionToTarget = new Vector3(0, 0, 0) - unit.transform.position;
-                Quaternion rotation = Quaternion.LookRotation(directionToTarget);
-                unit.rotation = rotation;
-            }
-            foreach (var unit in _enemyRangeUnits)
-            {
-                Vector3 directionToTarget = new Vector3(0, 0, 0) - unit.transform.position;
-                Quaternion rotation = Quaternion.LookRotation(directionToTarget);
-                unit.rotation = rotation;
+                var enemyUnitsScale = 1 + Math.Max(_enemyMeleeUnits.Length, _enemyRangeUnits.Length) / 2;
+                Vector3[] path;
+                var clac = new BattleFormationClac();
+                Vector3 offsetVector = enemyTransform[j].position;
+                switch (type)
+                {
+                    case 0:
+                        int points = (int)unitsScale / 2 > 18 ? (int)unitsScale / 2 : 18;
+                        path = new Vector3[points];
+                        for (int i = 0; i < points; i++)
+                        {
+                            float angle = 360 - i * (360f / (points - 1));
+                            path[i] = new Vector3(Mathf.Cos(angle * Mathf.Deg2Rad), 0, Mathf.Sin(angle * Mathf.Deg2Rad));
+                        }
+                        float radius = enemyUnitsScale + 10;
+                        path = path.Select(v => v * radius).ToArray();
+                        clac.FormationO(_enemyMeleeUnits, _enemyRangeUnits, path);
+                        break;
+                    case 1:
+                        enemyUnitsScale = Mathf.Min(12, enemyUnitsScale);
+                        path = new Vector3[] { new Vector3(1, 0, 0.1f), new Vector3(-1f, 0, 0.1f) };
+                        path = path.Select(v => v * enemyUnitsScale + offsetVector).ToArray();
+                        clac.FormationI(_enemyMeleeUnits, _enemyRangeUnits, path);
+                        break;
+                    case 2:
+                        enemyUnitsScale = Mathf.Min(12, enemyUnitsScale);
+                        path = new Vector3[] { new Vector3(1f, 0, 0.1f), new Vector3(0, 0, 0.5f), new Vector3(-1f, 0, 0) };
+                        path = path.Select(v => v * enemyUnitsScale + offsetVector).ToArray();
+                        clac.FormationI(_enemyMeleeUnits, _enemyRangeUnits, path);
+                        break;
+                    case 3:
+                        enemyUnitsScale = Mathf.Min(12, enemyUnitsScale);
+                        path = new Vector3[] { new Vector3(1f, 0, 0.1f), new Vector3(0, 0, -0.3f), new Vector3(-1f, 0, 0.1f) };
+                        path = path.Select(v => v * enemyUnitsScale + offsetVector).ToArray();
+                        clac.FormationI(_enemyMeleeUnits, _enemyRangeUnits, path);
+                        break;
+                    default:
+                        break;
+                }
+                foreach (var unit in _enemyMeleeUnits)
+                {
+                    Vector3 directionToTarget = new Vector3(0, 0, 0) - unit.transform.position;
+                    Quaternion rotation = Quaternion.LookRotation(directionToTarget);
+                    unit.rotation = rotation;
+                }
+                foreach (var unit in _enemyRangeUnits)
+                {
+                    Vector3 directionToTarget = new Vector3(0, 0, 0) - unit.transform.position;
+                    Quaternion rotation = Quaternion.LookRotation(directionToTarget);
+                    unit.rotation = rotation;
+                }
             }
         }
     }

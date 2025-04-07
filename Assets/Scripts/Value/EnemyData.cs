@@ -8,5 +8,11 @@ public class EnemyData : ScriptableObject
     public Sprite _enemySprite;
     public int minStageDepth;
     public int maxStageDepth;
-    public UnitData[] _unitData;
+    public UnitEnemyGroup[] _unitGroupData = new UnitEnemyGroup[6];
+}
+
+[System.Serializable]
+public struct UnitEnemyGroup
+{
+   public UnitData[] _unitData;
 }
