@@ -34,6 +34,8 @@ namespace Scenes.Title
             _progress.Value = 0;
             await LoadWebRequest(SheetType.UnitData) ;
             _progress.Value = 10;
+            await LoadWebRequest(SheetType.EnemyGroupData);
+            _progress.Value = 20;
         }
         private async UniTask LoadWebRequest(SheetType sheetType)
         {
@@ -64,6 +66,8 @@ namespace Scenes.Title
             List<List<string>> characterDataArrayList = new List<List<string>>();
             StringReader reader = new StringReader(_text);
             reader.ReadLine();
+            reader.ReadLine();
+            reader.ReadLine();
             while (reader.Peek() != -1)
             {
                 string line = reader.ReadLine();
@@ -90,6 +94,9 @@ namespace Scenes.Title
                     foreach (var data in dataList)
                     {
                         int id = int.Parse(data[0]);
+                        var targetUnit = _cardDataList.FirstOrDefault(c => c.status.id == id);
+                        if (targetUnit == default || targetUnit == null) continue;
+
                         string name = data[1];
                         string text = data[2];
                         var weaponType = StringToUnitWeaponType(data[3]);
@@ -100,20 +107,21 @@ namespace Scenes.Title
                         float attackRange = float.Parse(data[8]);
                         float attackspeed = float.Parse(data[9]);
                         float speed = float.Parse(data[10]);
-                        UnitStatus newUnitData = new UnitStatus(id,name, null, text, weaponType, group, hp, shiled, attack, attackRange, attackspeed, speed);
-                        var targetUnit = _cardDataList.FirstOrDefault(c => c.status.name == name);
-                        if (targetUnit != default)
-                        {
-                            targetUnit.status = newUnitData;
-                        }
+                        UnitStatus newUnitData = new UnitStatus(id,name, targetUnit.status.sprite, text, weaponType, group, hp, shiled, attack, attackRange, attackspeed, speed);
+
+                        // update data
+                        targetUnit.status = newUnitData;
                     }
                     break;
                 case SheetType.EnemyGroupData:
-                    var _enemyGroups = Resources.Load<EnemyDataPool>("Value/MasterDataPool/AllEnemyDataPool").normalPool;
+                    var _enemyGroups = Resources.Load<EnemyDataPool>("Value/MasterDataPool/AllEnemyGroupData").normalPool;
                     var _cardData = Resources.Load<CardPool>("Value/MasterDataPool/AllUnitPool").CardList();
                     foreach (var data in dataList)
                     {
                         int id = int.Parse(data[0]);
+                        var targetGroup = _enemyGroups.FirstOrDefault(c => c.id == id);
+                        if (targetGroup == default || targetGroup == null) continue;
+
                         string name = data[1];
                         int minStageDepth = int.Parse(data[2]);
                         int maxStageDepth = int.Parse(data[3]);
@@ -124,14 +132,12 @@ namespace Scenes.Title
                         UnitEnemyGroup unitGroupPosition5 = IntArrayToUnitEnemyGroup(SplitIntoThreeDigits(data[8]), _cardData);
                         UnitEnemyGroup unitGroupPosition6 = IntArrayToUnitEnemyGroup(SplitIntoThreeDigits(data[9]), _cardData);
                         UnitEnemyGroup[] unitEnemyGroups = new UnitEnemyGroup[] { unitGroupPosition1, unitGroupPosition2, unitGroupPosition3, unitGroupPosition4, unitGroupPosition5, unitGroupPosition6 };
-                        var targetGroup = _enemyGroups.FirstOrDefault(c => c.id == id);
-                        if (targetGroup != default)
-                        {
-                            targetGroup.name  = name;
-                            targetGroup.minStageDepth = minStageDepth;
-                            targetGroup.maxStageDepth = maxStageDepth;
-                            targetGroup.unitGroupData = unitEnemyGroups;
-                        }
+
+                        // update data
+                        targetGroup.name = name;
+                        targetGroup.minStageDepth = minStageDepth;
+                        targetGroup.maxStageDepth = maxStageDepth;
+                        targetGroup.unitGroupData = unitEnemyGroups;
                     }
                     break;
                 default:
@@ -142,22 +148,35 @@ namespace Scenes.Title
 
         private int[] SplitIntoThreeDigits(string input)
         {
-            return Enumerable.Range(0, (input.Length + 2) / 3)
-                             .Select(i => int.Parse(input.Substring(i * 3, Math.Min(3, input.Length - i * 3))))
-                             .ToArray();
+            return input.Length < 3 ? null : input.Split('/').Select(int.Parse).ToArray();
         }
 
         private UnitEnemyGroup IntArrayToUnitEnemyGroup(int[] inputs,List<UnitData> baseData)
         {
             UnitEnemyGroup unitEnemyGroup = new UnitEnemyGroup();
             List<UnitData> unitDatas = new List<UnitData>();
-            foreach (var input in inputs)
+            if (inputs == null)
             {
-                var unitData = baseData.Where(b => b.status.id == input).First();
-                unitDatas.Add(unitData);
+                unitEnemyGroup.unitData = unitDatas.ToArray();
+                return unitEnemyGroup;
             }
-            unitEnemyGroup.unitData = unitDatas.ToArray();
-            return unitEnemyGroup;
+            else
+            {
+                foreach (var input in inputs)
+                {
+                    var unitData = baseData.Where(b => b.status.id == input).FirstOrDefault();
+                    if (unitData == default)
+                    {
+                        Debug.LogWarning($"invalid enemy id {input}");
+                    }
+                    else
+                    {
+                        unitDatas.Add(unitData);
+                    }
+                }
+                unitEnemyGroup.unitData = unitDatas.ToArray();
+                return unitEnemyGroup;
+            }
         }
 
         public UnitWeaponType StringToUnitWeaponType(string stateStr)
