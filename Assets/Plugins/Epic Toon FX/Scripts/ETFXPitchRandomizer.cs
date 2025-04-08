@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections;
 
 namespace EpicToonFX
 {
@@ -11,7 +10,8 @@ namespace EpicToonFX
 	
 		void Start ()
 		{
-			transform.GetComponent<AudioSource>().pitch *= 1 + Random.Range(-randomPercent / 100, randomPercent / 100);
+			var audio = transform.GetComponent<AudioSource>();
+			audio.pitch *= 1 + Random.Range(-randomPercent / 100, randomPercent / 100);
 		}
 	}
 }

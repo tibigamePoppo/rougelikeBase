@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 198161944035608776}
   - component: {fileID: 199708145313222842}
   - component: {fileID: 82090615308768026}
+  - component: {fileID: -2754240706065299411}
   m_Layer: 0
   m_Name: SharpMissilePink
   m_TagString: Untagged
@@ -4922,6 +4923,19 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
+--- !u!114 &-2754240706065299411
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1550477657380252}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73411b49287734b7fba233a8d77b65c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  randomPercent: 0
 --- !u!1 &1901841321192174
 GameObject:
   m_ObjectHideFlags: 0
