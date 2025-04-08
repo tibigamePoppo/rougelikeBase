@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: LongArcher
   m_EditorClassIdentifier: 
   status:
+    id: 5
     name: "\u9577\u5F13\u5175"
     sprite: {fileID: 21300000, guid: 86165e49daa914a8f89d09691f64b4f6, type: 3}
     text: "\u5C04\u7A0B\u304C\u9577\u3044"

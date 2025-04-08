@@ -18,9 +18,7 @@ namespace Scenes.Title
         public IObservable<Unit> OnLoadMasterData => loadMasterData;
         public void Init()
         {
-            _progressText.text = "0%";
             _progressBar.fillAmount = 0;
-            //gameObject.SetActive(false);
             _closeButton.OnClickAsObservable().Subscribe(_ => gameObject.SetActive(false)).AddTo(this);
             _loadButton.OnClickAsObservable().Subscribe(_ => loadMasterData.OnNext(default)).AddTo(this);
         }

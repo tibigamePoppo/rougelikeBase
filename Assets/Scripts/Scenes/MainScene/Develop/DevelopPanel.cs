@@ -39,6 +39,11 @@ public class DevelopPanel : MonoBehaviour
 
     public void Init()
     {
+        if(Config.developMode == false)
+        {
+            _openButton.gameObject.SetActive(false);
+            return;
+        }
         _closeButton.OnClickAsObservable().Where(_ => !IsActiveOtherScene()).Subscribe(_ => gameObject.SetActive(false)).AddTo(this);
         _openButton.OnClickAsObservable().Where(_ => !IsActiveOtherScene()).Subscribe(_ => gameObject.SetActive(true)).AddTo(this);
         _upgradeButton.OnClickAsObservable().Where(_ => !IsActiveOtherScene()).Subscribe(_ => _upgradeWindow.OpenPanel()).AddTo(this);

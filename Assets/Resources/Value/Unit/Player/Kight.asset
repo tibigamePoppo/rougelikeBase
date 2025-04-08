@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Kight
   m_EditorClassIdentifier: 
   status:
+    id: 3
     name: "\u9A0E\u58EB"
     sprite: {fileID: 21300000, guid: b6e78695f9ebe44a0bb980977164a029, type: 3}
     text: "\u512A\u79C0\u306A\u524D\u885B"

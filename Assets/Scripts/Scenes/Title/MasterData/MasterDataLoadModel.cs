@@ -39,7 +39,6 @@ namespace Scenes.Title
         }
         private async UniTask LoadWebRequest(SheetType sheetType)
         {
-            Debug.Log("MasterDataApiClient.LoadStart!");
             string url = $"https://docs.google.com/spreadsheets/d/{SPREAD_SHEET_ID}/gviz/tq?tqx=out:csv&sheet={sheetType.ToString()}";
 
             using (UnityWebRequest request = UnityWebRequest.Get(url))
@@ -49,9 +48,6 @@ namespace Scenes.Title
                 if (request.result == UnityWebRequest.Result.Success)
                 {
                     var masterData = ConvertToArrayListFrom(request.downloadHandler.text);
-                    Debug.Log($"masterData.Length = {masterData.Count}");
-                    Debug.Log($"masterData[0].Length = {masterData[0].Count}");
-                    Debug.Log($"masterData[0][0].Value = {masterData[0][0]}");
                     GenerateDataList(sheetType, masterData);
                 }
                 else

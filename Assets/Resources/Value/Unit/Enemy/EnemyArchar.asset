@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: EnemyArchar
   m_EditorClassIdentifier: 
   status:
+    id: 102
     name: "\u6575\u5F13\u5175"
     sprite: {fileID: 0}
-    text: 
+    text: '""'
     type: 0
     group: 1
     hp: 50

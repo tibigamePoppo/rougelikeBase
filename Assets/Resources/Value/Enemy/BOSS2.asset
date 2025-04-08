@@ -12,26 +12,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df3bd9856d86e4d6ba36a447e8eada60, type: 3}
   m_Name: BOSS2
   m_EditorClassIdentifier: 
+  id: 9
   _enemyName: "\u30DC\u30B9\u30C6\u30B9\u30C82"
   _enemySprite: {fileID: 21300000, guid: cb81b4d3282684886afcf86a630a9eb0, type: 3}
-  minStageDepth: 1
+  minStageDepth: 0
   maxStageDepth: 1000
-  _unitGroupData:
-  - _unitData:
+  unitGroupData:
+  - unitData:
     - {fileID: 11400000, guid: b70eb564a6596420193fcaa53bad555f, type: 2}
     - {fileID: 11400000, guid: b70eb564a6596420193fcaa53bad555f, type: 2}
     - {fileID: 11400000, guid: b70eb564a6596420193fcaa53bad555f, type: 2}
     - {fileID: 11400000, guid: b70eb564a6596420193fcaa53bad555f, type: 2}
-  - _unitData:
+  - unitData:
     - {fileID: 11400000, guid: b70eb564a6596420193fcaa53bad555f, type: 2}
     - {fileID: 11400000, guid: b70eb564a6596420193fcaa53bad555f, type: 2}
     - {fileID: 11400000, guid: b70eb564a6596420193fcaa53bad555f, type: 2}
     - {fileID: 11400000, guid: b70eb564a6596420193fcaa53bad555f, type: 2}
-  - _unitData:
+  - unitData:
     - {fileID: 11400000, guid: b70eb564a6596420193fcaa53bad555f, type: 2}
     - {fileID: 11400000, guid: b70eb564a6596420193fcaa53bad555f, type: 2}
     - {fileID: 11400000, guid: b70eb564a6596420193fcaa53bad555f, type: 2}
     - {fileID: 11400000, guid: b70eb564a6596420193fcaa53bad555f, type: 2}
-  - _unitData: []
-  - _unitData: []
-  - _unitData: []
+  - unitData: []
+  - unitData: []
+  - unitData: []

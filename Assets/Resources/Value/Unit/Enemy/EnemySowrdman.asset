@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: EnemySowrdman
   m_EditorClassIdentifier: 
   status:
+    id: 101
     name: "\u86EE\u65CF1"
     sprite: {fileID: 0}
-    text: 
+    text: '""'
     type: 1
     group: 1
     hp: 100

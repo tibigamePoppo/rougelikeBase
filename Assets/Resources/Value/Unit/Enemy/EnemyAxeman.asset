@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: EnemyAxeman
   m_EditorClassIdentifier: 
   status:
+    id: 103
     name: "\u86EE\u65CF2"
     sprite: {fileID: 0}
-    text: 
+    text: '""'
     type: 1
     group: 1
     hp: 70

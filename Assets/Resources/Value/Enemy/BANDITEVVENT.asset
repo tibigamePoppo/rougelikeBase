@@ -12,15 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df3bd9856d86e4d6ba36a447e8eada60, type: 3}
   m_Name: BANDITEVVENT
   m_EditorClassIdentifier: 
+  id: 10
   _enemyName: "\u86EE\u65CF\u5C0F"
   _enemySprite: {fileID: 21300000, guid: 143d7d5e6dc6b42a594962b8c725c2e0, type: 3}
   minStageDepth: 0
   maxStageDepth: 1000
-  _unitGroupData:
-  - _unitData:
+  unitGroupData:
+  - unitData:
     - {fileID: 11400000, guid: bcb363fe19e694f318e8446588c5d2c7, type: 2}
     - {fileID: 11400000, guid: bcb363fe19e694f318e8446588c5d2c7, type: 2}
-  - _unitData:
+  - unitData:
     - {fileID: 11400000, guid: c09b3883f74cb4e0f8df58f4fc26a066, type: 2}
     - {fileID: 11400000, guid: c09b3883f74cb4e0f8df58f4fc26a066, type: 2}
     - {fileID: 11400000, guid: c09b3883f74cb4e0f8df58f4fc26a066, type: 2}
@@ -29,9 +30,9 @@ MonoBehaviour:
     - {fileID: 11400000, guid: c09b3883f74cb4e0f8df58f4fc26a066, type: 2}
     - {fileID: 11400000, guid: c09b3883f74cb4e0f8df58f4fc26a066, type: 2}
     - {fileID: 11400000, guid: c09b3883f74cb4e0f8df58f4fc26a066, type: 2}
-  - _unitData:
-    - {fileID: 11400000, guid: b84817daad219474fa548e89a0220cae, type: 2}
-    - {fileID: 11400000, guid: b84817daad219474fa548e89a0220cae, type: 2}
-  - _unitData: []
-  - _unitData: []
-  - _unitData: []
+  - unitData:
+    - {fileID: 11400000, guid: bcb363fe19e694f318e8446588c5d2c7, type: 2}
+    - {fileID: 11400000, guid: bcb363fe19e694f318e8446588c5d2c7, type: 2}
+  - unitData: []
+  - unitData: []
+  - unitData: []

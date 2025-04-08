@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: EnemyDualSowrdman
   m_EditorClassIdentifier: 
   status:
+    id: 107
     name: "\u77ED\u5263\u86EE\u65CF"
     sprite: {fileID: 0}
     text: '""'

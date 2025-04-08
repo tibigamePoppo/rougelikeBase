@@ -12,12 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df3bd9856d86e4d6ba36a447e8eada60, type: 3}
   m_Name: NORMAL4
   m_EditorClassIdentifier: 
+  id: 4
   _enemyName: "\u86EE\u65CF3"
   _enemySprite: {fileID: 21300000, guid: 143d7d5e6dc6b42a594962b8c725c2e0, type: 3}
   minStageDepth: 25
   maxStageDepth: 39
-  _unitGroupData:
-  - _unitData:
+  unitGroupData:
+  - unitData:
     - {fileID: 11400000, guid: d7d359ea493434bbc9a12c6a3385ff39, type: 2}
     - {fileID: 11400000, guid: d7d359ea493434bbc9a12c6a3385ff39, type: 2}
     - {fileID: 11400000, guid: d7d359ea493434bbc9a12c6a3385ff39, type: 2}
@@ -26,20 +27,11 @@ MonoBehaviour:
     - {fileID: 11400000, guid: e8b277e8f732b4db7a5df26f53578ce4, type: 2}
     - {fileID: 11400000, guid: e8b277e8f732b4db7a5df26f53578ce4, type: 2}
     - {fileID: 11400000, guid: e8b277e8f732b4db7a5df26f53578ce4, type: 2}
-  - _unitData:
+  - unitData:
     - {fileID: 11400000, guid: d7d359ea493434bbc9a12c6a3385ff39, type: 2}
     - {fileID: 11400000, guid: d7d359ea493434bbc9a12c6a3385ff39, type: 2}
     - {fileID: 11400000, guid: d7d359ea493434bbc9a12c6a3385ff39, type: 2}
     - {fileID: 11400000, guid: d7d359ea493434bbc9a12c6a3385ff39, type: 2}
-    - {fileID: 11400000, guid: d7d359ea493434bbc9a12c6a3385ff39, type: 2}
-    - {fileID: 11400000, guid: d7d359ea493434bbc9a12c6a3385ff39, type: 2}
-    - {fileID: 11400000, guid: e8b277e8f732b4db7a5df26f53578ce4, type: 2}
-    - {fileID: 11400000, guid: e8b277e8f732b4db7a5df26f53578ce4, type: 2}
-    - {fileID: 11400000, guid: e8b277e8f732b4db7a5df26f53578ce4, type: 2}
-    - {fileID: 11400000, guid: e8b277e8f732b4db7a5df26f53578ce4, type: 2}
-    - {fileID: 11400000, guid: e8b277e8f732b4db7a5df26f53578ce4, type: 2}
-    - {fileID: 11400000, guid: e8b277e8f732b4db7a5df26f53578ce4, type: 2}
-  - _unitData:
     - {fileID: 11400000, guid: d7d359ea493434bbc9a12c6a3385ff39, type: 2}
     - {fileID: 11400000, guid: d7d359ea493434bbc9a12c6a3385ff39, type: 2}
     - {fileID: 11400000, guid: d7d359ea493434bbc9a12c6a3385ff39, type: 2}
@@ -48,10 +40,23 @@ MonoBehaviour:
     - {fileID: 11400000, guid: e8b277e8f732b4db7a5df26f53578ce4, type: 2}
     - {fileID: 11400000, guid: e8b277e8f732b4db7a5df26f53578ce4, type: 2}
     - {fileID: 11400000, guid: e8b277e8f732b4db7a5df26f53578ce4, type: 2}
-  - _unitData: []
-  - _unitData:
+    - {fileID: 11400000, guid: e8b277e8f732b4db7a5df26f53578ce4, type: 2}
+    - {fileID: 11400000, guid: e8b277e8f732b4db7a5df26f53578ce4, type: 2}
+    - {fileID: 11400000, guid: e8b277e8f732b4db7a5df26f53578ce4, type: 2}
+    - {fileID: 11400000, guid: e8b277e8f732b4db7a5df26f53578ce4, type: 2}
+  - unitData:
+    - {fileID: 11400000, guid: d7d359ea493434bbc9a12c6a3385ff39, type: 2}
+    - {fileID: 11400000, guid: d7d359ea493434bbc9a12c6a3385ff39, type: 2}
+    - {fileID: 11400000, guid: d7d359ea493434bbc9a12c6a3385ff39, type: 2}
+    - {fileID: 11400000, guid: d7d359ea493434bbc9a12c6a3385ff39, type: 2}
+    - {fileID: 11400000, guid: e8b277e8f732b4db7a5df26f53578ce4, type: 2}
+    - {fileID: 11400000, guid: e8b277e8f732b4db7a5df26f53578ce4, type: 2}
+    - {fileID: 11400000, guid: e8b277e8f732b4db7a5df26f53578ce4, type: 2}
+    - {fileID: 11400000, guid: e8b277e8f732b4db7a5df26f53578ce4, type: 2}
+  - unitData: []
+  - unitData:
     - {fileID: 11400000, guid: b70eb564a6596420193fcaa53bad555f, type: 2}
     - {fileID: 11400000, guid: b70eb564a6596420193fcaa53bad555f, type: 2}
     - {fileID: 11400000, guid: b70eb564a6596420193fcaa53bad555f, type: 2}
     - {fileID: 11400000, guid: b70eb564a6596420193fcaa53bad555f, type: 2}
-  - _unitData: []
+  - unitData: []
