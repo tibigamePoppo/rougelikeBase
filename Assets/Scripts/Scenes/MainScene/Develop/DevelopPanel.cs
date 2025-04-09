@@ -112,13 +112,13 @@ public class DevelopPanel : MonoBehaviour
             BattlePresenter battlePresenter = FindFirstObjectByType<BattlePresenter>();
             if (battlePresenter != null)
             {
-                battlePresenter.Init(_enemyLevel, PlayerSingleton.Instance.CurrentDeck, 0);
+                battlePresenter.Init(_enemyLevel, PlayerSingleton.Instance.CurrentDeck, 0, Random.Range(0, 100000));
             }
         }
         else if (scene.name == "EventScene")
         {
             EventScenePtesenter eventPresenter = FindFirstObjectByType<EventScenePtesenter>();
-            eventPresenter.Init(0);
+            eventPresenter.Init(0, Random.Range(0, 100000));
         }
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }

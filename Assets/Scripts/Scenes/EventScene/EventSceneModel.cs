@@ -13,9 +13,11 @@ namespace Scenes.EventScene
         private Subject<EventEffectArg> _changeScene = new Subject<EventEffectArg>();
         public EventData SceneEvent { get { return _sceneEvent; } }
         public IObservable<EventEffectArg> ChangeScene => _changeScene;
+        private int _seed;
 
-        public void Init()
+        public void Init(int seed)
         {
+            _seed = seed;
             _sceneEvent = RandomEventList();
         }
 
@@ -24,6 +26,7 @@ namespace Scenes.EventScene
             List<EventBase> events = new List<EventBase>();
             var _eventDataList = Resources.Load<EventDataPool>("Value/EventPool").events.ToArray();
             _eventDataList = LimitFilterEvent(_eventDataList);
+            UnityEngine.Random.InitState(_seed);
             int randomIndex = UnityEngine.Random.Range(0, _eventDataList.Length);
             return _eventDataList[randomIndex];
         }

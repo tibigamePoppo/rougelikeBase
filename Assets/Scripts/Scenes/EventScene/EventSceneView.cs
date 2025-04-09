@@ -15,16 +15,18 @@ namespace Scenes.EventScene
         [SerializeField] private Image _eventImage;
         [SerializeField] private Transform _buttonPanel;
         private int _depth;
+        private int _seed;
         private Subject<EventEffectArg> _emitEvent = new Subject<EventEffectArg>();
         private EnemyData[] _preliminaryEnemyData;
         public IObservable<EventEffectArg> OnEmitEvent => _emitEvent;
         private EnemyLevel _enemyLevel;
 
-        public void Init(EventData eventData,int depth)
+        public void Init(EventData eventData,int depth,int seed)
         {
             _text.text = eventData.text;
             _eventImage.sprite = eventData.sprite;
             _depth = depth;
+            _seed = seed;
             foreach (var eventUnit in eventData.eventEffectArgs)
             {
                 var button = Instantiate(_button, _buttonPanel);
@@ -57,7 +59,7 @@ namespace Scenes.EventScene
                 BattlePresenter battlePresenter = FindFirstObjectByType<BattlePresenter>();
                 if (battlePresenter != null)
                 {
-                    battlePresenter.Init(_enemyLevel, PlayerSingleton.Instance.CurrentDeck, _depth, _preliminaryEnemyData);
+                    battlePresenter.Init(_enemyLevel, PlayerSingleton.Instance.CurrentDeck, _depth, _seed, _preliminaryEnemyData);
                 }
                 else
                 {

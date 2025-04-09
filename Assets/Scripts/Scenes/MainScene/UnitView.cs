@@ -6,10 +6,11 @@ using System;
 using System.Linq;
 using Scenes.Battle;
 using Scenes.EventScene;
+using UnityEngine.EventSystems;
 
 namespace Scenes.MainScene
 {
-    public class UnitView : MonoBehaviour
+    public class UnitView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         [SerializeField] private SpritePool _spritePool;
         [SerializeField] private Button _button;
@@ -24,9 +25,11 @@ namespace Scenes.MainScene
 
         private Subject<EventUnit> _clickEvent = new Subject<EventUnit>();
         private Subject<bool> _isPlayerWinBattle = new Subject<bool>();
+        private Subject<bool> _isMouseOver = new Subject<bool>();
 
         public IObservable<EventUnit> OnClickEvent => _clickEvent;
         public IObservable<bool> IsPlayerWinBattle => _isPlayerWinBattle;
+        public IObservable<bool> OnIsMouseOver => _isMouseOver;
 
 
         public void Intaractable(bool value)
@@ -106,7 +109,7 @@ namespace Scenes.MainScene
                 if (battlePresenter != null)
                 {
                     int stageDepth = _unit.depth + _stageDepth[_unit.stageNumber];
-                    battlePresenter.Init(_enemyLevel,PlayerSingleton.Instance.CurrentDeck, stageDepth);
+                    battlePresenter.Init(_enemyLevel,PlayerSingleton.Instance.CurrentDeck, stageDepth, _unit.seed);
                 }
                 else
                 {
@@ -120,7 +123,7 @@ namespace Scenes.MainScene
             else if(scene.name == "EventScene")
             {
                 EventScenePtesenter eventPresenter = FindFirstObjectByType<EventScenePtesenter>();
-                eventPresenter.Init(_unit.depth);
+                eventPresenter.Init(_unit.depth, _unit.seed);
             }
             SceneManager.sceneLoaded -= OnSceneLoaded;
         }
@@ -130,6 +133,16 @@ namespace Scenes.MainScene
             return Enumerable.Range(0, SceneManager.sceneCount)
                              .Select(SceneManager.GetSceneAt)
                              .Any(scene => scene.name == "BattleScene" || scene.name == "ShopScene" || scene.name == "EventScene");
+        }
+
+        public void OnPointerExit(PointerEventData eventData)
+        {
+            _isMouseOver.OnNext(false);
+        }
+
+        public void OnPointerEnter(PointerEventData eventData)
+        {
+            _isMouseOver.OnNext(true);
         }
 
         public Transform imageTransform { get { return _image.transform; } }

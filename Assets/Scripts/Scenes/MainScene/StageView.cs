@@ -17,6 +17,7 @@ namespace Scenes.MainScene
         [SerializeField] private StageEndView _stageEndView;
         [SerializeField] private GameObject _layerUnit;
         [SerializeField] private UnitLineView _unitLineView;
+        [SerializeField] private BattleUnitDetailView _battleUnitDetailView;
 
         private List<UnitView> _instanceEventUnitList = new List<UnitView>();
         private List<GameObject> _stageGameObjects = new List<GameObject>();
@@ -35,6 +36,7 @@ namespace Scenes.MainScene
                _stageDepth = 1;
             _stageStartView.Init();
             _stageEndView.Init();
+            _battleUnitDetailView.Init();
             InstanceUnits(unitInfo);
             LinqUnitLine();
 
@@ -80,6 +82,21 @@ namespace Scenes.MainScene
                         unit.Intaractable(false);
                     }
 
+                    // battle detail panel
+                    if (unitInfo[i][j].unitType == UnitType.Battle || unitInfo[i][j].unitType == UnitType.Elite || unitInfo[i][j].unitType == UnitType.Boss)
+                    {
+                        unit.OnIsMouseOver.Subscribe(isMouseOver =>
+                        {
+                            if(isMouseOver)
+                            {
+                                _battleUnitDetailView.Show(unit);
+                            }
+                            else
+                            {
+                                _battleUnitDetailView.Hide();
+                            }
+                        }).AddTo(this);
+                    }
                     // to Battle end boss
                     if(unitInfo[i][j].unitType == UnitType.Boss)
                     {

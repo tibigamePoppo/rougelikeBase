@@ -44,7 +44,7 @@ namespace Scenes.Battle
         private int[] _enemySpawnPaturnValue = new int[] { 0, 1, 2, 3 };//0 is circle, 1 is I formation, 2 is V formatin,3 is A formation
         private float[] _enemySpawnPaturnWeight = new float[] { 1f, 3f, 2f, 2f };
 
-        public void Init(EnemyLevel enemyLevel, List<UnitData> playerCards,int stageDepth, EnemyData[] preliminaryEnemyData = null)
+        public void Init(EnemyLevel enemyLevel, List<UnitData> playerCards,int stageDepth,int enemySeed, EnemyData[] preliminaryEnemyData = null)
         {
             _pastEventSystem = EventSystem.current;
             EventSystem.current = eventSystem;
@@ -58,6 +58,7 @@ namespace Scenes.Battle
             if (preliminaryEnemyData == null || preliminaryEnemyData.Length == 0)
             {
                 EnemyDataPool dataPool = Resources.Load<EnemyDataPool>("Value/EnemyPool");
+                UnityEngine.Random.InitState(enemySeed);
                 switch (enemyLevel)
                 {
                     case EnemyLevel.Normal:

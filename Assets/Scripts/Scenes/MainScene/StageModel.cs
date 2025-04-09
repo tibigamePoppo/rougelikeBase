@@ -20,13 +20,15 @@ public class EventUnit
     public int layerNumber;
     public int depth;
     public int stageNumber;
-    public EventUnit(EventUnit[] connect, UnitType unitType,int depth, int layerNumber,int stageNumber)
+    public int seed;
+    public EventUnit(EventUnit[] connect, UnitType unitType,int depth, int layerNumber,int stageNumber, int seed)
     {
         this.connect = connect;
         this.unitType = unitType;
         this.depth = depth;
         this.layerNumber = layerNumber;
         this.stageNumber = stageNumber;
+        this.seed = seed;
     }
 }
 
@@ -65,7 +67,7 @@ namespace Scenes.MainScene
                 int layerInUnitCount = UnitCountByDepth(i);
                 for (int j = 0; j < layerInUnitCount; j++)
                 {
-                    var newUnit = new EventUnit(new EventUnit[0], GetRandomUnitType(i), i, j, _currentStage);
+                    var newUnit = new EventUnit(new EventUnit[0], GetRandomUnitType(i), i, j, _currentStage, Random.Range(0, 100000));
                     _unitInfos[i].Add(newUnit);
                 }
             }

@@ -10,12 +10,12 @@ namespace Scenes.EventScene
         private EventSceneModel _model;
         private EventSceneView _view;
 
-        public void Init(int depth)
+        public void Init(int depth, int seed)
         {
             _model = new EventSceneModel();
             _view = GetComponent<EventSceneView>();
-            _model.Init();
-            _view.Init(_model.SceneEvent, depth);
+            _model.Init(seed);
+            _view.Init(_model.SceneEvent, depth, seed);
             _view.OnEmitEvent.Subscribe(e => _model.EventProcess(e)).AddTo(this);
             _model.ChangeScene.Subscribe(s => _view.ChangeScene(s)).AddTo(this);
         }
