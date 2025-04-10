@@ -172,6 +172,16 @@ namespace Scenes.Battle
                 Vector3[] path;
                 var clac = new BattleFormationClac();
                 Vector3 offsetVector = enemyTransform[j].position;
+                if(type != 0)
+                {
+                    Vector3 rayStart = new Vector3(offsetVector.x, offsetVector.y + 100, offsetVector.z);
+                    Ray ray = new Ray(rayStart, Vector3.down);
+                   var layerMask = LayerMask.GetMask("Stage");
+                    if (Physics.Raycast(ray, out RaycastHit hitInfo, offsetVector.y + 101, layerMask))
+                    {
+                        offsetVector.y = hitInfo.point.y;
+                    }
+                }
                 switch (type)
                 {
                     case 0:

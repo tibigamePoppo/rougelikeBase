@@ -5045,7 +5045,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _detailText: {fileID: 1879774930}
   _detailPanel: {fileID: 994387551}
-  OFFSET: {x: 1.5, y: 2, z: 0}
 --- !u!1 &1080073037
 GameObject:
   m_ObjectHideFlags: 0

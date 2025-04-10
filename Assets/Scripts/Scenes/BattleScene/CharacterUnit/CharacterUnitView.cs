@@ -23,6 +23,7 @@ namespace Scenes.Battle.UnitCharacter
         [SerializeField] private QuiqkOutline _quiqkOutline;
         [SerializeField] private GameObject _moveMarker;
         [SerializeField] private LineRenderer _moveLineRenderer;
+        [SerializeField] private EffectEmitBase _slowEffect;
         private bool _isDisplayMoveMarker = false;
         private bool _isDead = false;
 
@@ -40,7 +41,11 @@ namespace Scenes.Battle.UnitCharacter
         private Camera sceneCamera;
 
         private Subject<Vector3> formationPoint = new Subject<Vector3>();
+        private Subject<Disorder> getDisorder = new Subject<Disorder>();
+        private Subject<Disorder> removeDisorder = new Subject<Disorder>();
         public IObservable<Vector3> OnMoveFormationPoint => formationPoint;
+        public IObservable<Disorder> OnGetDisorder => getDisorder;
+        public IObservable<Disorder> OnRemoveDisorder => removeDisorder;
 
 
         public void Init(NavMeshAgent agent )
@@ -197,6 +202,19 @@ namespace Scenes.Battle.UnitCharacter
             _moveMarker.SetActive(value);
             _moveLineRenderer.gameObject.SetActive(value);
             _isDisplayMoveMarker = value;
+        }
+
+        public void SetDisorder(Disorder disorder, bool isRecover)
+        {
+            if (isRecover)
+            {
+                removeDisorder.OnNext(disorder);
+            }
+            else
+            {
+                _slowEffect.Emit(transform.position);
+                getDisorder.OnNext(disorder);
+            }
         }
     }
 }

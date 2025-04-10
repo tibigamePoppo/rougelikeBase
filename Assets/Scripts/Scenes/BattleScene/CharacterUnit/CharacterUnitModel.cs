@@ -7,6 +7,7 @@ using System;
 using Scenes.Battle.UnitCharacter.State;
 using System.Linq;
 using System.Threading;
+using System.Collections.Generic;
 
 namespace Scenes.Battle.UnitCharacter
 {
@@ -17,6 +18,7 @@ namespace Scenes.Battle.UnitCharacter
         private float _attackRange;
         private float _attackSpeed;
         private float _maxShield;
+        private float _moveSpeed;
         private string _unitName;
         private UnitWeaponType _type;
         private UnitGroup _unitGroup;
@@ -39,6 +41,7 @@ namespace Scenes.Battle.UnitCharacter
         private CharacterUnitModel[] _teamGroup;
         private CharacterUnitModel[] _enemyGroup;
         private CharacterUnitModel _targetUnit;
+        private List<Disorder> _disorderList = new List<Disorder>();
         private Color orangeColor = new Color(1, 0.8706f, 0.2392f);
         private Color pinkColor = new Color(0.8745f,0.3216f,0.5255f);
         private Color blueColor = new Color(0.2392f, 0.4078f, 1f);
@@ -83,7 +86,8 @@ namespace Scenes.Battle.UnitCharacter
             _unitGroup = status.group;
             _originTransfrom = originTransfrom;
             _agent = agent;
-            _agent.speed = status.speed;
+            _moveSpeed = status.speed;
+            SetMoveSpeed();
 
 
             if (HasRelicItem(4))
@@ -91,6 +95,17 @@ namespace Scenes.Battle.UnitCharacter
                 _maxShield += _maxHp * 0.2f;
                 _shield.Value += _maxHp * 0.2f;
             }
+        }
+
+        private void SetMoveSpeed()
+        {
+            _agent.speed = MoveSpeed();
+        }
+
+        private float MoveSpeed()
+        {
+            Debug.Log($"slow count {Mathf.Max(0.5f, _disorderList.Count(d => d == Disorder.Slow))} , {_moveSpeed / (2 * Mathf.Max(0.5f, _disorderList.Count(d => d == Disorder.Slow)))}");
+            return _moveSpeed / (2 * Mathf.Max(0.5f, _disorderList.Count(d => d == Disorder.Slow)));
         }
 
         public void BattleLoopStart()
@@ -323,6 +338,19 @@ namespace Scenes.Battle.UnitCharacter
         {
             _isSelect.OnNext(value);
         }
+
+        public void SetDisorder(Disorder disorder,bool isRecover)
+        {
+            if(isRecover)
+            {
+                _disorderList.Remove(disorder);
+            }
+            else
+            {
+                _disorderList.Add(disorder);
+            }
+            SetMoveSpeed();
+        }
     }
 
     public class AttackArg
@@ -353,5 +381,10 @@ namespace Scenes.Battle.UnitCharacter
     {
         Jump,
         Shake
+    }
+
+    public enum Disorder
+    {
+        Slow,
     }
 }

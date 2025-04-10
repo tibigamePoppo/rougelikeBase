@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Scenes.Battle.UnitCharacter;
 using Scenes.MainScene.Player;
@@ -10,6 +9,8 @@ using UniRx;
 using Cysharp.Threading.Tasks;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.AI;
+using Unity.AI.Navigation;
 
 namespace Scenes.Battle
 {
@@ -26,6 +27,8 @@ namespace Scenes.Battle
     {
         [SerializeField] private Transform _playerUnitSpawnTransfrom;
         [SerializeField] private Transform[] _enemyUnitSpawnTransfrom;
+        [SerializeField] private Transform[] _terrainMarkerTransform;
+        [SerializeField] private GameObject[] _terrainPrefabs;
         [SerializeField] private RewardView _rewardView;
         [SerializeField] private BattleFormationPresenter _battleFormationPresenter;
         [SerializeField] private BatleInitalFormationView _battleInitialFormationView;
@@ -34,6 +37,7 @@ namespace Scenes.Battle
         [SerializeField] private UnitCommandCardView _unitCommandCardView;
         [SerializeField] private Button _battlReadyButton;
         [SerializeField] private EventSystem eventSystem;
+        [SerializeField] private NavMeshSurface _surface;
         private EventSystem _pastEventSystem;
         private Camera _pastMainCamera;
         private Subject<bool> _isPlayerWinBattle = new Subject<bool>();
@@ -53,6 +57,7 @@ namespace Scenes.Battle
             _rewardView.Init(enemyLevel ,enemySeed);
             _unitCommandCardView.gameObject.SetActive(false);
             _rewardView.gameObject.SetActive(false);
+            GenerateTerrain();
 
             UnitEnemyGroup[] unitEnemyData = new UnitEnemyGroup[6];
             if (preliminaryEnemyData == null || preliminaryEnemyData.Length == 0)
@@ -135,6 +140,15 @@ namespace Scenes.Battle
             _battleInitialFormationView.EnemyInitialFormation(enemySpawnPaturn, enemyModel, _enemyUnitSpawnTransfrom);
             InitalFormation(playerPresenter.Concat(mergeEnemyPresenter).ToList()).Forget();
             _battleSituationView.Init(playerModel, mergeEnemyModel);
+        }
+
+        private void GenerateTerrain()
+        {
+            foreach (var marker in _terrainMarkerTransform)
+            {
+                Instantiate(_terrainPrefabs[UnityEngine.Random.Range(0, _terrainPrefabs.Length)], marker);
+            }
+            _surface.BuildNavMesh();
         }
 
         public async UniTaskVoid InitalFormation(List<CharacterUnitPresenter> characters)

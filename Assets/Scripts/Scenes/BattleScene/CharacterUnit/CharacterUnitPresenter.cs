@@ -26,7 +26,9 @@ namespace Scenes.Battle.UnitCharacter
 
             _model.Init(status,_agent, this.transform);
             _view.Init(_agent);
-            _view.OnMoveFormationPoint.Subscribe(p => _model.SetFormationPoint(p)).AddTo(this);
+            _view.OnMoveFormationPoint.Subscribe(p => _model.SetFormationPoint(p).Forget()).AddTo(this);
+            _view.OnGetDisorder.Subscribe(d => _model.SetDisorder(d, false)).AddTo(this);
+            _view.OnRemoveDisorder.Subscribe(d => _model.SetDisorder(d, true)).AddTo(this);
 
             _stateController.Init(_model,_view);
 

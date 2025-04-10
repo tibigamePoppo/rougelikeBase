@@ -6,13 +6,14 @@ public class ParticleSystemEffect : EffectEmitBase
 
     public override void Emit(Vector3 vector3)
     {
-        var audio = GetComponent<AudioSource>();
-        audio.volume = Config.seVolume;
-        audio.pitch *= 1 + Random.Range(-randomPercent / 100, randomPercent / 100);
-        audio.Play();
         foreach (var particle in _particleSystem)
         {
             particle.Play();
         }
+        var audio = GetComponent<AudioSource>();
+        if (audio == null) return;
+        audio.volume = Config.seVolume;
+        audio.pitch *= 1 + Random.Range(-randomPercent / 100, randomPercent / 100);
+        audio.Play();
     }
 }
