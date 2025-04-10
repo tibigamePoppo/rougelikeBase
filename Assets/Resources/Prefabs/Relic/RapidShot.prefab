@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 391174524313515746}
-  - component: {fileID: 326069311671170304}
+  - component: {fileID: 6174965324359097958}
   m_Layer: 0
   m_Name: RapidShot
   m_TagString: Untagged
@@ -32,7 +32,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &326069311671170304
+--- !u!114 &6174965324359097958
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,11 +41,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 2845170166407332449}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8e476ede65c24404f9d0f84ea5933849, type: 3}
+  m_Script: {fileID: 11500000, guid: 5c5d6bb89a2d8458f96ddb2e74b25f41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   relicItemId: 3
   relicItemName: "\u30E9\u30D4\u30C3\u30C9\u30B7\u30E7\u30C3\u30C8"
-  sprite: {fileID: 21300000, guid: a77ac1a0d0266469e84cd09b021dc0ac, type: 3}
+  sprite: {fileID: 21300000, guid: d2b01346c79d745e587073dc5433376c, type: 3}
   effectText: "\u5C04\u6483\u901F\u5EA6\u304C\uFF12\u500D\u306B\u306A\u308B"
   shopCost: 150

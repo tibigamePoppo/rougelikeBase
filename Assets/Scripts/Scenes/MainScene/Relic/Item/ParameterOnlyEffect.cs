@@ -1,6 +1,6 @@
 namespace Scenes.MainScene.Relic.Item
 {
-    public class InitialShield : RelicItemBase
+    public class ParameterOnlyEffect : RelicItemBase
     {
         public override void Init()
         {
