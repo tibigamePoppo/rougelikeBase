@@ -16,13 +16,18 @@ public class BattleUnitDetailView : MonoBehaviour
 
     public void Show(UnitView unit)
     {
-        var listText = ClacEnemysList(unit.eventUnit.unitType, unit.eventUnit.depth, unit.eventUnit.seed);
-        var rewordlistText = ClacBattleRewordList(unit.eventUnit.unitType, unit.eventUnit.depth, unit.eventUnit.seed);
-        _detailText.text = listText;
-        _detailText.text += "\n" + rewordlistText;
-
         _detailPanel.gameObject.SetActive(true);
         _detailPanel.position = unit.imageTransform.transform.position + OFFSET;
+
+        var listText = ClacEnemysList(unit.eventUnit.unitType, unit.eventUnit.depth, unit.eventUnit.seed);
+        _detailText.text = listText;
+
+        if (HasRelicItem(9))
+        {
+            var rewordlistText = ClacBattleRewordList(unit.eventUnit.unitType, unit.eventUnit.depth, unit.eventUnit.seed);
+            _detailText.text += "\n" + rewordlistText;
+        }
+
     }
 
     public void Hide()
@@ -68,9 +73,19 @@ public class BattleUnitDetailView : MonoBehaviour
             .Select(g => new { Name = g.Key, Count = g.Count() })
             .ToList();
         var text = "";
-        foreach (var entry in characterCount)
+        if(HasRelicItem(8))
         {
-            text += $"{entry.Name} : {entry.Count} \n";
+            foreach (var entry in characterCount)
+            {
+                text += $"{entry.Name} : {entry.Count} \n";
+            }
+        }
+        else
+        {
+            foreach (var entry in characterCount)
+            {
+                text += $"{entry.Name}\n";
+            }
         }
         return text;
     }
@@ -123,5 +138,10 @@ public class BattleUnitDetailView : MonoBehaviour
         text += $"カード報酬:{rewardUnit.status.name}\n";
         text += $"お金報酬　:{_money} G";
         return text;
+    }
+
+    private bool HasRelicItem(int id)
+    {
+        return PlayerSingleton.Instance.CurrentRelic.Select(c => c.relicItemId).Contains(id);
     }
 }
