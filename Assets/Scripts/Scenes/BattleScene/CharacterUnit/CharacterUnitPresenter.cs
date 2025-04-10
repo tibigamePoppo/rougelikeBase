@@ -22,6 +22,7 @@ namespace Scenes.Battle.UnitCharacter
             _stateController = new CharacterUnitStateController();
             _view = GetComponent<CharacterUnitView>();
             _agent = GetComponent<NavMeshAgent>();
+            _agent.enabled = false;
 
             _model.Init(status,_agent, this.transform);
             _view.Init(_agent);
@@ -40,6 +41,7 @@ namespace Scenes.Battle.UnitCharacter
 
         public void BattleStart()
         {
+            _agent.enabled = true;
             _model.BattleLoopStart();
         }
 
