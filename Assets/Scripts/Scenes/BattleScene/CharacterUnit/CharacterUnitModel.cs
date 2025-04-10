@@ -104,7 +104,6 @@ namespace Scenes.Battle.UnitCharacter
 
         private float MoveSpeed()
         {
-            Debug.Log($"slow count {Mathf.Max(0.5f, _disorderList.Count(d => d == Disorder.Slow))} , {_moveSpeed / (2 * Mathf.Max(0.5f, _disorderList.Count(d => d == Disorder.Slow)))}");
             return _moveSpeed / (2 * Mathf.Max(0.5f, _disorderList.Count(d => d == Disorder.Slow)));
         }
 

@@ -7,7 +7,6 @@ namespace Scenes.Battle.Stage
     {
         private void OnTriggerEnter(Collider other)
         {
-            Debug.Log($"in {other.gameObject.name}");
             if (other.TryGetComponent(out CharacterUnitView view))
             {
                 view.SetDisorder(Disorder.Slow, false);

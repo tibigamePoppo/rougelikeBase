@@ -14,7 +14,8 @@ namespace Common
             }
             else
             {
-                Destroy(this);
+                Destroy(Instance);
+                Instance = this as T;
             }
         }
     }
