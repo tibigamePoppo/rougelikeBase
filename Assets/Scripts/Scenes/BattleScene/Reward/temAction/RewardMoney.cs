@@ -15,8 +15,9 @@ public class RewardMoney : RewardItemActionBase
         }
     }
 
-    public override void Init(EnemyLevel enemyLevel)
+    public override void Init(EnemyLevel enemyLevel,int seed)
     {
+        Random.InitState(seed);
         switch (enemyLevel)
         {
             case EnemyLevel.Normal:

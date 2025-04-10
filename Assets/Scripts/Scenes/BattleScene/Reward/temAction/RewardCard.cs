@@ -18,9 +18,10 @@ public class RewardCard : RewardItemActionBase
         }
     }
 
-    public override void Init(EnemyLevel enemyLevel)
+    public override void Init(EnemyLevel enemyLevel,int seed)
     {
         var _cards = Resources.Load<CardPool>("Value/PlayerAllUnitPool").cards.ToArray();
+        Random.InitState(seed);
         switch (enemyLevel)
         {
             case EnemyLevel.Normal:

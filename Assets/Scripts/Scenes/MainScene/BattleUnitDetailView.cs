@@ -17,7 +17,9 @@ public class BattleUnitDetailView : MonoBehaviour
     public void Show(UnitView unit)
     {
         var listText = ClacEnemysList(unit.eventUnit.unitType, unit.eventUnit.depth, unit.eventUnit.seed);
+        var rewordlistText = ClacBattleRewordList(unit.eventUnit.unitType, unit.eventUnit.depth, unit.eventUnit.seed);
         _detailText.text = listText;
+        _detailText.text += "\n" + rewordlistText;
 
         _detailPanel.gameObject.SetActive(true);
         _detailPanel.position = unit.imageTransform.transform.position + OFFSET;
@@ -70,6 +72,56 @@ public class BattleUnitDetailView : MonoBehaviour
         {
             text += $"{entry.Name} : {entry.Count} \n";
         }
+        return text;
+    }
+
+    private string ClacBattleRewordList(UnitType type, int stageDepth, int seed)
+    {
+        var text = "";
+        var enemyLevel = EnemyLevel.Normal;
+        if (type == UnitType.Elite)
+        {
+            enemyLevel = EnemyLevel.Elite;
+        }
+        else if (type == UnitType.Boss)
+        {
+            enemyLevel = EnemyLevel.Boss;
+        }
+        var _cards = Resources.Load<CardPool>("Value/PlayerAllUnitPool").cards.ToArray();
+        Random.InitState(seed);
+        switch (enemyLevel)
+        {
+            case EnemyLevel.Normal:
+                _cards = _cards.Where(c => c.shopCost <= 110).ToArray();
+                break;
+            case EnemyLevel.Elite:
+                _cards = _cards.Where(c => c.shopCost <= 170).ToArray();
+                break;
+            case EnemyLevel.Boss:
+                _cards = _cards.Where(c => c.shopCost <= 250).ToArray();
+                break;
+            default:
+                break;
+        }
+        var rewardUnit = _cards[Random.Range(0, _cards.Length)];
+        int _money = 0;
+        Random.InitState(seed);
+        switch (enemyLevel)
+        {
+            case EnemyLevel.Normal:
+                _money = Random.Range(90, 110);
+                break;
+            case EnemyLevel.Elite:
+                _money = Random.Range(140, 170);
+                break;
+            case EnemyLevel.Boss:
+                _money = Random.Range(210, 250);
+                break;
+            default:
+                break;
+        }
+        text += $"カード報酬:{rewardUnit.status.name}\n";
+        text += $"お金報酬　:{_money} G";
         return text;
     }
 }

@@ -50,7 +50,7 @@ namespace Scenes.Battle
             EventSystem.current = eventSystem;
             _pastMainCamera = Camera.main;
             _pastMainCamera.gameObject.SetActive(false);
-            _rewardView.Init(enemyLevel);
+            _rewardView.Init(enemyLevel ,enemySeed);
             _unitCommandCardView.gameObject.SetActive(false);
             _rewardView.gameObject.SetActive(false);
 
