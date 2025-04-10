@@ -12,6 +12,7 @@ public class UnitGroupView : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
     [SerializeField] private LayerMask _stageLayerMask;
     private bool _isDragging = false;
     private Transform[] _units;
+    private const float MAX_X_AXIS = 26;
     public void Init(Transform[] units)
     {
         _units = units;
@@ -30,6 +31,8 @@ public class UnitGroupView : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
                 Vector3 worldPosition = hit.point;
                 worldPosition.y = 0.1f;
                 if (worldPosition.z > 5) worldPosition.z = 5;
+                worldPosition.x = Mathf.Max(-MAX_X_AXIS, worldPosition.x - _rectTransform.sizeDelta.x / 10);
+                worldPosition.x = Mathf.Min(MAX_X_AXIS, worldPosition.x + _rectTransform.sizeDelta.x / 10);
                 transform.position = worldPosition;
             }
         }).AddTo(this);
