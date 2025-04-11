@@ -12364,7 +12364,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1135496220
 Transform:
   m_ObjectHideFlags: 0
@@ -16756,6 +16756,7 @@ MonoBehaviour:
   - {fileID: 8575375156463303717, guid: b3252f1224c984580b6860d77f5c5177, type: 3}
   - {fileID: 3477409019734402045, guid: abb4b0b2fac2d4910a784d2cf7ee1adb, type: 3}
   - {fileID: 4867046396340905704, guid: 798481cb70a5e40aca76d52307da9f4a, type: 3}
+  - {fileID: 2096521504879382112, guid: 1cfe6d49166e24d84bdfe4f068368b61, type: 3}
   _rewardView: {fileID: 1293555271}
   _battleFormationPresenter: {fileID: 2020106164}
   _battleInitialFormationView: {fileID: 1166816012}
