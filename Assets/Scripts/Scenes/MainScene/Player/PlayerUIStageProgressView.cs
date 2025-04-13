@@ -11,6 +11,7 @@ namespace Scenes.MainScene.Player
         {
             var startView = Instantiate(_progressSingleView, transform);
             startView.Init(ProgressType.Start);
+            startView.NextProgress();
             _progressViews.Add(startView);
             for (int i = 1; i < depth; i++)
             {
@@ -26,6 +27,7 @@ namespace Scenes.MainScene.Player
         public void UpdateProgress(int depth)
         {
             _progressViews[depth - 1].Progressed();
+            _progressViews[depth].NextProgress();
         }
 
         public void ResetProgress(int depth)
