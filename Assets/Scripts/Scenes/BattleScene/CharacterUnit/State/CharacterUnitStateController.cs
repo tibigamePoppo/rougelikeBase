@@ -9,7 +9,7 @@ namespace Scenes.Battle.UnitCharacter.State
     {
         Idle,
         Move,
-        Attak,
+        Attack,
         Dead
     }
 
@@ -38,7 +38,7 @@ namespace Scenes.Battle.UnitCharacter.State
                     case CharacterUnitStateType.Move:
                         moveState.StateAction();
                         break;
-                    case CharacterUnitStateType.Attak:
+                    case CharacterUnitStateType.Attack:
                         attackState.StateAction();
                         break;
                     case CharacterUnitStateType.Dead:

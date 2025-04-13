@@ -160,7 +160,7 @@ namespace Scenes.Battle.UnitCharacter
                 {
                     ChangeState(CharacterUnitStateType.Idle);
                     await UniTask.Delay(TimeSpan.FromTicks(1));
-                    ChangeState(CharacterUnitStateType.Attak);
+                    ChangeState(CharacterUnitStateType.Attack);
                     await UniTask.Delay(TimeSpan.FromSeconds(AttackSpeed() * 0.2f));
                     target.TakeDamage(_attackPower, pinkColor);
                     if (HasRelicItem(6))
@@ -271,7 +271,7 @@ namespace Scenes.Battle.UnitCharacter
         public async UniTask MainLoopAttackAction(CharacterUnitModel[] attackableTarget)
         {
             var taregt = GetTarget();
-            ChangeState(CharacterUnitStateType.Attak);
+            ChangeState(CharacterUnitStateType.Attack);
             _agent.isStopped = true;
             Attack(taregt[0], orangeColor).Forget();
             if (_type == UnitWeaponType.Range)

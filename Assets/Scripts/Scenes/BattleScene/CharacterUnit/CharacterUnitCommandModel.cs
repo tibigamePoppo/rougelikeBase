@@ -105,10 +105,10 @@ namespace Scenes.Battle.UnitCharacter
                     Vector3 checkPoint = enemyCenter + perpendicularDirection.normalized * larkLength;
 
                     _agent.SetDestination(checkPoint);
-                    await UniTask.WaitUntil(() => !IsMoving(1) || taregt[0].CurrentState == CharacterUnitStateType.Attak, cancellationToken: _commandTokenSorce.Token);
+                    await UniTask.WaitUntil(() => !IsMoving(1) || taregt[0].CurrentState == CharacterUnitStateType.Attack, cancellationToken: _commandTokenSorce.Token);
                     _agent.SetDestination(movePosition);
                     taregt = GetTarget();
-                    await UniTask.WaitUntil(() => taregt[0].CurrentState == CharacterUnitStateType.Attak, cancellationToken: _commandTokenSorce.Token);
+                    await UniTask.WaitUntil(() => taregt[0].CurrentState == CharacterUnitStateType.Attack, cancellationToken: _commandTokenSorce.Token);
                     _agent.SetDestination(taregt[0].Transform.position);
                 }
                 else if (_type == UnitWeaponType.Melee)
@@ -125,7 +125,7 @@ namespace Scenes.Battle.UnitCharacter
                     else
                     {
                         _agent.SetDestination(movePosition);
-                        await UniTask.WaitUntil(() => taregt[0].CurrentState == CharacterUnitStateType.Attak, cancellationToken: _commandTokenSorce.Token);
+                        await UniTask.WaitUntil(() => taregt[0].CurrentState == CharacterUnitStateType.Attack, cancellationToken: _commandTokenSorce.Token);
                         _agent.SetDestination(_larkPastPosition);
                         await UniTask.WaitUntil(() => !IsMoving(1), cancellationToken: _commandTokenSorce.Token);
                     }
