@@ -5,6 +5,7 @@ using UnityEngine;
 using System.Linq;
 using UnityEngine.SceneManagement;
 using UniRx.Triggers;
+using Scenes.MainScene.Player;
 
 namespace Scenes.MainScene
 {
@@ -18,6 +19,7 @@ namespace Scenes.MainScene
         [SerializeField] private GameObject _layerUnit;
         [SerializeField] private UnitLineView _unitLineView;
         [SerializeField] private BattleUnitDetailView _battleUnitDetailView;
+        [SerializeField] private PlayerUIStageProgressView _playerUIStageProgressView;
 
         private List<UnitView> _instanceEventUnitList = new List<UnitView>();
         private List<GameObject> _stageGameObjects = new List<GameObject>();
@@ -33,12 +35,13 @@ namespace Scenes.MainScene
         public void Init(List<EventUnit>[] unitInfo)
         {
             _contentDefaultPosition = _stageContent.position;
-               _stageDepth = 1;
+            _stageDepth = 1;
             _stageStartView.Init();
             _stageEndView.Init();
             _battleUnitDetailView.Init();
             InstanceUnits(unitInfo);
             LinqUnitLine();
+            _playerUIStageProgressView.Init(unitInfo.Length);
 
             float screenWidth = Screen.width;
             float screenHeight = Screen.height;
@@ -148,6 +151,7 @@ namespace Scenes.MainScene
             DestroyStage();
             InstanceUnits(unitInfo);
             LinqUnitLine();
+            _playerUIStageProgressView.ResetProgress(unitInfo.Length);
         }
 
         private void DestroyStage()
@@ -164,6 +168,7 @@ namespace Scenes.MainScene
         public void UnitUpdate(EventUnit[] EventUnits)
         {
             if (EventUnits == null) return;
+            _playerUIStageProgressView.UpdateProgress(EventUnits[0].depth);
             var nextLayerEventUnit = _instanceEventUnitList.Where(e => e.eventUnit.depth <= EventUnits.First().depth).ToArray();
             nextLayerEventUnit = nextLayerEventUnit.Where(e => EventUnits.Contains(e.eventUnit)).ToArray();
             /*
