@@ -19,7 +19,7 @@ MonoBehaviour:
     text: '""'
     type: 1
     group: 1
-    hp: 130
+    hp: 140
     shield: 0
     attack: 25
     attackRange: 2.5

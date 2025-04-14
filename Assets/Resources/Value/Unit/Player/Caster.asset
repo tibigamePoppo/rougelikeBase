@@ -19,7 +19,7 @@ MonoBehaviour:
     text: "\u653B\u6483\u529B\u304C\u9AD8\u3044"
     type: 0
     group: 0
-    hp: 50
+    hp: 70
     shield: 0
     attack: 30
     attackRange: 8

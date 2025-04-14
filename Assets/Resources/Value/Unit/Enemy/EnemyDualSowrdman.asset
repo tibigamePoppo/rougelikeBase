@@ -19,9 +19,9 @@ MonoBehaviour:
     text: '""'
     type: 1
     group: 1
-    hp: 160
+    hp: 100
     shield: 0
-    attack: 15
+    attack: 20
     attackRange: 2
     attackSpeed: 0.4
     speed: 2
