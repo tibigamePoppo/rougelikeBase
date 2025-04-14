@@ -17860,7 +17860,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1649321330}
   m_Layer: 0
-  m_Name: Srage
+  m_Name: Stage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17988,7 +17988,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1690891901}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: CameraParent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

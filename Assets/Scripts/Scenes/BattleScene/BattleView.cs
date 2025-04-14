@@ -43,6 +43,9 @@ namespace Scenes.Battle
         private Subject<bool> _isPlayerWinBattle = new Subject<bool>();
         private FormationType _formationType = FormationType.None;
 
+        private List<GameObject> _stageTerrain = new List<GameObject>();
+        private GameObject _lastTerrain = null;
+
         public IObservable<bool> IsPlayerWinBattle => _isPlayerWinBattle;
 
         private int[] _enemySpawnPaturnValue = new int[] { 0, 1, 2, 3 };//0 is circle, 1 is I formation, 2 is V formatin,3 is A formation
@@ -144,11 +147,31 @@ namespace Scenes.Battle
 
         private void GenerateTerrain()
         {
-            foreach (var marker in _terrainMarkerTransform)
+            var terrains = StageTerrainPefab();
+            for (int i = 0; i < _terrainMarkerTransform.Length; i++)
             {
-                Instantiate(_terrainPrefabs[UnityEngine.Random.Range(0, _terrainPrefabs.Length)], marker);
+                Instantiate(terrains[i], _terrainMarkerTransform[i]);
             }
             _surface.BuildNavMesh();
+        }
+
+        private GameObject[] StageTerrainPefab()
+        {
+            GameObject trrain = null;
+            for (int i = 0; i < _terrainMarkerTransform.Length; i++)
+            {
+                while (true)
+                {
+                    trrain = _terrainPrefabs[UnityEngine.Random.Range(0, _terrainPrefabs.Length)];
+                    if (trrain != _lastTerrain && _stageTerrain.Count(t => t == trrain) < 2)
+                    {
+                        break;
+                    }
+                }
+                _stageTerrain.Add(trrain);
+                _lastTerrain = trrain;
+            }
+            return _stageTerrain.ToArray();
         }
 
         public async UniTaskVoid InitalFormation(List<CharacterUnitPresenter> characters)
