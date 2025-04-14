@@ -86,7 +86,7 @@ namespace Scenes.Title
             switch (type)
             {
                 case SheetType.UnitData:
-                    var _cardDataList = Resources.Load<CardPool>("Value/MasterDataPool/AllUnitPool").CardList();
+                    var _cardDataList = Resources.Load<CardPool>("Value/MasterData/AllUnitPool").CardList();
                     foreach (var data in dataList)
                     {
                         int id = int.Parse(data[0]);
@@ -110,8 +110,8 @@ namespace Scenes.Title
                     }
                     break;
                 case SheetType.EnemyGroupData:
-                    var _enemyGroups = Resources.Load<EnemyDataPool>("Value/MasterDataPool/AllEnemyGroupData").normalPool;
-                    var _cardData = Resources.Load<CardPool>("Value/MasterDataPool/AllUnitPool").CardList();
+                    var _enemyGroups = Resources.Load<EnemyDataPool>("Value/MasterData/AllEnemyGroupData").normalPool;
+                    var _cardData = Resources.Load<CardPool>("Value/MasterData/AllUnitPool").CardList();
                     foreach (var data in dataList)
                     {
                         int id = int.Parse(data[0]);
