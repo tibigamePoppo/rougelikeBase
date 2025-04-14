@@ -118,7 +118,9 @@ public class BattleUnitDetailView : MonoBehaviour
             default:
                 break;
         }
-        var rewardUnit = _cards[Random.Range(0, _cards.Length)];
+        var rewardUnit1 = _cards[Random.Range(0, _cards.Length)];
+        var rewardUnit2 = _cards[Random.Range(0, _cards.Length)];
+        var rewardUnit3 = _cards[Random.Range(0, _cards.Length)];
         int _money = 0;
         Random.InitState(seed);
         switch (enemyLevel)
@@ -135,7 +137,9 @@ public class BattleUnitDetailView : MonoBehaviour
             default:
                 break;
         }
-        text += $"カード報酬:{rewardUnit.status.name}\n";
+        text += $"カード報酬: 1.{rewardUnit1.status.name}\n"
+              + $"　　　　　  2.{rewardUnit2.status.name}\n"
+              + $"　　　　　  3.{rewardUnit3.status.name}\n";
         text += $"お金報酬　:{_money} G";
         return text;
     }

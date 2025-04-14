@@ -107,6 +107,7 @@ namespace Scenes.Title
 
                         // update data
                         targetUnit.status = newUnitData;
+                        Debug.Log($"update {name}");
                     }
                     break;
                 case SheetType.EnemyGroupData:

@@ -4,13 +4,15 @@ using System.Linq;
 
 public class RewardCard : RewardItemActionBase
 {
-    private UnitData _rewardUnit;
-    public UnitData ReawrdUnit { get { return _rewardUnit; } }
+    private const int CARD_COUNT = 3;
+    private UnitData[] _rewardUnit = new UnitData[CARD_COUNT];
+    public UnitData[] ReawrdUnit { get { return _rewardUnit; } }
+    private System.Action _callback;
     public override void ItemAction()
     {
         if (PlayerSingleton.Instance)
         {
-            PlayerSingleton.Instance.AddCard(_rewardUnit);
+            _callback.Invoke();
         }
         else
         {
@@ -18,8 +20,9 @@ public class RewardCard : RewardItemActionBase
         }
     }
 
-    public override void Init(EnemyLevel enemyLevel,int seed)
+    public override void Init(EnemyLevel enemyLevel,int seed, System.Action callback)
     {
+        _callback = callback;
         var _cards = Resources.Load<CardPool>("Value/PlayerAllUnitPool").cards.ToArray();
         Random.InitState(seed);
         switch (enemyLevel)
@@ -36,9 +39,11 @@ public class RewardCard : RewardItemActionBase
             default:
                 break;
         }
-        _rewardUnit = _cards[Random.Range(0, _cards.Length)];
+        _rewardUnit[0] = _cards[Random.Range(0, _cards.Length)];
+        _rewardUnit[1] = _cards[Random.Range(0, _cards.Length)];
+        _rewardUnit[2] = _cards[Random.Range(0, _cards.Length)];
     }
 
-    public override string ContentName { get { return _rewardUnit.status.name; } }
+    public override string ContentName { get { return "ユニットカード"; } }
 }
 
