@@ -10,7 +10,7 @@ public abstract class ShopItemView : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _costText;
     protected int _shopCost;
     private bool _isBought = false;
-    private Subject<Unit> _boughtEvent = new Subject<Unit>();
+    protected Subject<Unit> _boughtEvent = new Subject<Unit>();
     protected GameObject _copyObject;
     public GameObject copyObject { get { return _copyObject; } }
     public IObservable<Unit> OnBoughtEvent => _boughtEvent;
@@ -39,11 +39,11 @@ public abstract class ShopItemView : MonoBehaviour
         _isBought = true;
         _soldImage.gameObject.SetActive(true);
         PlayerSingleton.Instance.ChangeMoney(-_shopCost);
-        _boughtEvent.OnNext(default);
     }
 
-    public void UpdateText()
+    public virtual void UpdateText()
     {
+        _costText.text = $"{_shopCost} G";
         if (PlayerSingleton.Instance.CurrentMoney < _shopCost)
         {
             _costText.color = Color.red;

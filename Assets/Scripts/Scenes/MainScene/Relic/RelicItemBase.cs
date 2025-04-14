@@ -9,6 +9,10 @@ namespace Scenes.MainScene.Relic
         public Sprite sprite;
         public string effectText;
         public int shopCost;
-        public virtual void Init() { }
+        public bool isEffect;
+        public virtual void Init() { isEffect = true; }
+        public virtual void OnEffect()
+        {
+        }
     }
 }
