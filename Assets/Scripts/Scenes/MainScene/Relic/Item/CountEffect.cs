@@ -18,11 +18,9 @@ namespace Scenes.MainScene.Relic.Item
         {
             if (!isEffect) return;
             currentCount = Mathf.Max(0, currentCount - 1);
-            Debug.Log($"OnEffect {currentCount}");
             if (currentCount == 0)
             {
                 isEffect = false;
-                Debug.Log($"isEffect {isEffect}");
             }
         }
     }
