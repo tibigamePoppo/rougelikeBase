@@ -11,13 +11,14 @@ namespace Scenes.Battle
     public class BattleSituationView : MonoBehaviour
     {
         [SerializeField] private Image _playerSituation;
-        [SerializeField] private GameObject _barPosition;
-        [SerializeField] private TextMeshProUGUI _numberText;
+        [SerializeField] private Image _situation;
+        [SerializeField] private Sprite _finishSituation;
+        [SerializeField] private TextMeshProUGUI _playerUnitsCountText;
+        [SerializeField] private TextMeshProUGUI _enemyUnitsCountText;
         private CharacterUnitModel[] _playerUnits;
         private CharacterUnitModel[] _enemyUnits;
         private int _playerUnitsCount;
         private int _enemyUnitsCount;
-        private const int width = 450;
 
         public void Init(CharacterUnitModel[] playerUnits, CharacterUnitModel[] enemyUnits)
         {
@@ -38,10 +39,13 @@ namespace Scenes.Battle
         private void UpdateSituation()
         {
             float situationValue = Mathf.Min(1, (PlayerUnitAlive()/ _playerUnitsCount) / (EnemyUnitAlive() / _enemyUnitsCount + PlayerUnitAlive() / _playerUnitsCount));
-
-            _numberText.text = $"{PlayerUnitAlive()} | {EnemyUnitAlive()}";
+            _playerUnitsCountText.text = $"{PlayerUnitAlive()}";
+            _enemyUnitsCountText.text = $"{EnemyUnitAlive()}";
             _playerSituation.DOFillAmount(situationValue, 0.1f);
-            _barPosition.transform.DOLocalMoveX(-450 + width * situationValue * 2, 0.1f);
+            if(EnemyUnitAlive() == 0)
+            {
+                _situation.sprite = _finishSituation;
+            }
         }
 
         private float PlayerUnitAlive()
