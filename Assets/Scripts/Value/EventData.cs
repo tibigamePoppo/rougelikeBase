@@ -5,6 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "ResourceValue/EventData")]
 public class EventData : ScriptableObject
 {
+    public int id;
     public string eventName;
     [TextArea]
     public string text;

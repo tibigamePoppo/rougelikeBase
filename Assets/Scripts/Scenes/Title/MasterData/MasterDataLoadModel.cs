@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using Scenes.MainScene.Player;
+using Scenes.MainScene.Relic;
 
 namespace Scenes.Title
 {
@@ -24,9 +25,15 @@ namespace Scenes.Title
         public IObservable<int> OnProgress => _progress;
         private const string SPREAD_SHEET_ID = "1q0lFCISt-xxfq8HAwQ1RDjZZSHe0qqI1A9WNYHlB_oU";
 
+        private List<UnitData> _baseUnit = new List<UnitData>();
+        private List<RelicItemBase> _baseRelic = new List<RelicItemBase>();
+        private List<EventLimit> _eventLimits = new List<EventLimit>();
+        private List<EventEffectArg> _eventArg = new List<EventEffectArg>();
+
         public void Init()
         {
-
+            _baseUnit = Resources.Load<CardPool>("Value/MasterDataPool/AllUnitPool").cards;
+            _baseRelic = Resources.Load<RelicItemPool>("Value/RelicItemPool").relicItem.ToList();
         }
 
         public async void LoadMasterDataProcess()
@@ -36,6 +43,10 @@ namespace Scenes.Title
             _progress.Value = 10;
             await LoadWebRequest(SheetType.EnemyGroupData);
             _progress.Value = 20;
+            await LoadWebRequest(SheetType.EventLimitTable);
+            _progress.Value = 30;
+            await LoadWebRequest(SheetType.EventEffetcArg);
+            _progress.Value = 40;
         }
         private async UniTask LoadWebRequest(SheetType sheetType)
         {
@@ -86,11 +97,10 @@ namespace Scenes.Title
             switch (type)
             {
                 case SheetType.UnitData:
-                    var _cardDataList = Resources.Load<CardPool>("Value/MasterDataPool/AllUnitPool").CardList();
                     foreach (var data in dataList)
                     {
                         int id = int.Parse(data[0]);
-                        var targetUnit = _cardDataList.FirstOrDefault(c => c.status.id == id);
+                        var targetUnit = _baseUnit.FirstOrDefault(c => c.status.id == id);
                         if (targetUnit == default || targetUnit == null) continue;
 
                         string name = data[1];
@@ -112,7 +122,6 @@ namespace Scenes.Title
                     break;
                 case SheetType.EnemyGroupData:
                     var _enemyGroups = Resources.Load<EnemyDataPool>("Value/MasterDataPool/AllEnemyGroupData").normalPool;
-                    var _cardData = Resources.Load<CardPool>("Value/MasterDataPool/AllUnitPool").CardList();
                     foreach (var data in dataList)
                     {
                         int id = int.Parse(data[0]);
@@ -122,12 +131,12 @@ namespace Scenes.Title
                         string name = data[1];
                         int minStageDepth = int.Parse(data[2]);
                         int maxStageDepth = int.Parse(data[3]);
-                        UnitEnemyGroup unitGroupPosition1 = IntArrayToUnitEnemyGroup(SplitIntoThreeDigits(data[4]), _cardData);
-                        UnitEnemyGroup unitGroupPosition2 = IntArrayToUnitEnemyGroup(SplitIntoThreeDigits(data[5]), _cardData);
-                        UnitEnemyGroup unitGroupPosition3 = IntArrayToUnitEnemyGroup(SplitIntoThreeDigits(data[6]), _cardData);
-                        UnitEnemyGroup unitGroupPosition4 = IntArrayToUnitEnemyGroup(SplitIntoThreeDigits(data[7]), _cardData);
-                        UnitEnemyGroup unitGroupPosition5 = IntArrayToUnitEnemyGroup(SplitIntoThreeDigits(data[8]), _cardData);
-                        UnitEnemyGroup unitGroupPosition6 = IntArrayToUnitEnemyGroup(SplitIntoThreeDigits(data[9]), _cardData);
+                        UnitEnemyGroup unitGroupPosition1 = IntArrayToUnitEnemyGroup(SplitIntoThreeDigits(data[4]));
+                        UnitEnemyGroup unitGroupPosition2 = IntArrayToUnitEnemyGroup(SplitIntoThreeDigits(data[5]));
+                        UnitEnemyGroup unitGroupPosition3 = IntArrayToUnitEnemyGroup(SplitIntoThreeDigits(data[6]));
+                        UnitEnemyGroup unitGroupPosition4 = IntArrayToUnitEnemyGroup(SplitIntoThreeDigits(data[7]));
+                        UnitEnemyGroup unitGroupPosition5 = IntArrayToUnitEnemyGroup(SplitIntoThreeDigits(data[8]));
+                        UnitEnemyGroup unitGroupPosition6 = IntArrayToUnitEnemyGroup(SplitIntoThreeDigits(data[9]));
                         UnitEnemyGroup[] unitEnemyGroups = new UnitEnemyGroup[] { unitGroupPosition1, unitGroupPosition2, unitGroupPosition3, unitGroupPosition4, unitGroupPosition5, unitGroupPosition6 };
 
                         // update data
@@ -136,6 +145,47 @@ namespace Scenes.Title
                         targetGroup.maxStageDepth = maxStageDepth;
                         targetGroup.unitGroupData = unitEnemyGroups;
                     }
+                    break;
+                case SheetType.EventLimitTable:
+                    List<EventLimit> limits = new List<EventLimit>();
+                    foreach (var data in dataList)
+                    {
+                        var newLimit = new EventLimit();
+                        newLimit.id = int.Parse(data[0]);
+                        newLimit.upperLimitMoney = int.Parse(data[1]);
+                        newLimit.underLimitMoney = int.Parse(data[2]);
+                        newLimit.upperLimitPopularity = int.Parse(data[3]);
+                        newLimit.underLimitPopularity = int.Parse(data[4]);
+                        newLimit.containUnits = IntArrayToUnitUnitArray(SplitIntoThreeDigits(data[5]));
+                        newLimit.uncontainUnits = IntArrayToUnitUnitArray(SplitIntoThreeDigits(data[6]));
+                        newLimit.containRelic = IntArrayToUnitRelicArray(SplitIntoThreeDigits(data[7]));
+                        newLimit.uncontainRelic = IntArrayToUnitRelicArray(SplitIntoThreeDigits(data[8]));
+                        newLimit.passEvent = SplitIntoThreeDigits(data[9]);
+                        newLimit.notPassEvent = SplitIntoThreeDigits(data[9]);
+
+                        Debug.Log($"update limit {newLimit.id}");
+                    }
+                    _eventLimits = limits;
+                    break;
+                case SheetType.EventEffetcArg: // TODO : EnemyData[] enemys = null; を実装する
+                    List<EventEffectArg> args = new List<EventEffectArg>();
+                    foreach (var data in dataList)
+                    {
+                        int id = int.Parse(data[0]);
+                        string text = data[1];
+                        int playerPopularityChange = int.Parse(data[2]);
+                        int playerMoneyChange = int.Parse(data[3]);
+                        SceneName changeScene = (SceneName)Enum.Parse(typeof(SceneName), data[4]);
+                        UnitData[] units = IntArrayToUnitUnitArray(SplitIntoThreeDigits(data[5]));
+                        EnemyData[] enemys = null;
+                        RelicItemBase[] relic = IntArrayToUnitRelicArray(SplitIntoThreeDigits(data[7]));
+                        var newArg = new EventEffectArg(id, text, playerPopularityChange, playerMoneyChange, changeScene, units, enemys, relic);
+                        args.Add(newArg);
+
+
+                        Debug.Log($"update arg {id}");
+                    }
+                    _eventArg = args;
                     break;
                 default:
                     break;
@@ -148,7 +198,35 @@ namespace Scenes.Title
             return input.Length < 3 ? null : input.Split('/').Select(int.Parse).ToArray();
         }
 
-        private UnitEnemyGroup IntArrayToUnitEnemyGroup(int[] inputs,List<UnitData> baseData)
+        private UnitData[] IntArrayToUnitUnitArray(int[] inputs)
+        {
+            List<UnitData> unitDatas = new List<UnitData>();
+            if (inputs == null)
+            {
+                return null;
+            }
+            foreach (var input in inputs)
+            {
+                unitDatas.Add(_baseUnit.FirstOrDefault(b => b.status.id == input));
+            }
+            return unitDatas.ToArray();
+        }
+
+        private RelicItemBase[] IntArrayToUnitRelicArray(int[] inputs)
+        {
+            List<RelicItemBase> relicDatas = new List<RelicItemBase>();
+            if (inputs == null)
+            {
+                return null;
+            }
+            foreach (var input in inputs)
+            {
+                relicDatas.Add(_baseRelic.FirstOrDefault(b => b.relicItemId == input));
+            }
+            return relicDatas.ToArray();
+        }
+
+        private UnitEnemyGroup IntArrayToUnitEnemyGroup(int[] inputs)
         {
             UnitEnemyGroup unitEnemyGroup = new UnitEnemyGroup();
             List<UnitData> unitDatas = new List<UnitData>();
@@ -161,7 +239,7 @@ namespace Scenes.Title
             {
                 foreach (var input in inputs)
                 {
-                    var unitData = baseData.Where(b => b.status.id == input).FirstOrDefault();
+                    var unitData = _baseUnit.Where(b => b.status.id == input).FirstOrDefault();
                     if (unitData == default)
                     {
                         Debug.LogWarning($"invalid enemy id {input}");

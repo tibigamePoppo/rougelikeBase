@@ -12,10 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e886e9a109824a3584de5b58e13e0ef, type: 3}
   m_Name: Vilage
   m_EditorClassIdentifier: 
+  id: 8
   eventName: "\u53CB\u597D\u7684\u306A\u6751"
   text: "\u6751\u306E\u4EBA\u306F\u3068\u3066\u3082\u826F\u304F\u3057\u3066\u304F\u308C\u308B\u3002\u4F11\u61A9\u3059\u308B\u304B\u3001\u6751\u306E\u624B\u4F1D\u3044\u3092\u3057\u3088\u3046\u3002"
   sprite: {fileID: 21300000, guid: d6f208eda1ac84e5baafd330e8a78d7e, type: 3}
   limit:
+    id: 0
     upperLimitMoney: 0
     underLimitMoney: 0
     upperLimitPopularity: 0
@@ -24,20 +26,22 @@ MonoBehaviour:
     uncontainUnits: []
     containRelic: []
     uncontainRelic: []
-    passEvent: []
-    notPassEvent: []
+    passEvent: 
+    notPassEvent: 
   eventEffectArgs:
-  - text: "\u4F11\u61A9\u3059\u308B"
+  - id: 0
+    text: "\u4F11\u61A9\u3059\u308B"
     playerPopularityChange: 30
     playerMoneyChange: 0
     changeScene: 0
     units: []
     enemys: []
-    relic: {fileID: 0}
-  - text: "\u4ED5\u4E8B\u3092\u624B\u4F1D\u3046"
+    relic: []
+  - id: 0
+    text: "\u4ED5\u4E8B\u3092\u624B\u4F1D\u3046"
     playerPopularityChange: 0
-    playerMoneyChange: 30
+    playerMoneyChange: 80
     changeScene: 0
     units: []
     enemys: []
-    relic: {fileID: 0}
+    relic: []

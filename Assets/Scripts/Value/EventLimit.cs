@@ -2,8 +2,9 @@ using Scenes.MainScene.Player;
 using Scenes.MainScene.Relic;
 
 [System.Serializable]
-public struct EventLimit
+public struct  EventLimit
 {
+    public int id;
     public int upperLimitMoney;
     public int underLimitMoney;
     public int upperLimitPopularity;
@@ -12,6 +13,6 @@ public struct EventLimit
     public UnitData[] uncontainUnits;
     public RelicItemBase[] containRelic;
     public RelicItemBase[] uncontainRelic;
-    public string[] passEvent;
-    public string[] notPassEvent;
+    public int[] passEvent;
+    public int[] notPassEvent;
 }

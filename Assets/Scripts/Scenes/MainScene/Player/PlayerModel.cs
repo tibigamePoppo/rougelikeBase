@@ -14,9 +14,9 @@ namespace Scenes.MainScene.Player
         private Subject<Unit> _updateDeck = new Subject<Unit>();
         private List<UnitData> _cardDataList = new List<UnitData>();
         private List<RelicItemBase> _relicItems = new List<RelicItemBase>();
-        private List<String> _passEventName = new List<string>();
+        private List<int> _passEventName = new List<int>();
         private Subject<RelicItemBase[]> _updateRelicItem = new Subject<RelicItemBase[]>();
-        private Subject<String[]> _updatePassEventName = new Subject<string[]>();
+        private Subject<int[]> _updatePassEventName = new Subject<int[]>();
         private BattleReportStruct _battleReportStruct;
         private Subject<BattleReportStruct> _battleReport = new Subject<BattleReportStruct>();
 
@@ -24,7 +24,7 @@ namespace Scenes.MainScene.Player
         public IObservable<int> OnMoneyChange => _money;
         public IObservable<Unit> OnDeckChange => _updateDeck;
         public IObservable<RelicItemBase[]> OnUpdateRelicItem => _updateRelicItem;
-        public IObservable<string[]> OnUpdatePassEventName => _updatePassEventName;
+        public IObservable<int[]> OnUpdatePassEventName => _updatePassEventName;
         public IObservable<BattleReportStruct> OnUpdateBattleReport => _battleReport;
         public int CurrentPopularity { get { return _popularity.Value; } }
         public int CurrentMoney { get { return _money.Value; } }
@@ -81,7 +81,7 @@ namespace Scenes.MainScene.Player
             _updateRelicItem.OnNext(_relicItems.ToArray());
         }
 
-        public void AddPassEvent(String eventName)
+        public void AddPassEvent(int eventName)
         {
             _passEventName.Add(eventName);
             _updatePassEventName.OnNext(_passEventName.ToArray());

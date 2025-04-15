@@ -15,10 +15,10 @@ public class PlayerSingleton : SingletonAbstract<PlayerSingleton>
     private Subject<RelicItemBase> _addRelicItem = new Subject<RelicItemBase>();
     private Subject<RelicItemBase> _removeRelicItem = new Subject<RelicItemBase>();
     private Subject<BattleReportStruct> _battleReport = new Subject<BattleReportStruct>();
-    private Subject<string> _addPassEventName = new Subject<string>();
+    private Subject<int> _addPassEventName = new Subject<int>();
     private List<UnitData> _currentDeck = new List<UnitData>();
     private RelicItemBase[] _currentRelicItem = new RelicItemBase[0];
-    private string[] _currentPassEvent = new string[0];
+    private int[] _currentPassEvent = new int[0];
     private int _playerMoney;
     private int _playerPopularity;
     private BattleReportStruct _battleReportStruct;
@@ -29,11 +29,11 @@ public class PlayerSingleton : SingletonAbstract<PlayerSingleton>
     public IObservable<UnitData> OnRemoveCardEvent => _removeUnit;
     public IObservable<RelicItemBase> OnAddRelicItemEvent => _addRelicItem;
     public IObservable<RelicItemBase> OnRemoveRelicItemEvent => _removeRelicItem;
-    public IObservable<string> OnAddPassEventName => _addPassEventName;
+    public IObservable<int> OnAddPassEventName => _addPassEventName;
     public IObservable<BattleReportStruct> OnUpdateBattleReport => _battleReport;
     public List<UnitData> CurrentDeck { get { return _currentDeck; } }
     public RelicItemBase[] CurrentRelic { get { return _currentRelicItem; } }
-    public string[] CurrentPassEvent { get { return _currentPassEvent; } }
+    public int[] CurrentPassEvent { get { return _currentPassEvent; } }
     public int CurrentMoney { get {return _playerMoney; } }
     public int CurrentPopularity { get { return _playerPopularity; } }
     public BattleReportStruct BattleReportStruct { get { return _battleReportStruct; } }
@@ -65,7 +65,7 @@ public class PlayerSingleton : SingletonAbstract<PlayerSingleton>
         _addRelicItem.OnNext(relicItem);
     }
 
-    public void AddPassEventName(string name)
+    public void AddPassEventName(int name)
     {
         _addPassEventName.OnNext(name);
     }
@@ -91,7 +91,7 @@ public class PlayerSingleton : SingletonAbstract<PlayerSingleton>
         _currentDeck = currentDeck;
     }
 
-    public void SetCurrentPassEvent(string[] events)
+    public void SetCurrentPassEvent(int[] events)
     {
         _currentPassEvent = events;
     }

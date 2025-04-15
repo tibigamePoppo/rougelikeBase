@@ -42,8 +42,8 @@ namespace Scenes.EventScene
                                     (e.limit.uncontainRelic.Length == 0 || !e.limit.uncontainRelic.Any(relic => PlayerSingleton.Instance.CurrentRelic.Contains(relic))) &&
                                     (e.limit.containUnits.Length == 0 || e.limit.containUnits.All(unit => PlayerSingleton.Instance.CurrentDeck.Contains(unit))) &&
                                     (e.limit.uncontainUnits.Length == 0 || !e.limit.uncontainUnits.Any(unit => PlayerSingleton.Instance.CurrentDeck.Contains(unit))) &&
-                                    (e.limit.passEvent.Length == 0 || e.limit.passEvent.All(eventName => PlayerSingleton.Instance.CurrentPassEvent.Contains(eventName))) &&
-                                    (e.limit.notPassEvent.Length == 0 || !e.limit.notPassEvent.Any(eventName => PlayerSingleton.Instance.CurrentPassEvent.Contains(eventName))) 
+                                    (e.limit.passEvent.Length == 0 || e.limit.passEvent.All(eventId => PlayerSingleton.Instance.CurrentPassEvent.Contains(eventId))) &&
+                                    (e.limit.notPassEvent.Length == 0 || !e.limit.notPassEvent.Any(eventId => PlayerSingleton.Instance.CurrentPassEvent.Contains(eventId))) 
                                 ).ToArray();
             return data;
         }
@@ -55,10 +55,13 @@ namespace Scenes.EventScene
             Debug.Log($"change money {arg.playerMoneyChange}");
             PlayerSingleton.Instance.ChangeMoney(arg.playerMoneyChange);
             Debug.Log($"change scene {arg.changeScene}");
-            if(arg.relic != null)
+            if(arg.relic.Length > 0)
             {
-                arg.relic.Init();
-                Debug.Log($"Reric {arg.relic.name}");
+                foreach (var relic in arg.relic)
+                {
+                    relic.Init();
+                    Debug.Log($"Reric {relic.name}");
+                }
             }
 
             if (arg.changeScene != SceneName.None)
