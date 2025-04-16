@@ -160,8 +160,8 @@ namespace Scenes.Title
 
                         targetEvent.eventName = data[1];
                         targetEvent.text = data[2];
-                        targetEvent.limit = _eventLimits.FirstOrDefault(l => l.id == int.Parse(data[2]));
-                        var effectArgId = SplitIntoThreeDigits(data[3]);
+                        targetEvent.limit = _eventLimits.FirstOrDefault(l => l.id == int.Parse(data[3]));
+                        var effectArgId = SplitIntoThreeDigits(data[4]);
                         List<EventEffectArg> newArg = new List<EventEffectArg>();
                         foreach (var argId in effectArgId)
                         {
@@ -188,6 +188,7 @@ namespace Scenes.Title
                         newLimit.uncontainRelic = IntArrayToUnitRelicArray(SplitIntoThreeDigits(data[8]));
                         newLimit.passEvent = SplitIntoThreeDigits(data[9]);
                         newLimit.notPassEvent = SplitIntoThreeDigits(data[9]);
+                        limits.Add(newLimit);
 
                         Debug.Log($"update limit {newLimit.id}");
                     }

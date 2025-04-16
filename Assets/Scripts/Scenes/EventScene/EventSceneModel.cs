@@ -38,12 +38,12 @@ namespace Scenes.EventScene
                                     (e.limit.upperLimitMoney == 0 || e.limit.upperLimitMoney >= PlayerSingleton.Instance.CurrentMoney) &&
                                     e.limit.underLimitPopularity <= PlayerSingleton.Instance.CurrentPopularity &&
                                     (e.limit.upperLimitPopularity == 0 || e.limit.upperLimitPopularity >= PlayerSingleton.Instance.CurrentPopularity) &&
-                                    (e.limit.containRelic.Length == 0 || e.limit.containRelic.All(relic => PlayerSingleton.Instance.CurrentRelic.Contains(relic))) &&
-                                    (e.limit.uncontainRelic.Length == 0 || !e.limit.uncontainRelic.Any(relic => PlayerSingleton.Instance.CurrentRelic.Contains(relic))) &&
-                                    (e.limit.containUnits.Length == 0 || e.limit.containUnits.All(unit => PlayerSingleton.Instance.CurrentDeck.Contains(unit))) &&
-                                    (e.limit.uncontainUnits.Length == 0 || !e.limit.uncontainUnits.Any(unit => PlayerSingleton.Instance.CurrentDeck.Contains(unit))) &&
-                                    (e.limit.passEvent.Length == 0 || e.limit.passEvent.All(eventId => PlayerSingleton.Instance.CurrentPassEvent.Contains(eventId))) &&
-                                    (e.limit.notPassEvent.Length == 0 || !e.limit.notPassEvent.Any(eventId => PlayerSingleton.Instance.CurrentPassEvent.Contains(eventId))) 
+                                    (e.limit.containRelic == null || e.limit.containRelic.Length == 0 || e.limit.containRelic.All(relic => PlayerSingleton.Instance.CurrentRelic.Contains(relic))) &&
+                                    (e.limit.uncontainRelic == null || e.limit.uncontainRelic.Length == 0 || !e.limit.uncontainRelic.Any(relic => PlayerSingleton.Instance.CurrentRelic.Contains(relic))) &&
+                                    (e.limit.containUnits == null || e.limit.containUnits.Length == 0 || e.limit.containUnits.All(unit => PlayerSingleton.Instance.CurrentDeck.Contains(unit))) &&
+                                    (e.limit.uncontainUnits == null || e.limit.uncontainUnits.Length == 0 || !e.limit.uncontainUnits.Any(unit => PlayerSingleton.Instance.CurrentDeck.Contains(unit))) &&
+                                    (e.limit.passEvent == null || e.limit.passEvent.Length == 0 || e.limit.passEvent.All(eventId => PlayerSingleton.Instance.CurrentPassEvent.Contains(eventId))) &&
+                                    (e.limit.notPassEvent == null || e.limit.notPassEvent.Length == 0 || !e.limit.notPassEvent.Any(eventId => PlayerSingleton.Instance.CurrentPassEvent.Contains(eventId))) 
                                 ).ToArray();
             return data;
         }
@@ -55,7 +55,7 @@ namespace Scenes.EventScene
             Debug.Log($"change money {arg.playerMoneyChange}");
             PlayerSingleton.Instance.ChangeMoney(arg.playerMoneyChange);
             Debug.Log($"change scene {arg.changeScene}");
-            if(arg.relic.Length > 0)
+            if(arg.relic != null && arg.relic.Length > 0)
             {
                 foreach (var relic in arg.relic)
                 {
@@ -68,10 +68,13 @@ namespace Scenes.EventScene
             {
                 _changeScene.OnNext(arg);
             }
-            foreach (var unit in arg.units)
+            if(arg.units != null)
             {
-                Debug.Log($"add member {unit.name}");
-                PlayerSingleton.Instance.AddCard(unit);
+                foreach (var unit in arg.units)
+                {
+                    Debug.Log($"add member {unit.name}");
+                    PlayerSingleton.Instance.AddCard(unit);
+                }
             }
             SceneManager.UnloadSceneAsync("EventScene");
         }

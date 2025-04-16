@@ -2,7 +2,7 @@ using Scenes.MainScene.Player;
 using Scenes.MainScene.Relic;
 
 [System.Serializable]
-public struct  EventLimit
+public struct EventLimit
 {
     public int id;
     public int upperLimitMoney;
