@@ -27,12 +27,14 @@ namespace Scenes.Title
 
         private List<UnitData> _baseUnit = new List<UnitData>();
         private List<RelicItemBase> _baseRelic = new List<RelicItemBase>();
+        private List<EventData> _baseEvents = new List<EventData>();
         private List<EventLimit> _eventLimits = new List<EventLimit>();
         private List<EventEffectArg> _eventArg = new List<EventEffectArg>();
 
         public void Init()
         {
             _baseUnit = Resources.Load<CardPool>("Value/MasterDataPool/AllUnitPool").cards;
+            _baseEvents = Resources.Load<EventDataPool>("Value/EventPool").events;
             _baseRelic = Resources.Load<RelicItemPool>("Value/RelicItemPool").relicItem.ToList();
         }
 
@@ -40,13 +42,15 @@ namespace Scenes.Title
         {
             _progress.Value = 0;
             await LoadWebRequest(SheetType.UnitData) ;
-            _progress.Value = 10;
-            await LoadWebRequest(SheetType.EnemyGroupData);
             _progress.Value = 20;
-            await LoadWebRequest(SheetType.EventLimitTable);
-            _progress.Value = 30;
-            await LoadWebRequest(SheetType.EventEffetcArg);
+            await LoadWebRequest(SheetType.EnemyGroupData);
             _progress.Value = 40;
+            await LoadWebRequest(SheetType.EventLimitTable);
+            _progress.Value = 60;
+            await LoadWebRequest(SheetType.EventEffetcArg);
+            _progress.Value = 80;
+            await LoadWebRequest(SheetType.EventTable);
+            _progress.Value = 100;
         }
         private async UniTask LoadWebRequest(SheetType sheetType)
         {
@@ -58,6 +62,7 @@ namespace Scenes.Title
 
                 if (request.result == UnityWebRequest.Result.Success)
                 {
+                    _progress.Value += 10;
                     var masterData = ConvertToArrayListFrom(request.downloadHandler.text);
                     GenerateDataList(sheetType, masterData);
                 }
@@ -144,6 +149,27 @@ namespace Scenes.Title
                         targetGroup.minStageDepth = minStageDepth;
                         targetGroup.maxStageDepth = maxStageDepth;
                         targetGroup.unitGroupData = unitEnemyGroups;
+                    }
+                    break;
+                case SheetType.EventTable:
+                    foreach (var data in dataList)
+                    {
+                        int id = int.Parse(data[0]);
+                        var targetEvent = _baseEvents.FirstOrDefault(c => c.id == id);
+                        if (targetEvent == default || targetEvent == null) continue;
+
+                        targetEvent.eventName = data[1];
+                        targetEvent.text = data[2];
+                        targetEvent.limit = _eventLimits.FirstOrDefault(l => l.id == int.Parse(data[2]));
+                        var effectArgId = SplitIntoThreeDigits(data[3]);
+                        List<EventEffectArg> newArg = new List<EventEffectArg>();
+                        foreach (var argId in effectArgId)
+                        {
+                            newArg.Add(_eventArg.FirstOrDefault(l => l.id == argId));
+                        }
+                        targetEvent.eventEffectArgs = newArg;
+
+                        Debug.Log($"update {targetEvent.eventName}");
                     }
                     break;
                 case SheetType.EventLimitTable:
